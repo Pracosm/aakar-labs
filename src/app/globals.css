@@ -1,26 +1,197 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --accent: #FF5C1B;
+  --accent-dim: #FF5C1B33;
+  --accent-hover: #FF7A42;
+  --bg-page: #F5F1EB;
+  --bg-surface: #FAF8F4;
+  --bg-panel: #FFFFFF;
+  --bg-elevated: #FFFFFF;
+  --border: #E0DCD4;
+  --border-subtle: #EBE8E2;
+  --text-primary: #1A1816;
+  --text-secondary: #6B6560;
+  --text-tertiary: #9A948E;
+  --cutout-yellow: #F5E6A3;
+  --cutout-yellow-dark: #EDD97A;
+  --cutout-pink: #F8D7DA;
+  --cutout-blue: #D4E6F1;
+  --cutout-green: #D5F0D0;
+  --cutout-lilac: #E8DAEF;
+  --cutout-peach: #FDEBD0;
+  --cutout-cream: #FFF8E7;
+  --hero-sky: #E8F0F8;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-space-grotesk);
+  --font-body: var(--font-inter);
+  --font-mono: var(--font-roboto-mono);
+  --color-accent: var(--accent);
+  --color-accent-dim: var(--accent-dim);
+  --color-accent-hover: var(--accent-hover);
+  --color-bg-page: var(--bg-page);
+  --color-bg-surface: var(--bg-surface);
+  --color-bg-panel: var(--bg-panel);
+  --color-bg-elevated: var(--bg-elevated);
+  --color-border: var(--border);
+  --color-border-subtle: var(--border-subtle);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-tertiary: var(--text-tertiary);
+  --color-cutout-yellow: var(--cutout-yellow);
+  --color-cutout-pink: var(--cutout-pink);
+  --color-cutout-blue: var(--cutout-blue);
+  --color-cutout-green: var(--cutout-green);
+  --color-cutout-lilac: var(--cutout-lilac);
+  --color-cutout-peach: var(--cutout-peach);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  height: 100%;
+  scroll-behavior: smooth;
+  scroll-padding-top: 72px;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  height: 100%;
+  overflow-x: hidden;
+  background: var(--bg-page);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* ===== HERO ANIMATIONS ===== */
+
+/* Glow circle drift — three different paths for organic motion */
+@keyframes glow-drift-1 {
+  0%, 100% { translate: 0 0; }
+  25% { translate: 30px 25px; }
+  50% { translate: -15px 45px; }
+  75% { translate: 35px -15px; }
+}
+@keyframes glow-drift-2 {
+  0%, 100% { translate: 0 0; }
+  33% { translate: -35px 25px; }
+  66% { translate: 25px -30px; }
+}
+@keyframes glow-drift-3 {
+  0%, 100% { translate: 0 0; }
+  40% { translate: 20px -25px; }
+  80% { translate: -30px 15px; }
+}
+
+/* Cursor wanders around the app mockup canvas */
+@keyframes cursor-wander {
+  0%, 100% { translate: 0 0; }
+  10% { translate: 80px -140px; }
+  25% { translate: 210px -190px; }
+  35% { translate: 280px -205px; }
+  50% { translate: 70px -65px; }
+  65% { translate: -60px -130px; }
+  80% { translate: 180px -90px; }
+  90% { translate: 40px -20px; }
+}
+
+/* Cutout card gentle float */
+@keyframes card-float {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -10px; }
+}
+
+/* Star pulse */
+@keyframes star-pulse {
+  0%, 100% { scale: 1; opacity: var(--star-base-opacity); }
+  50% { scale: 1.2; opacity: var(--star-peak-opacity); }
+}
+
+/* Dot breathing */
+@keyframes dot-breathe {
+  0%, 100% { scale: 1; }
+  50% { scale: 1.5; }
+}
+
+/* Hero text entrance */
+@keyframes hero-fade-in {
+  from { opacity: 0; transform: translateY(28px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* App mockup entrance */
+@keyframes mockup-rise {
+  from { opacity: 0; transform: translateY(40px) scale(0.96) translateX(-50%); }
+  to { opacity: 1; transform: translateY(0) scale(1) translateX(-50%); }
+}
+
+/* Scroll hint bounce */
+@keyframes bounce-hint {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 5px; }
+}
+
+/* Selection box pulse */
+@keyframes selection-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* ===== ANIMATION UTILITY CLASSES ===== */
+
+.animate-glow-1 { animation: glow-drift-1 25s ease-in-out infinite; }
+.animate-glow-2 { animation: glow-drift-2 20s ease-in-out infinite; }
+.animate-glow-3 { animation: glow-drift-3 22s ease-in-out infinite; }
+
+.animate-cursor-wander { animation: cursor-wander 14s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
+
+.animate-card-float { animation: card-float var(--float-duration, 6s) ease-in-out var(--float-delay, 0s) infinite; }
+
+.animate-star-pulse { animation: star-pulse 5s ease-in-out infinite; }
+
+.animate-dot-breathe { animation: dot-breathe 3s ease-in-out infinite; }
+
+.animate-bounce-hint { animation: bounce-hint 2s ease-in-out infinite; }
+
+.animate-selection-pulse { animation: selection-pulse 2s ease-in-out infinite; }
+
+.animate-hero-entrance {
+  animation: hero-fade-in 0.8s ease-out forwards;
+  opacity: 0;
+}
+.animate-hero-entrance-d1 {
+  animation: hero-fade-in 0.8s ease-out 0.3s forwards;
+  opacity: 0;
+}
+.animate-hero-entrance-d2 {
+  animation: hero-fade-in 0.8s ease-out 0.6s forwards;
+  opacity: 0;
+}
+.animate-mockup-rise {
+  animation: mockup-rise 1s ease-out 1s forwards;
+  opacity: 0;
+}
+
+/* ===== REDUCED MOTION ===== */
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-glow-1, .animate-glow-2, .animate-glow-3,
+  .animate-cursor-wander, .animate-card-float,
+  .animate-star-pulse, .animate-dot-breathe,
+  .animate-bounce-hint, .animate-selection-pulse {
+    animation: none;
+  }
+  .animate-hero-entrance,
+  .animate-hero-entrance-d1,
+  .animate-hero-entrance-d2,
+  .animate-mockup-rise {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
 }
