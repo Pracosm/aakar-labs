@@ -37,7 +37,7 @@ export default function Navbar() {
       {/* Right — CTA (desktop) */}
       <a
         href="/start-project"
-        className="hidden bg-accent px-7 py-3 font-mono text-[13px] font-semibold tracking-[1px] text-bg-page transition-all duration-300 ease-out hover:-translate-y-[2px] hover:bg-accent-hover hover:shadow-xl active:scale-[0.98] lg:block"
+        className="hidden bg-accent px-7 py-3 font-mono text-[13px] font-semibold tracking-[1px] text-bg-page transition-colors hover:bg-accent-hover lg:block"
       >
         START PROJECT
       </a>
@@ -71,7 +71,7 @@ export default function Navbar() {
           <a
             href="/start-project"
             onClick={() => setOpen(false)}
-            className="mt-4 block w-full bg-accent px-7 py-3 text-center font-mono text-[13px] font-semibold tracking-[1px] text-bg-page transition-all duration-300 ease-out hover:-translate-y-[2px] hover:bg-accent-hover hover:shadow-xl active:scale-[0.98]"
+            className="mt-4 block w-full bg-accent px-7 py-3 text-center font-mono text-[13px] font-semibold tracking-[1px] text-bg-page transition-colors hover:bg-accent-hover"
           >
             START PROJECT
           </a>

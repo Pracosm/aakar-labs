@@ -1,5 +1,3 @@
-"use client";
-
 import {
   PenTool,
   Package,
@@ -15,41 +13,11 @@ import {
 } from "lucide-react";
 import ButtonPrimary from "./ui/ButtonPrimary";
 import ButtonOutline from "./ui/ButtonOutline";
-import { useRef } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useGSAP } from "@gsap/react";
-
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
-}
 
 export default function Hero() {
-  const container = useRef<HTMLDivElement>(null);
-
-  useGSAP(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-    const cards = gsap.utils.toArray<HTMLElement>(".parallax-card");
-    cards.forEach((card) => {
-      const speed = card.dataset.speed || "0.5";
-      gsap.to(card, {
-        y: () => window.innerHeight * parseFloat(speed),
-        ease: "none",
-        scrollTrigger: {
-          trigger: container.current,
-          start: "top top",
-          end: "bottom top",
-          scrub: true,
-        },
-      });
-    });
-  }, { scope: container });
-
   return (
     <section
-      ref={container}
-      className="relative h-[720px] w-full overflow-hidden sm:h-[800px] md:h-[850px] lg:h-[920px]"
+      className="relative h-auto min-h-[600px] w-full overflow-hidden lg:h-[920px]"
       style={{
         background:
           "linear-gradient(to top, #F0F4F8 0%, #F5F1EB 60%, #FDF6EC 100%)",
@@ -110,8 +78,8 @@ export default function Hero() {
         *
       </span>
 
-      {/* ---- Floating Cutout Cards (xl+) ---- */}
-      <div className="pointer-events-none hidden xl:block">
+      {/* ---- Floating Cutout Cards (md+) ---- */}
+      <div className="hidden md:block">
         <CutoutBrand />
         <CutoutUX />
         <CutoutDev />
@@ -130,26 +98,26 @@ export default function Hero() {
           A design studio crafting interfaces, brands, and systems —
           handover-ready at industry standards.
         </p>
-        <div className="animate-hero-entrance-d2 mt-8 flex flex-row items-center justify-center gap-2.5 sm:gap-3.5">
-          <ButtonPrimary label="LET'S CREATE" href="/start-project" className="px-4 text-[11px] sm:px-7 sm:text-[13px]" />
-          <ButtonOutline label="SEE OUR WORK" href="#work" className="px-4 text-[11px] sm:px-7 sm:text-[13px]" />
+        <div className="animate-hero-entrance-d2 mt-8 flex flex-col items-center gap-3.5 sm:flex-row">
+          <ButtonPrimary label="LET'S CREATE" href="/start-project" />
+          <ButtonOutline label="SEE OUR WORK" href="#work" />
         </div>
       </div>
 
       {/* ---- Desktop: animated headline entrance ---- */}
-      <h1 className="animate-hero-entrance absolute left-1/2 top-[95px] z-20 hidden w-[90%] max-w-[812px] -translate-x-1/2 text-center font-display text-[64px] font-bold leading-[1.05] tracking-[-2.5px] text-text-primary lg:block">
+      <h1 className="animate-hero-entrance absolute left-1/2 top-[95px] z-10 hidden w-[812px] -translate-x-1/2 text-center font-display text-[64px] font-bold leading-[1.05] tracking-[-2.5px] text-text-primary lg:block">
         We design digital experiences that stand out.
       </h1>
 
       {/* ---- Desktop: animated subline entrance ---- */}
-      <p className="animate-hero-entrance-d1 absolute left-1/2 top-[260px] z-20 hidden w-[90%] max-w-[560px] -translate-x-1/2 text-center font-body text-[17px] leading-[1.65] text-text-secondary lg:block">
+      <p className="animate-hero-entrance-d1 absolute left-1/2 top-[260px] z-10 hidden w-[560px] -translate-x-1/2 text-center font-body text-[17px] leading-[1.65] text-text-secondary lg:block">
         A design studio crafting interfaces, brands, and
         <br />
         systems — handover-ready at industry standards.
       </p>
 
       {/* ---- Desktop: animated CTA entrance ---- */}
-      <div className="animate-hero-entrance-d2 absolute left-1/2 top-[330px] z-20 hidden -translate-x-1/2 items-center gap-3.5 lg:flex">
+      <div className="animate-hero-entrance-d2 absolute left-1/2 top-[330px] z-10 hidden -translate-x-1/2 items-center gap-3.5 lg:flex">
         <ButtonPrimary label="LET'S CREATE" href="/start-project" />
         <ButtonOutline label="SEE OUR WORK" href="#work" />
       </div>
@@ -163,10 +131,8 @@ export default function Hero() {
       </span>
 
       {/* ---- App Screen Mockup with animated cursor ---- */}
-      <div className="absolute left-1/2 top-[380px] z-20 flex w-[640px] -translate-x-1/2 justify-center sm:top-[420px] lg:top-[400px]">
-        <div className="origin-top scale-[0.52] sm:scale-[0.7] md:scale-[0.85] lg:scale-100">
-          <AppScreenMockup />
-        </div>
+      <div className="hidden lg:block">
+        <AppScreenMockup />
       </div>
 
       {/* ---- Zigzag — desktop only ---- */}
@@ -190,8 +156,7 @@ export default function Hero() {
 function CutoutBrand() {
   return (
     <div
-      data-speed="0.25"
-      className="parallax-card animate-card-float absolute left-[-30px] top-[180px] flex h-[200px] w-[280px] flex-col gap-3.5 rounded-2xl p-6 shadow-[0_8px_30px_-4px_#00000010]"
+      className="animate-card-float absolute left-[-30px] top-[180px] flex h-[200px] w-[280px] flex-col gap-3.5 rounded-2xl p-6 shadow-[0_8px_30px_-4px_#00000010]"
       style={{
         background: "var(--cutout-yellow)",
         transform: "rotate(-14deg)",
@@ -215,8 +180,7 @@ function CutoutBrand() {
 function CutoutUX() {
   return (
     <div
-      data-speed="0.15"
-      className="parallax-card animate-card-float absolute left-[140px] top-[520px] flex h-[280px] w-[240px] flex-col gap-2.5 rounded-2xl p-6 shadow-[0_8px_30px_-4px_#00000010]"
+      className="animate-card-float absolute left-[140px] top-[520px] flex h-[280px] w-[240px] flex-col gap-2.5 rounded-2xl p-6 shadow-[0_8px_30px_-4px_#00000010]"
       style={{
         background: "var(--cutout-pink)",
         transform: "rotate(8deg)",
@@ -242,8 +206,7 @@ function CutoutUX() {
 function CutoutDev() {
   return (
     <div
-      data-speed="0.3"
-      className="parallax-card animate-card-float absolute right-[18px] top-[553px] flex h-[220px] w-[300px] flex-col gap-3 rounded-2xl p-6 shadow-[0_8px_30px_-4px_#00000010]"
+      className="animate-card-float absolute right-[18px] top-[553px] flex h-[220px] w-[300px] flex-col gap-3 rounded-2xl p-6 shadow-[0_8px_30px_-4px_#00000010]"
       style={{
         background: "var(--cutout-blue)",
         transform: "rotate(-7deg)",
@@ -271,8 +234,7 @@ function CutoutDev() {
 function CutoutLaunch() {
   return (
     <div
-      data-speed="0.1"
-      className="parallax-card animate-card-float absolute right-[50px] top-[340px] flex h-[190px] w-[250px] flex-col gap-2.5 rounded-2xl p-6 shadow-[0_8px_30px_-4px_#00000010]"
+      className="animate-card-float absolute right-[50px] top-[340px] flex h-[190px] w-[250px] flex-col gap-2.5 rounded-2xl p-6 shadow-[0_8px_30px_-4px_#00000010]"
       style={{
         background: "var(--cutout-green)",
         transform: "rotate(12deg)",
@@ -296,8 +258,7 @@ function CutoutLaunch() {
 function CutoutMotion() {
   return (
     <div
-      data-speed="0.4"
-      className="parallax-card animate-card-float absolute right-[40px] top-[100px] flex h-[170px] w-[220px] flex-col gap-2.5 rounded-2xl p-5 shadow-[0_6px_24px_-4px_#00000010]"
+      className="animate-card-float absolute right-[40px] top-[100px] flex h-[170px] w-[220px] flex-col gap-2.5 rounded-2xl p-5 shadow-[0_6px_24px_-4px_#00000010]"
       style={{
         background: "var(--cutout-lilac)",
         transform: "rotate(-5deg)",
@@ -323,8 +284,7 @@ function CutoutMotion() {
 function CutoutStrategy() {
   return (
     <div
-      data-speed="0.2"
-      className="parallax-card animate-card-float absolute left-[47%] top-[660px] flex h-[160px] w-[200px] flex-col gap-2 rounded-2xl p-5 shadow-[0_6px_24px_-4px_#00000010]"
+      className="animate-card-float absolute left-[47%] top-[660px] flex h-[160px] w-[200px] flex-col gap-2 rounded-2xl p-5 shadow-[0_6px_24px_-4px_#00000010]"
       style={{
         background: "var(--cutout-peach)",
         transform: "rotate(16deg)",
@@ -345,8 +305,7 @@ function CutoutStrategy() {
 function CutoutTiny() {
   return (
     <div
-      data-speed="0.12"
-      className="parallax-card animate-card-float absolute -left-5 top-[560px] flex h-[120px] w-[160px] flex-col gap-1.5 rounded-xl p-4 shadow-[0_6px_20px_-4px_#00000010]"
+      className="animate-card-float absolute -left-5 top-[560px] flex h-[120px] w-[160px] flex-col gap-1.5 rounded-xl p-4 shadow-[0_6px_20px_-4px_#00000010]"
       style={{
         background: "var(--cutout-yellow)",
         transform: "rotate(-20deg)",
@@ -369,7 +328,7 @@ function CutoutTiny() {
 function AppScreenMockup() {
   return (
     <div
-      className="animate-mockup-rise relative flex h-[400px] w-[640px] shrink-0 flex-col overflow-hidden rounded-2xl border border-[#E8E4DE] bg-white"
+      className="animate-mockup-rise absolute left-1/2 top-[400px] flex h-[400px] w-[640px] flex-col overflow-hidden rounded-2xl border border-[#E8E4DE] bg-white"
       style={{
         boxShadow: "0 24px 80px -8px #00000015, 0 1px 8px 0 #00000008",
       }}

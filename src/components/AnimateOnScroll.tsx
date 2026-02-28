@@ -1,45 +1,40 @@
 "use client";
 
-import { useRef, type ReactNode } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useGSAP } from "@gsap/react";
-
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
-}
+import { useRef, useEffect, useState, type ReactNode } from "react";
 
 export default function AnimateOnScroll({ children }: { children: ReactNode }) {
-  const container = useRef<HTMLDivElement>(null);
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
 
-  useGSAP(() => {
-    const el = container.current;
-    if (!el) return;
-
+  useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      gsap.set(el, { opacity: 1, y: 0 });
+      setVisible(true);
       return;
     }
-
-    gsap.fromTo(
-      el,
-      { opacity: 0, y: 50 },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 1.2,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: el,
-          start: "top 85%",
-          toggleActions: "play none none none",
-        },
-      }
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.12, rootMargin: "0px 0px -40px 0px" }
     );
-  }, { scope: container });
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   return (
-    <div ref={container} className="will-change-[opacity,transform] opacity-0" style={{ transform: "translateZ(0)" }}>
+    <div
+      ref={ref}
+      style={{
+        opacity: visible ? 1 : 0,
+        transform: visible ? "translateY(0)" : "translateY(40px)",
+        transition: "opacity 0.7s ease-out, transform 0.7s ease-out",
+      }}
+    >
       {children}
     </div>
   );
