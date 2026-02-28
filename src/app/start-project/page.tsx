@@ -62,6 +62,7 @@ export default function StartProjectPage() {
   const [budget, setBudget] = useState("");
   const [details, setDetails] = useState("");
   const [timeline, setTimeline] = useState("");
+  const [company, setCompany] = useState(""); // honeypot — invisible to real users
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -72,7 +73,7 @@ export default function StartProjectPage() {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, service, budget, details, timeline }),
+        body: JSON.stringify({ name, email, service, budget, details, timeline, company }),
       });
 
       if (!res.ok) {
@@ -125,6 +126,19 @@ export default function StartProjectPage() {
             </h1>
 
             <form onSubmit={handleSubmit} className="flex flex-col gap-8">
+              {/* Honeypot — invisible to humans, bots fill it and get silently rejected */}
+              <div className="absolute -left-[9999px] opacity-0" aria-hidden="true">
+                <label htmlFor="company">Company</label>
+                <input
+                  id="company"
+                  type="text"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  value={company}
+                  onChange={(e) => setCompany(e.target.value)}
+                />
+              </div>
+
               {/* Name */}
               <div className="flex flex-col gap-2">
                 <label
