@@ -177,9 +177,9 @@ function CaseStudyHero() {
       {/* Back link */}
       <Link
         href="/#work"
-        className="absolute left-5 top-10 z-10 flex items-center gap-1.5 font-mono text-[11px] font-medium tracking-[1.5px] text-text-secondary transition-colors hover:text-text-primary md:left-16"
+        className="absolute left-5 top-10 z-[50] flex items-center gap-2 rounded-full border border-[#D1D5DB]/40 bg-white/80 px-5 py-2.5 font-mono text-[11px] font-semibold tracking-[1.5px] text-[#4B5563] shadow-[0_4px_16px_rgba(0,0,0,0.06)] backdrop-blur-md transition-all hover:bg-white hover:text-[#111827] hover:shadow-[0_4px_20px_rgba(0,0,0,0.12)] active:scale-[0.98] md:left-10 lg:left-16"
       >
-        <ArrowLeft size={14} />
+        <ArrowLeft size={16} />
         BACK TO WORK
       </Link>
 
