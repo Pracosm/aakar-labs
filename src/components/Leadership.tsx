@@ -21,10 +21,10 @@ const members = [
     desc: "Systems thinking, interface craft, and the guardian of design standards.",
   },
   {
-    photo: "/images/team/jay.png",
-    name: "Jay Sinkar",
-    role: "CHIEF EXPERIENCE OFFICER",
-    desc: "Brand voice, storytelling, and the bridge between studio and world.",
+    photo: "/images/team/karun.jpg",
+    name: "Karun Thapa",
+    role: "CHIEF BRANDING OFFICER",
+    desc: "Leads Kwirks, our in-house brother studio for branding — partnering with us on identity work end-to-end.",
   },
 ];
 
