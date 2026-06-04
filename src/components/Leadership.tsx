@@ -3,7 +3,7 @@ import SectionLabel from "./ui/SectionLabel";
 
 const members = [
   {
-    photo: "/images/team/shardul.png",
+    photo: "/images/team/shardul.jpg",
     name: "Shardul Nandedkar",
     role: "FOUNDER",
     desc: "Vision, direction, and the relentless pursuit of clarity in every pixel.",
