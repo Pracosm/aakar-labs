@@ -33,49 +33,21 @@ const TRACKS: Track[] = [
     id: "brand",
     label: "Brand Identity",
     code: "TRK-01",
-    blurb: "Visual system, positioning, and the assets to apply it.",
+    blurb: "Visual system and assets for your product.",
     modules: [
       {
-        id: "brand_audit",
-        name: "Brand audit & positioning",
-        desc: "Audit of current assets, tone, and visual territory.",
-        min: 10000,
-        max: 15000,
+        id: "brand_digital",
+        name: "Logo + type + color",
+        desc: "Logo, typography pairing and color system — sized for digital use.",
+        min: 30000,
+        max: 50000,
       },
       {
-        id: "logo",
-        name: "Logo design / refinement",
-        desc: "Two to three directions, refinement to a final mark.",
-        min: 20000,
-        max: 30000,
-      },
-      {
-        id: "color_type",
-        name: "Color & typography system",
-        desc: "Palette, type pairing, scale, usage rules.",
-        min: 10000,
-        max: 15000,
-      },
-      {
-        id: "icons",
-        name: "Iconography & graphic language",
-        desc: "Icon style, base set, supporting graphic motifs.",
-        min: 15000,
-        max: 20000,
-      },
-      {
-        id: "illustration",
-        name: "Illustration system",
-        desc: "Abstract illustration / lattice motifs over literal imagery.",
-        min: 10000,
-        max: 15000,
-      },
-      {
-        id: "guidelines",
-        name: "Brand guidelines document",
-        desc: "PDF guidelines + production-ready asset exports.",
-        min: 5000,
-        max: 10000,
+        id: "brand_full",
+        name: "Full brand identity",
+        desc: "Everything: audit, logo, type, color, iconography, illustration system, guidelines and production-ready exports.",
+        min: 70000,
+        max: 100000,
       },
     ],
   },
@@ -83,56 +55,21 @@ const TRACKS: Track[] = [
     id: "product",
     label: "Product Design (UI/UX)",
     code: "TRK-02",
-    blurb: "From journey maps to a clickable prototype and dev handoff.",
+    blurb: "Designed product surfaces, ready for engineering.",
     modules: [
       {
-        id: "ux_audit",
-        name: "UX audit & journey maps",
-        desc: "Audit of current flows, revised journeys for key personas.",
-        min: 10000,
-        max: 15000,
-      },
-      {
-        id: "ia",
-        name: "Information architecture & wireframes",
-        desc: "Sitemap, IA, low-fi wireframes for key flows.",
-        min: 15000,
-        max: 20000,
-      },
-      {
-        id: "ui_small",
-        name: "Hi-fi UI — small (1–5 screens)",
-        desc: "Polished UI on top of wireframes for a focused surface.",
-        min: 20000,
-        max: 25000,
-      },
-      {
-        id: "ui_medium",
-        name: "Hi-fi UI — medium (6–15 screens)",
-        desc: "Landing, console, dashboard, and key product flows.",
-        min: 35000,
-        max: 45000,
-      },
-      {
-        id: "ui_large",
-        name: "Hi-fi UI — large (16+ screens)",
-        desc: "Full product surface with responsive states.",
-        min: 50000,
+        id: "product_screens",
+        name: "Hi-fi screens",
+        desc: "Polished UI screens for your core flows. Static, handoff-ready.",
+        min: 40000,
         max: 60000,
       },
       {
-        id: "prototype",
-        name: "Interactive prototype",
-        desc: "Clickable prototype for internal review and usability.",
-        min: 10000,
-        max: 15000,
-      },
-      {
-        id: "design_system",
-        name: "Design system & dev handoff",
-        desc: "Reusable component library, tokens, handoff docs.",
-        min: 15000,
-        max: 20000,
+        id: "product_full",
+        name: "Full UX + interactive prototype",
+        desc: "Everything: UX audit, journey maps, IA, wireframes, screens, clickable prototype, design system and dev handoff.",
+        min: 80000,
+        max: 110000,
       },
     ],
   },
@@ -144,31 +81,17 @@ const TRACKS: Track[] = [
     modules: [
       {
         id: "dev_frontend",
-        name: "Frontend build (Next.js / React)",
-        desc: "Component library translated 1:1 from the design system.",
+        name: "Frontend build",
+        desc: "Next.js / React implementation, 1:1 with the design system.",
         min: 60000,
         max: 90000,
       },
       {
-        id: "dev_backend",
-        name: "Backend & API wiring",
-        desc: "API integration, data models, server-side logic.",
-        min: 40000,
-        max: 60000,
-      },
-      {
-        id: "dev_auth",
-        name: "Authentication & accounts",
-        desc: "Sign-in, sessions, role-based access.",
-        min: 15000,
-        max: 25000,
-      },
-      {
-        id: "dev_deploy",
-        name: "Deployment, perf & a11y",
-        desc: "Production deploy, perf budgets, accessibility checks.",
-        min: 10000,
-        max: 15000,
+        id: "dev_full",
+        name: "Full development",
+        desc: "Everything: frontend, backend, APIs, authentication, deployment, performance and accessibility.",
+        min: 125000,
+        max: 190000,
       },
     ],
   },
@@ -180,9 +103,7 @@ const TIMELINE_OPTIONS = [
   { id: "flexible", label: "Flexible · 6+ weeks", multiplier: 0.95 },
 ];
 
-// Bundle: meaningful Brand (≥3 modules) + meaningful Product (≥3 modules)
-// triggers the package discount the proposal hints at.
-const BUNDLE_THRESHOLD = 3;
+// Bundle: any Brand option + any Product option triggers the package discount.
 const BUNDLE_DISCOUNT = 15000;
 
 const ALL_MODULES = TRACKS.flatMap((t) =>
@@ -310,8 +231,7 @@ export default function StartProjectPage() {
     });
 
     const bundle =
-      brandSelected.length >= BUNDLE_THRESHOLD &&
-      productSelected.length >= BUNDLE_THRESHOLD;
+      brandSelected.length > 0 && productSelected.length > 0;
     if (bundle) {
       min = Math.max(0, min - BUNDLE_DISCOUNT);
       max = Math.max(0, max - BUNDLE_DISCOUNT);
@@ -344,14 +264,17 @@ export default function StartProjectPage() {
       const next = new Set(prev);
       if (next.has(id)) {
         next.delete(id);
-      } else {
-        next.add(id);
-        // UI tiers are mutually exclusive — pick one screen tier at a time.
-        const uiTiers = ["ui_small", "ui_medium", "ui_large"];
-        if (uiTiers.includes(id)) {
-          uiTiers.filter((t) => t !== id).forEach((t) => next.delete(t));
-        }
+        return next;
       }
+      // Picking any option in a track replaces the other option in that track.
+      const picked = findModule(id);
+      if (picked) {
+        const sameTrack = TRACKS.find((t) => t.id === picked.trackId);
+        sameTrack?.modules.forEach((m) => {
+          if (m.id !== id) next.delete(m.id);
+        });
+      }
+      next.add(id);
       return next;
     });
   }
