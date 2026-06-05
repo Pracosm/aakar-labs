@@ -223,7 +223,7 @@ export default function SelectedWork() {
                   color: "rgba(236,238,245,0.35)",
                 }}
               >
-                2024 — 2025
+                Feb 2026 — Apr 2026
               </span>
             </div>
 

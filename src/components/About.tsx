@@ -2,7 +2,7 @@ import SectionLabel from "./ui/SectionLabel";
 
 const specs = [
   { key: "TEAM_SIZE", value: "8 designers" },
-  { key: "FOUNDED", value: "2024" },
+  { key: "FOUNDED", value: "Dec 2025" },
   { key: "BASED", value: "Remote-first" },
   { key: "TOOLS", value: "Figma, Framer, After Effects" },
   { key: "HANDOFF", value: "Figma Dev Mode, Zeplin" },
