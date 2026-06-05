@@ -148,6 +148,15 @@ body {
     0 0 0 1px rgba(236, 238, 245, 0.04);
 }
 
+/* Fixed background video — lock to the LARGEST viewport so iOS Safari's
+   URL bar showing/hiding on scroll doesn't resize the container and re-crop
+   the video (visible as a "zoom in / clip" jump on mobile). */
+.bg-video-fixed {
+  width: 100vw;
+  height: 100vh;        /* fallback for older browsers */
+  height: 100lvh;       /* largest viewport — stable across URL bar changes */
+}
+
 /* ===== AETHERIS KEYFRAMES ===== */
 
 @keyframes sphereDrift {
