@@ -27,44 +27,81 @@ export default function Process() {
   return (
     <section
       id="process"
-      className="flex w-full flex-col gap-12 border-y border-border-subtle bg-bg-surface px-5 py-12 md:px-10 md:py-16 lg:px-16 lg:py-20"
+      className="relative w-full px-5 py-16 md:px-10 md:py-20 lg:px-14 lg:py-24"
+      style={{ borderTop: "1px solid rgba(236,238,245,0.05)" }}
     >
-      {/* Header */}
-      <div className="flex w-full flex-col gap-5">
-        <SectionLabel code="AKR-006" label="OUR_PROCESS" />
-        <h2 className="font-display text-2xl font-bold tracking-[-1px] text-text-primary md:text-3xl lg:text-[40px]">
-          How we work.
-        </h2>
-        <p className="max-w-[560px] text-sm leading-[1.7] text-text-secondary md:text-base">
-          Four phases. Clear deliverables at every stage.
-          Nothing moves forward until the previous phase is signed off.
-        </p>
-      </div>
-
-      {/* Steps */}
-      <div className="flex w-full flex-col md:grid md:grid-cols-2 lg:flex lg:flex-row">
-        {steps.map((step, i) => (
-          <div
-            key={step.num}
-            className={`flex flex-1 flex-col gap-4 px-0 py-6 md:px-7 md:py-8 ${
-              i < steps.length - 1
-                ? "border-b border-border md:border-b-0 md:border-r"
-                : ""
-            } ${
-              i === 1 ? "md:border-r-0 lg:border-r" : ""
-            }`}
+      <div className="max-w-[1160px] mx-auto">
+        <div className="flex w-full flex-col gap-5 mb-12">
+          <SectionLabel code="AKR-006" label="OUR_PROCESS" />
+          <h2
+            className="font-display"
+            style={{
+              fontSize: "clamp(2rem, 4vw, 3.25rem)",
+              fontWeight: 700,
+              letterSpacing: "-0.06em",
+              color: "var(--rim-white)",
+              lineHeight: 1.05,
+            }}
           >
-            <span className="font-mono text-2xl font-medium text-accent-dim lg:text-[32px]">
-              {step.num}
-            </span>
-            <h3 className="font-display text-xl font-bold tracking-[-0.3px] text-text-primary">
-              {step.title}
-            </h3>
-            <p className="text-sm leading-[1.6] text-text-secondary">
-              {step.desc}
-            </p>
-          </div>
-        ))}
+            How we{" "}
+            <span style={{ color: "var(--laptop-glow)" }}>work.</span>
+          </h2>
+          <p
+            className="max-w-[560px]"
+            style={{
+              fontFamily: "Outfit",
+              fontWeight: 300,
+              fontSize: 16,
+              color: "rgba(236,238,245,0.5)",
+              lineHeight: 1.7,
+            }}
+          >
+            Four phases. Clear deliverables at every stage. Nothing moves
+            forward until the previous phase is signed off.
+          </p>
+        </div>
+
+        <div className="grid w-full grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+          {steps.map((step) => (
+            <div
+              key={step.num}
+              className="flex flex-col gap-4 p-7 rounded-2xl glass-panel"
+            >
+              <span
+                className="font-mono"
+                style={{
+                  fontSize: 28,
+                  fontWeight: 500,
+                  color: "rgba(212,117,106,0.45)",
+                  letterSpacing: "-0.02em",
+                }}
+              >
+                {step.num}
+              </span>
+              <h3
+                className="font-display text-xl"
+                style={{
+                  fontWeight: 700,
+                  letterSpacing: "-0.02em",
+                  color: "var(--rim-white)",
+                }}
+              >
+                {step.title}
+              </h3>
+              <p
+                style={{
+                  fontFamily: "Outfit",
+                  fontWeight: 300,
+                  fontSize: 14,
+                  color: "rgba(236,238,245,0.6)",
+                  lineHeight: 1.7,
+                }}
+              >
+                {step.desc}
+              </p>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );

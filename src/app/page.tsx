@@ -1,6 +1,5 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
-import Services from "@/components/Services";
 import SelectedWork from "@/components/SelectedWork";
 import Process from "@/components/Process";
 import About from "@/components/About";
@@ -11,12 +10,22 @@ import AnimateOnScroll from "@/components/AnimateOnScroll";
 
 export default function Home() {
   return (
-    <div className="mx-auto flex min-h-screen w-full flex-col bg-bg-page">
+    <div className="relative mx-auto flex min-h-screen w-full flex-col">
+      {/* Dark veil — transparent over the hero, fades in as you reach the next section */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0"
+        style={{
+          top: "100vh",
+          bottom: 0,
+          zIndex: -1,
+          background:
+            "linear-gradient(180deg, rgba(5,5,9,0) 0%, rgba(5,5,9,0.35) 40vh, rgba(5,5,9,0.5) 100vh, rgba(5,5,9,0.55) 100%)",
+        }}
+      />
+
       <Navbar />
       <Hero />
-      <AnimateOnScroll>
-        <Services />
-      </AnimateOnScroll>
       <AnimateOnScroll>
         <SelectedWork />
       </AnimateOnScroll>
@@ -32,9 +41,7 @@ export default function Home() {
       <AnimateOnScroll>
         <ContactCTA />
       </AnimateOnScroll>
-      <AnimateOnScroll>
-        <Footer />
-      </AnimateOnScroll>
+      <Footer />
     </div>
   );
 }

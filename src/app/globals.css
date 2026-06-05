@@ -1,18 +1,32 @@
 @import "tailwindcss";
 
 :root {
-  --accent: #FF5C1B;
-  --accent-dim: #FF5C1B33;
-  --accent-hover: #FF7A42;
-  --bg-page: #F5F1EB;
-  --bg-surface: #FAF8F4;
-  --bg-panel: #FFFFFF;
-  --bg-elevated: #FFFFFF;
-  --border: #E0DCD4;
-  --border-subtle: #EBE8E2;
-  --text-primary: #1A1816;
-  --text-secondary: #6B6560;
-  --text-tertiary: #9A948E;
+  /* Aetheris Palette — dark theme */
+  --void: #050509;
+  --void-deep: #000000;
+  --sphere-shadow: #1a1d2e;
+  --sphere-mid: #2d3352;
+  --rim-white: #eceef5;
+  --glow-white: #ffffff;
+  --coral: #d4756a;
+  --stem-green: #4a8c3f;
+  --laptop-glow: #f0e8d5;
+
+  /* Semantic tokens mapped onto the dark theme */
+  --accent: var(--coral);
+  --accent-hover: #e08a7e;
+  --accent-dim: rgba(212, 117, 106, 0.18);
+  --bg-page: var(--void);
+  --bg-surface: rgba(26, 29, 46, 0.4);
+  --bg-panel: rgba(26, 29, 46, 0.55);
+  --bg-elevated: rgba(45, 51, 82, 0.55);
+  --border: rgba(236, 238, 245, 0.08);
+  --border-subtle: rgba(236, 238, 245, 0.05);
+  --text-primary: var(--rim-white);
+  --text-secondary: rgba(236, 238, 245, 0.7);
+  --text-tertiary: rgba(236, 238, 245, 0.45);
+
+  /* Legacy cutout palette — used by the floating hero cards */
   --cutout-yellow: #F5E6A3;
   --cutout-yellow-dark: #EDD97A;
   --cutout-pink: #F8D7DA;
@@ -21,16 +35,35 @@
   --cutout-lilac: #E8DAEF;
   --cutout-peach: #FDEBD0;
   --cutout-cream: #FFF8E7;
-  --hero-sky: #E8F0F8;
+}
+
+/* Scoped light tokens for the legacy hero section,
+   so it remains readable on its own light gradient bg. */
+.hero-light {
+  --text-primary: #1A1816;
+  --text-secondary: #6B6560;
+  --text-tertiary: #9A948E;
+  --accent: #FF5C1B;
+  --accent-hover: #FF7A42;
+  --border: #E0DCD4;
+  --border-subtle: #EBE8E2;
+  --bg-page: #F5F1EB;
+  --bg-surface: #FAF8F4;
+  --bg-panel: #FFFFFF;
 }
 
 @theme inline {
   --font-display: var(--font-space-grotesk);
-  --font-body: var(--font-inter);
+  --font-body: var(--font-outfit);
   --font-mono: var(--font-roboto-mono);
   --color-accent: var(--accent);
   --color-accent-dim: var(--accent-dim);
   --color-accent-hover: var(--accent-hover);
+  --color-coral: var(--coral);
+  --color-stem-green: var(--stem-green);
+  --color-laptop-glow: var(--laptop-glow);
+  --color-rim-white: var(--rim-white);
+  --color-void: var(--void);
   --color-bg-page: var(--bg-page);
   --color-bg-surface: var(--bg-surface);
   --color-bg-panel: var(--bg-panel);
@@ -50,16 +83,30 @@
 
 html {
   height: 100%;
-  scroll-behavior: smooth;
-  scroll-padding-top: 72px;
+  scroll-padding-top: 84px;
+}
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
 }
 
 body {
-  height: 100%;
+  min-height: 100%;
   overflow-x: hidden;
-  background: var(--bg-page);
-  color: var(--text-primary);
-  font-family: var(--font-body);
+  background: var(--void);
+  color: var(--rim-white);
+  font-family: var(--font-body), "Outfit", system-ui, sans-serif;
+  font-weight: 300;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -68,9 +115,111 @@ body {
   }
 }
 
-/* ===== HERO ANIMATIONS ===== */
+/* ===== AETHERIS UTILITY CLASSES ===== */
 
-/* Glow circle drift — three different paths for organic motion */
+.sphere-glow {
+  background-image: radial-gradient(
+    ellipse at 68% 12%,
+    rgba(255, 255, 255, 0.09),
+    transparent 58%
+  );
+}
+
+.sphere-glow:hover {
+  background-image: radial-gradient(
+    ellipse at 50% 20%,
+    rgba(255, 255, 255, 0.12),
+    transparent 58%
+  );
+}
+
+.screen-glow {
+  background: rgba(240, 232, 213, 0.05);
+  border: 1px solid rgba(240, 232, 213, 0.1);
+  box-shadow: 0 6px 40px rgba(240, 232, 213, 0.06);
+}
+
+.glass-panel {
+  background: rgba(26, 29, 46, 0.4);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(236, 238, 245, 0.08);
+  box-shadow: 0 30px 100px rgba(0, 0, 0, 0.55),
+    0 0 0 1px rgba(236, 238, 245, 0.04);
+}
+
+/* ===== AETHERIS KEYFRAMES ===== */
+
+@keyframes sphereDrift {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-14px) scale(1.015); }
+}
+
+@keyframes rimPulse {
+  0%, 100% { opacity: 0.1; }
+  50% { opacity: 0.18; }
+}
+
+@keyframes aetherisReveal {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.aetheris-reveal {
+  animation: aetherisReveal 1s cubic-bezier(0.34, 1.1, 0.64, 1) both;
+}
+
+/* Page transition — soft fade + blur lift on route change */
+@keyframes pageReveal {
+  from {
+    opacity: 0;
+    filter: blur(8px);
+    transform: scale(0.985);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: scale(1);
+  }
+}
+
+.page-transition {
+  animation: pageReveal 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+  will-change: opacity, filter, transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-transition { animation: none; }
+}
+
+/* Quiet stars in the hero dark areas — restrained, no warm tints */
+@keyframes twinkle {
+  0%, 100% {
+    opacity: 0.25;
+    transform: translate(-50%, -50%) scale(0.9);
+  }
+  50% {
+    opacity: 0.7;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+.twinkle {
+  position: absolute;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.55));
+  opacity: 0.6;
+  animation: twinkle var(--twk-dur, 6s) ease-in-out var(--twk-delay, 0s) infinite;
+  will-change: opacity, transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .twinkle { animation: none; opacity: 0.5; transform: translate(-50%, -50%); }
+}
+
+/* ===== LEGACY HERO ANIMATIONS ===== */
+
 @keyframes glow-drift-1 {
   0%, 100% { translate: 0 0; }
   25% { translate: 30px 25px; }
@@ -88,7 +237,6 @@ body {
   80% { translate: -30px 15px; }
 }
 
-/* Cursor wanders around the app mockup canvas */
 @keyframes cursor-wander {
   0%, 100% { translate: 0 0; }
   10% { translate: 80px -140px; }
@@ -100,64 +248,49 @@ body {
   90% { translate: 40px -20px; }
 }
 
-/* Cutout card gentle float */
 @keyframes card-float {
   0%, 100% { translate: 0 0; }
   50% { translate: 0 -10px; }
 }
 
-/* Star pulse */
 @keyframes star-pulse {
   0%, 100% { scale: 1; opacity: var(--star-base-opacity); }
   50% { scale: 1.2; opacity: var(--star-peak-opacity); }
 }
 
-/* Dot breathing */
 @keyframes dot-breathe {
   0%, 100% { scale: 1; }
   50% { scale: 1.5; }
 }
 
-/* Hero text entrance */
 @keyframes hero-fade-in {
   from { opacity: 0; transform: translateY(28px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* App mockup entrance */
 @keyframes mockup-rise {
   from { opacity: 0; transform: translateY(40px) scale(0.96); }
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-/* Scroll hint bounce */
 @keyframes bounce-hint {
   0%, 100% { translate: 0 0; }
   50% { translate: 0 5px; }
 }
 
-/* Selection box pulse */
 @keyframes selection-pulse {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.4; }
 }
 
-/* ===== ANIMATION UTILITY CLASSES ===== */
-
 .animate-glow-1 { animation: glow-drift-1 25s ease-in-out infinite; }
 .animate-glow-2 { animation: glow-drift-2 20s ease-in-out infinite; }
 .animate-glow-3 { animation: glow-drift-3 22s ease-in-out infinite; }
-
 .animate-cursor-wander { animation: cursor-wander 14s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
-
 .animate-card-float { animation: card-float var(--float-duration, 6s) ease-in-out var(--float-delay, 0s) infinite; }
-
 .animate-star-pulse { animation: star-pulse 5s ease-in-out infinite; }
-
 .animate-dot-breathe { animation: dot-breathe 3s ease-in-out infinite; }
-
 .animate-bounce-hint { animation: bounce-hint 2s ease-in-out infinite; }
-
 .animate-selection-pulse { animation: selection-pulse 2s ease-in-out infinite; }
 
 .animate-hero-entrance {
@@ -176,8 +309,6 @@ body {
   animation: mockup-rise 1s ease-out 1s forwards;
   opacity: 0;
 }
-
-/* ===== REDUCED MOTION ===== */
 
 @media (prefers-reduced-motion: reduce) {
   .animate-glow-1, .animate-glow-2, .animate-glow-3,

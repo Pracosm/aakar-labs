@@ -39,15 +39,15 @@ const TRACKS: Track[] = [
         id: "brand_digital",
         name: "Logo + type + color",
         desc: "Logo, typography pairing and color system — sized for digital use.",
-        min: 30000,
-        max: 50000,
+        min: 50000,
+        max: 75000,
       },
       {
         id: "brand_full",
         name: "Full brand identity",
         desc: "Everything: audit, logo, type, color, iconography, illustration system, guidelines and production-ready exports.",
-        min: 70000,
-        max: 100000,
+        min: 130000,
+        max: 180000,
       },
     ],
   },
@@ -61,15 +61,15 @@ const TRACKS: Track[] = [
         id: "product_screens",
         name: "Hi-fi screens",
         desc: "Polished UI screens for your core flows. Static, handoff-ready.",
-        min: 40000,
-        max: 60000,
+        min: 75000,
+        max: 110000,
       },
       {
         id: "product_full",
         name: "Full UX + interactive prototype",
         desc: "Everything: UX audit, journey maps, IA, wireframes, screens, clickable prototype, design system and dev handoff.",
-        min: 80000,
-        max: 110000,
+        min: 150000,
+        max: 200000,
       },
     ],
   },
@@ -83,15 +83,15 @@ const TRACKS: Track[] = [
         id: "dev_frontend",
         name: "Frontend build",
         desc: "Next.js / React implementation, 1:1 with the design system.",
-        min: 60000,
-        max: 90000,
+        min: 100000,
+        max: 150000,
       },
       {
         id: "dev_full",
         name: "Full development",
         desc: "Everything: frontend, backend, APIs, authentication, deployment, performance and accessibility.",
-        min: 125000,
-        max: 190000,
+        min: 220000,
+        max: 320000,
       },
     ],
   },
@@ -104,7 +104,7 @@ const TIMELINE_OPTIONS = [
 ];
 
 // Bundle: any Brand option + any Product option triggers the package discount.
-const BUNDLE_DISCOUNT = 15000;
+const BUNDLE_DISCOUNT = 30000;
 
 const ALL_MODULES = TRACKS.flatMap((t) =>
   t.modules.map((m) => ({ ...m, trackId: t.id })),
@@ -375,7 +375,17 @@ export default function StartProjectPage() {
   // ─── Render ──────────────────────────────────────────────────────────────
 
   return (
-    <div className="flex min-h-screen w-full flex-col bg-bg-page">
+    <div className="relative flex min-h-screen w-full flex-col">
+      {/* Constant dark veil over the video for readability */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0"
+        style={{
+          zIndex: -1,
+          background: "rgba(5,5,9,0.55)",
+        }}
+      />
+
       <Navbar />
 
       <main className="mx-auto flex w-full max-w-[1100px] flex-1 flex-col px-5 py-16 md:px-10 md:py-20">
@@ -406,12 +416,32 @@ export default function StartProjectPage() {
               <SectionLabel code="AKR-007" label="START_PROJECT" />
             </div>
 
-            <h1 className="mb-4 font-display text-3xl font-bold leading-[1.15] tracking-[-1.5px] text-text-primary md:text-5xl">
+            <h1
+              className="mb-5 font-display"
+              style={{
+                fontSize: "clamp(2.25rem, 5vw, 3.75rem)",
+                fontWeight: 700,
+                letterSpacing: "-0.06em",
+                color: "var(--rim-white)",
+                lineHeight: 1.05,
+              }}
+            >
               Build your scope.
               <br />
-              We&apos;ll show your estimate.
+              <span style={{ color: "var(--laptop-glow)" }}>
+                We&apos;ll show your estimate.
+              </span>
             </h1>
-            <p className="mb-12 max-w-[560px] text-[15px] leading-[1.7] text-text-secondary">
+            <p
+              className="mb-12 max-w-[560px]"
+              style={{
+                fontFamily: "Outfit",
+                fontWeight: 300,
+                fontSize: 15,
+                color: "rgba(236,238,245,0.6)",
+                lineHeight: 1.7,
+              }}
+            >
               Pick the modules you need. Your indicative range updates on the
               right — final pricing depends on screen count, feedback rounds
               and complexity.
@@ -467,10 +497,10 @@ export default function StartProjectPage() {
                             type="button"
                             onClick={() => toggle(m.id)}
                             aria-pressed={isSelected}
-                            className={`group flex flex-col gap-2 rounded-lg border p-4 text-left transition-all ${
+                            className={`group flex flex-col gap-2 rounded-xl border p-4 text-left transition-all backdrop-blur-md ${
                               isSelected
-                                ? "border-accent bg-accent/5 shadow-[0_0_0_1px_var(--accent)]"
-                                : "border-border bg-bg-panel hover:border-text-tertiary"
+                                ? "border-[color:var(--coral)] bg-[rgba(212,117,106,0.08)] shadow-[0_0_0_1px_var(--coral)]"
+                                : "border-[rgba(236,238,245,0.08)] bg-[rgba(26,29,46,0.4)] hover:border-[rgba(236,238,245,0.25)]"
                             }`}
                           >
                             <div className="flex items-start justify-between gap-3">
@@ -480,8 +510,8 @@ export default function StartProjectPage() {
                               <span
                                 className={`mt-0.5 flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-sm border transition-colors ${
                                   isSelected
-                                    ? "border-accent bg-accent text-bg-page"
-                                    : "border-border bg-transparent"
+                                    ? "border-[color:var(--coral)] bg-[color:var(--coral)] text-black"
+                                    : "border-[rgba(236,238,245,0.3)] bg-transparent"
                                 }`}
                                 aria-hidden="true"
                               >
@@ -524,8 +554,8 @@ export default function StartProjectPage() {
                         onClick={() => handleTimelineChange(opt.id)}
                         className={`rounded-full border px-4 py-2 font-mono text-[12px] font-medium tracking-[0.5px] transition-colors ${
                           timeline === opt.id
-                            ? "border-accent bg-accent text-bg-page"
-                            : "border-border bg-transparent text-text-secondary hover:border-text-secondary"
+                            ? "border-[color:var(--laptop-glow)] bg-[color:var(--laptop-glow)] text-black"
+                            : "border-[rgba(236,238,245,0.18)] bg-transparent text-[rgba(236,238,245,0.7)] hover:border-[rgba(236,238,245,0.4)]"
                         }`}
                       >
                         {opt.label}
@@ -542,14 +572,14 @@ export default function StartProjectPage() {
                 </section>
 
                 {/* Contact details */}
-                <section className="flex flex-col gap-6 border-t border-border pt-10">
+                <section className="flex flex-col gap-6 border-t border-[rgba(236,238,245,0.08)] pt-10">
                   <SectionLabel code="TRK-05" label="ABOUT_YOU" />
 
                   <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                     <div className="flex flex-col gap-2">
                       <label
                         htmlFor="name"
-                        className="font-mono text-[11px] font-medium tracking-[1.5px] text-text-tertiary"
+                        className="font-mono text-[11px] font-medium tracking-[1.5px] text-[rgba(236,238,245,0.72)]"
                       >
                         YOUR NAME
                       </label>
@@ -560,13 +590,13 @@ export default function StartProjectPage() {
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         placeholder="Jane Doe"
-                        className="border-b border-border bg-transparent py-2.5 font-body text-[15px] text-text-primary outline-none transition-colors placeholder:text-text-tertiary focus:border-accent"
+                        className="border-b border-[rgba(236,238,245,0.18)] bg-transparent py-2.5 font-body text-[15px] text-[color:var(--rim-white)] outline-none transition-colors placeholder:text-[rgba(236,238,245,0.55)] focus:border-[color:var(--coral)]"
                       />
                     </div>
                     <div className="flex flex-col gap-2">
                       <label
                         htmlFor="email"
-                        className="font-mono text-[11px] font-medium tracking-[1.5px] text-text-tertiary"
+                        className="font-mono text-[11px] font-medium tracking-[1.5px] text-[rgba(236,238,245,0.72)]"
                       >
                         EMAIL
                       </label>
@@ -577,7 +607,7 @@ export default function StartProjectPage() {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder="jane@company.com"
-                        className="border-b border-border bg-transparent py-2.5 font-body text-[15px] text-text-primary outline-none transition-colors placeholder:text-text-tertiary focus:border-accent"
+                        className="border-b border-[rgba(236,238,245,0.18)] bg-transparent py-2.5 font-body text-[15px] text-[color:var(--rim-white)] outline-none transition-colors placeholder:text-[rgba(236,238,245,0.55)] focus:border-[color:var(--coral)]"
                       />
                     </div>
                   </div>
@@ -585,7 +615,7 @@ export default function StartProjectPage() {
                   <div className="flex flex-col gap-2">
                     <label
                       htmlFor="projectName"
-                      className="font-mono text-[11px] font-medium tracking-[1.5px] text-text-tertiary"
+                      className="font-mono text-[11px] font-medium tracking-[1.5px] text-[rgba(236,238,245,0.72)]"
                     >
                       PROJECT NAME
                     </label>
@@ -595,14 +625,14 @@ export default function StartProjectPage() {
                       value={projectName}
                       onChange={(e) => setProjectName(e.target.value)}
                       placeholder="Project Yodhai"
-                      className="border-b border-border bg-transparent py-2.5 font-body text-[15px] text-text-primary outline-none transition-colors placeholder:text-text-tertiary focus:border-accent"
+                      className="border-b border-[rgba(236,238,245,0.18)] bg-transparent py-2.5 font-body text-[15px] text-[color:var(--rim-white)] outline-none transition-colors placeholder:text-[rgba(236,238,245,0.55)] focus:border-[color:var(--coral)]"
                     />
                   </div>
 
                   <div className="flex flex-col gap-2">
                     <label
                       htmlFor="details"
-                      className="font-mono text-[11px] font-medium tracking-[1.5px] text-text-tertiary"
+                      className="font-mono text-[11px] font-medium tracking-[1.5px] text-[rgba(236,238,245,0.72)]"
                     >
                       TELL US ABOUT YOUR PROJECT
                     </label>
@@ -612,7 +642,7 @@ export default function StartProjectPage() {
                       value={details}
                       onChange={(e) => setDetails(e.target.value)}
                       placeholder="A brief overview of what you're building and what you need help with..."
-                      className="resize-none border-b border-border bg-transparent py-2.5 font-body text-[15px] leading-[1.6] text-text-primary outline-none transition-colors placeholder:text-text-tertiary focus:border-accent"
+                      className="resize-none border-b border-[rgba(236,238,245,0.18)] bg-transparent py-2.5 font-body text-[15px] leading-[1.6] text-[color:var(--rim-white)] outline-none transition-colors placeholder:text-[rgba(236,238,245,0.55)] focus:border-[color:var(--coral)]"
                     />
                   </div>
                 </section>
@@ -620,9 +650,9 @@ export default function StartProjectPage() {
 
               {/* ─── RIGHT: sticky estimate ───────────────────────────── */}
               <aside className="lg:sticky lg:top-24 lg:self-start">
-                <div className="flex flex-col gap-5 rounded-xl border border-border bg-bg-panel p-6">
+                <div className="flex flex-col gap-5 rounded-2xl p-6 glass-panel">
                   <div className="flex items-center justify-between gap-3">
-                    <span className="font-mono text-[11px] font-medium tracking-[1.5px] text-text-tertiary">
+                    <span className="font-mono text-[11px] font-medium tracking-[1.5px] text-[rgba(236,238,245,0.72)]">
                       ESTIMATE
                     </span>
                     {revealedEstimate?.bundle && (
@@ -634,7 +664,7 @@ export default function StartProjectPage() {
 
                   {/* Currency dropdown */}
                   <label className="flex flex-col gap-1.5">
-                    <span className="font-mono text-[10px] font-medium tracking-[1.2px] text-text-tertiary">
+                    <span className="font-mono text-[10px] font-medium tracking-[1.2px] text-[rgba(236,238,245,0.72)]">
                       BILLING REGION
                     </span>
                     <select
@@ -642,7 +672,7 @@ export default function StartProjectPage() {
                       onChange={(e) =>
                         setCurrencyCode(e.target.value as Currency["code"])
                       }
-                      className="appearance-none rounded-md border border-border bg-bg-page px-3 py-2 pr-8 font-mono text-[12px] tracking-[0.5px] text-text-primary outline-none transition-colors hover:border-text-secondary focus:border-accent"
+                      className="appearance-none rounded-md border border-[rgba(236,238,245,0.12)] bg-[rgba(5,5,9,0.6)] px-3 py-2 pr-8 font-mono text-[12px] tracking-[0.5px] text-[color:var(--rim-white)] outline-none transition-colors hover:border-[rgba(236,238,245,0.3)] focus:border-[color:var(--coral)]"
                       style={{
                         backgroundImage:
                           "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6' fill='none'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%239A948E' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E\")",
@@ -697,7 +727,7 @@ export default function StartProjectPage() {
                   {revealedEstimate ? (
                     <>
                       <div className="flex flex-col gap-1.5">
-                        <span className="font-mono text-[10px] font-medium tracking-[1.2px] text-text-tertiary">
+                        <span className="font-mono text-[10px] font-medium tracking-[1.2px] text-[rgba(236,238,245,0.72)]">
                           FROM · {currency.code}
                         </span>
                         <span className="font-display text-[26px] font-bold leading-tight tracking-[-1px] text-text-primary">
@@ -705,7 +735,7 @@ export default function StartProjectPage() {
                             convertFromINR(revealedEstimate.min, currency),
                             currency,
                           )}
-                          <span className="text-text-tertiary"> – </span>
+                          <span className="text-[rgba(236,238,245,0.72)]"> – </span>
                           {formatMoney(
                             convertFromINR(revealedEstimate.max, currency),
                             currency,
@@ -713,13 +743,13 @@ export default function StartProjectPage() {
                         </span>
                       </div>
 
-                      <p className="text-[11px] leading-[1.55] text-text-tertiary">
+                      <p className="text-[11px] leading-[1.55] text-[rgba(236,238,245,0.72)]">
                         Indicative range based on your snapshot. To rework it,
                         select your modules again from scratch.
                       </p>
 
                       {error && (
-                        <p className="font-mono text-[12px] text-red-600">
+                        <p className="font-mono text-[12px] text-[#ff8a7e]">
                           {error}
                         </p>
                       )}
@@ -727,7 +757,11 @@ export default function StartProjectPage() {
                       <button
                         type="submit"
                         disabled={sending}
-                        className="w-full bg-accent py-3.5 font-mono text-[13px] font-semibold tracking-[1px] text-bg-page transition-colors hover:bg-accent-hover disabled:opacity-60"
+                        className="w-full rounded-full py-3.5 font-sans text-[11px] font-semibold tracking-[0.22em] uppercase transition-all disabled:opacity-60"
+                        style={{
+                          background: "var(--laptop-glow)",
+                          color: "#000",
+                        }}
                       >
                         {sending ? "SENDING..." : "SEND BRIEF"}
                       </button>
@@ -741,7 +775,7 @@ export default function StartProjectPage() {
                       </p>
 
                       {error && (
-                        <p className="font-mono text-[12px] text-red-600">
+                        <p className="font-mono text-[12px] text-[#ff8a7e]">
                           {error}
                         </p>
                       )}
@@ -749,7 +783,7 @@ export default function StartProjectPage() {
                       <button
                         type="button"
                         onClick={handleCalculate}
-                        className="w-full border border-text-primary bg-bg-page py-3.5 font-mono text-[13px] font-semibold tracking-[1px] text-text-primary transition-colors hover:bg-text-primary hover:text-bg-page disabled:opacity-60"
+                        className="w-full rounded-full border border-[rgba(236,238,245,0.25)] bg-transparent py-3.5 font-sans text-[11px] font-semibold tracking-[0.22em] uppercase text-[color:var(--rim-white)] transition-all hover:bg-white/10 disabled:opacity-60"
                       >
                         CALCULATE ESTIMATE
                       </button>
@@ -761,7 +795,7 @@ export default function StartProjectPage() {
 
             <Link
               href="/"
-              className="mt-12 self-center font-mono text-[11px] font-medium tracking-[1.5px] text-text-tertiary transition-colors hover:text-text-primary"
+              className="mt-12 self-center font-mono text-[11px] font-medium tracking-[1.5px] text-[rgba(236,238,245,0.72)] transition-colors hover:text-text-primary"
             >
               BACK TO HOME
             </Link>

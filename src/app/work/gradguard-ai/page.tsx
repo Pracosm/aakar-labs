@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Navbar from "@/components/Navbar";
-import SectionLabel from "@/components/ui/SectionLabel";
 import Link from "next/link";
 import {
   ArrowLeft,
@@ -14,6 +13,22 @@ import {
   Filter,
 } from "lucide-react";
 
+/* Light-theme section label local to this case study page,
+   since the global SectionLabel is themed for the dark site shell. */
+function SectionLabel({ code, label }: { code: string; label: string }) {
+  return (
+    <div className="flex items-center gap-3">
+      <span className="font-mono text-[10px] font-medium tracking-[2px] text-[#FF5C1B]">
+        {code}
+      </span>
+      <span className="block h-px w-8 bg-[#E0DCD4]" />
+      <span className="font-mono text-[10px] font-medium tracking-[2px] text-[#9A948E]">
+        {label}
+      </span>
+    </div>
+  );
+}
+
 export const metadata: Metadata = {
   title: "GradGuard AI — Case Study | Aakar Labs",
   description:
@@ -22,7 +37,7 @@ export const metadata: Metadata = {
 
 export default function GradGuardCaseStudy() {
   return (
-    <div className="flex min-h-screen w-full flex-col bg-bg-page">
+    <div className="flex min-h-screen w-full flex-col">
       <Navbar />
       <CaseStudyHero />
       <ProjectOverview />
@@ -187,11 +202,11 @@ function CaseStudyHero() {
       <div className="relative z-10 flex flex-col gap-8 px-5 pt-24 md:px-10 lg:w-[560px] lg:px-0 lg:pl-[120px] lg:pt-[160px]">
         <SectionLabel code="PRJ-001" label="CASE_STUDY" />
 
-        <h1 className="font-display text-4xl font-bold leading-[1.05] tracking-[-2px] text-text-primary md:text-5xl lg:text-[64px] lg:tracking-[-2.5px]">
+        <h1 className="font-display text-4xl font-bold leading-[1.05] tracking-[-2px] text-[#1A1816] md:text-5xl lg:text-[64px] lg:tracking-[-2.5px]">
           GradGuard AI
         </h1>
 
-        <p className="max-w-[520px] font-body text-base leading-[1.7] text-text-secondary lg:text-[18px]">
+        <p className="max-w-[520px] font-body text-base leading-[1.7] text-[#6B6560] lg:text-[18px]">
           An AI-powered social media auditing platform that scans posts across
           Instagram, Reddit, X, LinkedIn, and YouTube — flagging high-risk
           content before it becomes a problem.
@@ -201,12 +216,12 @@ function CaseStudyHero() {
           {["MOBILE APP", "UI/UX DESIGN", "DESIGN SYSTEM"].map((tag) => (
             <span
               key={tag}
-              className="border border-border px-2.5 py-1 font-mono text-[10px] font-medium tracking-[1.5px] text-text-secondary"
+              className="border border-[#E0DCD4] px-2.5 py-1 font-mono text-[10px] font-medium tracking-[1.5px] text-[#6B6560]"
             >
               {tag}
             </span>
           ))}
-          <span className="font-mono text-[11px] font-medium tracking-[1px] text-text-tertiary">
+          <span className="font-mono text-[11px] font-medium tracking-[1px] text-[#9A948E]">
             2025
           </span>
         </div>
@@ -221,16 +236,16 @@ function CaseStudyHero() {
 
 function ProjectOverview() {
   return (
-    <section className="flex w-full flex-col gap-10 border-y border-border-subtle bg-bg-surface px-5 py-12 md:px-10 md:py-16 lg:flex-row lg:gap-20 lg:px-[120px] lg:py-20">
+    <section className="flex w-full flex-col gap-10 border-y border-[#EBE8E2] bg-[#FAF8F4] px-5 py-12 md:px-10 md:py-16 lg:flex-row lg:gap-20 lg:px-[120px] lg:py-20">
       {/* Left column */}
       <div className="flex flex-1 flex-col gap-6">
         <SectionLabel code="PRJ-001" label="OVERVIEW" />
-        <h2 className="font-display text-3xl font-bold leading-[1.15] tracking-[-1px] text-text-primary lg:text-4xl">
+        <h2 className="font-display text-3xl font-bold leading-[1.15] tracking-[-1px] text-[#1A1816] lg:text-4xl">
           Protecting futures,
           <br />
           one post at a time.
         </h2>
-        <div className="flex flex-col gap-4 text-[15px] leading-[1.7] text-text-secondary lg:text-base">
+        <div className="flex flex-col gap-4 text-[15px] leading-[1.7] text-[#6B6560] lg:text-base">
           <p>
             GradGuard AI helps students and professionals audit their social
             media presence before job applications, college admissions, or public
@@ -247,12 +262,12 @@ function ProjectOverview() {
       </div>
 
       {/* Right column — project specs */}
-      <div className="w-full shrink-0 border border-border bg-white lg:w-[374px]">
-        <div className="flex items-center justify-between border-b border-border px-6 py-4">
-          <span className="font-mono text-[10px] font-medium tracking-[2px] text-text-tertiary">
+      <div className="w-full shrink-0 border border-[#E0DCD4] bg-white lg:w-[374px]">
+        <div className="flex items-center justify-between border-b border-[#E0DCD4] px-6 py-4">
+          <span className="font-mono text-[10px] font-medium tracking-[2px] text-[#9A948E]">
             PROJECT DETAILS
           </span>
-          <span className="h-1.5 w-1.5 rounded-full bg-accent" />
+          <span className="h-1.5 w-1.5 rounded-full bg-[#FF5C1B]" />
         </div>
         {(
           [
@@ -267,12 +282,12 @@ function ProjectOverview() {
         ).map(([key, value]) => (
           <div
             key={key}
-            className="flex items-center justify-between border-b border-border-subtle px-6 py-3.5 last:border-b-0"
+            className="flex items-center justify-between border-b border-[#EBE8E2] px-6 py-3.5 last:border-b-0"
           >
-            <span className="font-mono text-[11px] font-medium tracking-[1px] text-text-tertiary">
+            <span className="font-mono text-[11px] font-medium tracking-[1px] text-[#9A948E]">
               {key}
             </span>
-            <span className="font-body text-sm text-text-primary">{value}</span>
+            <span className="font-body text-sm text-[#1A1816]">{value}</span>
           </div>
         ))}
       </div>
@@ -286,10 +301,10 @@ function ProjectOverview() {
 
 function Challenge() {
   return (
-    <section className="flex w-full flex-col gap-12 border-b border-border-subtle bg-bg-page px-5 py-12 md:px-10 md:py-16 lg:px-[120px] lg:py-20">
+    <section className="flex w-full flex-col gap-12 border-b border-[#EBE8E2] bg-[#F5F1EB] px-5 py-12 md:px-10 md:py-16 lg:px-[120px] lg:py-20">
       <div className="flex flex-col gap-5">
         <SectionLabel code="PRJ-001" label="THE_CHALLENGE" />
-        <h2 className="font-display text-3xl font-bold leading-[1.15] tracking-[-1px] text-text-primary lg:text-4xl">
+        <h2 className="font-display text-3xl font-bold leading-[1.15] tracking-[-1px] text-[#1A1816] lg:text-4xl">
           Social media is a minefield
           <br className="hidden md:block" />
           for future professionals.
@@ -298,10 +313,10 @@ function Challenge() {
 
       <div className="flex flex-col gap-10 lg:flex-row lg:gap-12">
         <div className="flex flex-1 flex-col gap-4">
-          <h3 className="font-display text-xl font-bold tracking-[-0.5px] text-text-primary">
+          <h3 className="font-display text-xl font-bold tracking-[-0.5px] text-[#1A1816]">
             The problem
           </h3>
-          <p className="text-[15px] leading-[1.7] text-text-secondary">
+          <p className="text-[15px] leading-[1.7] text-[#6B6560]">
             Students and early-career professionals have years of unfiltered
             social media history. A single controversial post can derail a job
             application or college admission — and most people don&apos;t know
@@ -309,10 +324,10 @@ function Challenge() {
           </p>
         </div>
         <div className="flex flex-1 flex-col gap-4">
-          <h3 className="font-display text-xl font-bold tracking-[-0.5px] text-text-primary">
+          <h3 className="font-display text-xl font-bold tracking-[-0.5px] text-[#1A1816]">
             Why it matters
           </h3>
-          <p className="text-[15px] leading-[1.7] text-text-secondary">
+          <p className="text-[15px] leading-[1.7] text-[#6B6560]">
             70% of employers screen candidates&apos; social media. Manual
             auditing across 5+ platforms is tedious, inconsistent, and easy to
             miss. Users needed a tool that&apos;s fast, thorough, and
@@ -348,15 +363,15 @@ function Solution() {
   ];
 
   return (
-    <section className="flex w-full flex-col gap-12 border-y border-border-subtle bg-bg-surface px-5 py-12 md:px-10 md:py-16 lg:px-[120px] lg:py-20">
+    <section className="flex w-full flex-col gap-12 border-y border-[#EBE8E2] bg-[#FAF8F4] px-5 py-12 md:px-10 md:py-16 lg:px-[120px] lg:py-20">
       <div className="flex flex-col gap-5">
         <SectionLabel code="PRJ-001" label="OUR_APPROACH" />
-        <h2 className="font-display text-3xl font-bold leading-[1.15] tracking-[-1px] text-text-primary lg:text-4xl">
+        <h2 className="font-display text-3xl font-bold leading-[1.15] tracking-[-1px] text-[#1A1816] lg:text-4xl">
           Design that makes a stressful
           <br className="hidden md:block" />
           process feel effortless.
         </h2>
-        <p className="max-w-[680px] text-base leading-[1.7] text-text-secondary">
+        <p className="max-w-[680px] text-base leading-[1.7] text-[#6B6560]">
           We designed GradGuard AI to be reassuring, not alarming. Every
           decision — from colour to copy to interaction — was made to help users
           feel in control of their digital footprint.
@@ -367,15 +382,15 @@ function Solution() {
         {items.map((item) => (
           <div
             key={item.num}
-            className="flex flex-1 flex-col gap-4 border border-border bg-white p-8"
+            className="flex flex-1 flex-col gap-4 border border-[#E0DCD4] bg-white p-8"
           >
-            <span className="font-mono text-[11px] font-semibold tracking-[2px] text-accent">
+            <span className="font-mono text-[11px] font-semibold tracking-[2px] text-[#FF5C1B]">
               {item.num}
             </span>
-            <h3 className="font-display text-xl font-bold tracking-[-0.5px] text-text-primary">
+            <h3 className="font-display text-xl font-bold tracking-[-0.5px] text-[#1A1816]">
               {item.title}
             </h3>
-            <p className="text-sm leading-[1.6] text-text-secondary">
+            <p className="text-sm leading-[1.6] text-[#6B6560]">
               {item.desc}
             </p>
           </div>
@@ -391,19 +406,19 @@ function Solution() {
 
 function ScreenShowcase() {
   return (
-    <section className="flex w-full flex-col items-center gap-12 bg-bg-page px-5 py-12 md:px-10 md:py-16 lg:px-[120px] lg:py-20">
+    <section className="flex w-full flex-col items-center gap-12 bg-[#F5F1EB] px-5 py-12 md:px-10 md:py-16 lg:px-[120px] lg:py-20">
       <SectionLabel code="PRJ-001" label="SCREEN_GALLERY" />
 
       <div className="flex flex-col items-center gap-10 md:flex-row md:items-start md:justify-center md:gap-10">
         <div className="flex flex-col items-center gap-4">
           <DashboardPhone />
-          <span className="font-mono text-[11px] font-medium tracking-[2px] text-text-tertiary">
+          <span className="font-mono text-[11px] font-medium tracking-[2px] text-[#9A948E]">
             Home Dashboard
           </span>
         </div>
         <div className="flex flex-col items-center gap-4">
           <AuditPhone />
-          <span className="font-mono text-[11px] font-medium tracking-[2px] text-text-tertiary">
+          <span className="font-mono text-[11px] font-medium tracking-[2px] text-[#9A948E]">
             Audit Screen
           </span>
         </div>
@@ -425,10 +440,10 @@ function Results() {
   ];
 
   return (
-    <section className="flex w-full flex-col gap-12 bg-bg-page px-5 py-12 md:px-10 md:py-16 lg:px-[120px] lg:py-20">
+    <section className="flex w-full flex-col gap-12 bg-[#F5F1EB] px-5 py-12 md:px-10 md:py-16 lg:px-[120px] lg:py-20">
       <div className="flex flex-col gap-5">
         <SectionLabel code="PRJ-001" label="RESULTS" />
-        <h2 className="font-display text-3xl font-bold leading-[1.15] tracking-[-1px] text-text-primary lg:text-4xl">
+        <h2 className="font-display text-3xl font-bold leading-[1.15] tracking-[-1px] text-[#1A1816] lg:text-4xl">
           Delivered on time.
           <br />
           Designed to last.
@@ -439,12 +454,12 @@ function Results() {
         {stats.map((stat, i) => (
           <div
             key={stat.num}
-            className={`flex flex-col gap-2 py-8 pr-7 ${i < 3 ? "lg:border-r lg:border-border" : ""}`}
+            className={`flex flex-col gap-2 py-8 pr-7 ${i < 3 ? "lg:border-r lg:border-[#E0DCD4]" : ""}`}
           >
-            <span className="font-display text-4xl font-bold tracking-[-2px] text-accent md:text-5xl">
+            <span className="font-display text-4xl font-bold tracking-[-2px] text-[#FF5C1B] md:text-5xl">
               {stat.num}
             </span>
-            <span className="whitespace-pre-line text-sm leading-[1.5] text-text-secondary">
+            <span className="whitespace-pre-line text-sm leading-[1.5] text-[#6B6560]">
               {stat.label}
             </span>
           </div>
@@ -466,26 +481,26 @@ function CTASection() {
         background: "linear-gradient(180deg, #FFF8F3 0%, #F5F1EB 100%)",
       }}
     >
-      <span className="font-body text-xs font-semibold tracking-[3px] text-accent">
+      <span className="font-body text-xs font-semibold tracking-[3px] text-[#FF5C1B]">
         INTERESTED IN WORKING TOGETHER?
       </span>
-      <h2 className="max-w-[800px] text-center font-body text-3xl font-bold text-text-primary md:text-4xl lg:text-5xl">
+      <h2 className="max-w-[800px] text-center font-body text-3xl font-bold text-[#1A1816] md:text-4xl lg:text-5xl">
         Let&apos;s design your next product.
       </h2>
-      <p className="max-w-[640px] text-center text-base leading-[1.6] text-text-secondary">
+      <p className="max-w-[640px] text-center text-base leading-[1.6] text-[#6B6560]">
         We bring ideas to life with polished interfaces, structured design
         systems, and pixel-perfect handoff — ready for your engineering team.
       </p>
       <div className="flex flex-col items-center gap-4 sm:flex-row">
         <Link
           href="/start-project"
-          className="bg-accent px-7 py-3 font-mono text-[13px] font-semibold tracking-[1px] text-bg-page transition-colors hover:bg-accent-hover"
+          className="bg-[#FF5C1B] px-7 py-3 font-mono text-[13px] font-semibold tracking-[1px] text-[#F5F1EB] transition-colors hover:bg-[#FF7A42]"
         >
           START A PROJECT
         </Link>
         <Link
           href="/#work"
-          className="border border-border px-7 py-3 font-mono text-[13px] font-medium tracking-[1px] text-text-secondary transition-colors hover:border-text-secondary"
+          className="border border-[#E0DCD4] px-7 py-3 font-mono text-[13px] font-medium tracking-[1px] text-[#6B6560] transition-colors hover:border-text-secondary"
         >
           VIEW MORE WORK
         </Link>
@@ -501,10 +516,10 @@ function CTASection() {
 function CaseStudyFooter() {
   return (
     <footer className="flex w-full flex-col items-center justify-between gap-4 bg-text-primary px-5 py-8 md:flex-row md:px-10 lg:px-[120px]">
-      <span className="font-body text-sm font-bold tracking-[2px] text-bg-page">
+      <span className="font-body text-sm font-bold tracking-[2px] text-[#F5F1EB]">
         AAKAR LABS
       </span>
-      <span className="text-[13px] text-text-tertiary">
+      <span className="text-[13px] text-[#9A948E]">
         Design studio. Industry-standard deliverables.
       </span>
     </footer>
@@ -522,12 +537,12 @@ function DashboardPhone() {
         {/* Header */}
         <div className="flex items-center justify-between pt-8">
           <div>
-            <p className="text-[11px] text-text-tertiary">Hey, Name 👋</p>
-            <h3 className="font-display text-lg font-bold text-text-primary">
+            <p className="text-[11px] text-[#9A948E]">Hey, Name 👋</p>
+            <h3 className="font-display text-lg font-bold text-[#1A1816]">
               Your Dashboard
             </h3>
           </div>
-          <Bell size={18} className="text-text-tertiary" />
+          <Bell size={18} className="text-[#9A948E]" />
         </div>
 
         {/* Risk card */}
@@ -547,12 +562,12 @@ function DashboardPhone() {
         {/* Stats row */}
         <div className="flex gap-3">
           <div className="flex flex-1 flex-col rounded-2xl bg-[#F4F4F5] p-3.5">
-            <span className="text-2xl font-bold text-text-primary">3</span>
-            <span className="text-[10px] text-text-secondary">High Risk</span>
+            <span className="text-2xl font-bold text-[#1A1816]">3</span>
+            <span className="text-[10px] text-[#6B6560]">High Risk</span>
           </div>
           <div className="flex flex-1 flex-col rounded-2xl bg-[#F4F4F5] p-3.5">
-            <span className="text-2xl font-bold text-text-primary">432</span>
-            <span className="text-[10px] text-text-secondary">
+            <span className="text-2xl font-bold text-[#1A1816]">432</span>
+            <span className="text-[10px] text-[#6B6560]">
               Posts Scanned
             </span>
           </div>
@@ -561,7 +576,7 @@ function DashboardPhone() {
         {/* Platform breakdown */}
         <div className="flex flex-col gap-3 rounded-3xl bg-[#F4F4F5] p-5">
           <div className="flex items-center justify-between">
-            <span className="font-display text-sm font-bold text-text-primary">
+            <span className="font-display text-sm font-bold text-[#1A1816]">
               Platform Breakdown
             </span>
             <span className="text-[10px] font-medium text-[#8B5CF6]">
@@ -574,7 +589,7 @@ function DashboardPhone() {
             { name: "TikTok", count: "1 flagged", color: "#F59E0B" },
           ].map((p) => (
             <div key={p.name} className="flex items-center justify-between">
-              <span className="text-xs text-text-secondary">{p.name}</span>
+              <span className="text-xs text-[#6B6560]">{p.name}</span>
               <span
                 className="text-[10px] font-medium"
                 style={{ color: p.color }}
@@ -593,8 +608,8 @@ function DashboardPhone() {
           <span className="text-[11px] font-medium text-white">Home</span>
         </div>
         <div className="flex flex-1 items-center justify-center gap-1.5 rounded-full bg-[#F4F4F5] px-4 py-2.5">
-          <Search size={14} className="text-text-secondary" />
-          <span className="text-[11px] font-medium text-text-secondary">
+          <Search size={14} className="text-[#6B6560]" />
+          <span className="text-[11px] font-medium text-[#6B6560]">
             Audit
           </span>
         </div>
@@ -623,10 +638,10 @@ function AuditPhone() {
       <div className="flex flex-1 flex-col gap-5 overflow-hidden px-5 pt-8">
         {/* Header */}
         <div className="flex items-center justify-between pt-5">
-          <h3 className="font-display text-2xl font-bold text-text-primary">
+          <h3 className="font-display text-2xl font-bold text-[#1A1816]">
             Audit
           </h3>
-          <Settings size={18} className="text-text-tertiary" />
+          <Settings size={18} className="text-[#9A948E]" />
         </div>
 
         {/* Stat badges */}
@@ -647,10 +662,10 @@ function AuditPhone() {
 
         {/* Title + filter */}
         <div className="flex items-center justify-between">
-          <span className="font-display text-sm font-bold text-text-primary">
+          <span className="font-display text-sm font-bold text-[#1A1816]">
             5 Flagged Posts
           </span>
-          <Filter size={14} className="text-text-tertiary" />
+          <Filter size={14} className="text-[#9A948E]" />
         </div>
 
         {/* Filter chips */}
@@ -658,7 +673,7 @@ function AuditPhone() {
           {["All", "High", "Medium", "Low"].map((chip, i) => (
             <span
               key={chip}
-              className={`rounded-full px-3 py-1 text-[10px] font-medium ${i === 0 ? "bg-[#8B5CF6] text-white" : "bg-[#F4F4F5] text-text-secondary"}`}
+              className={`rounded-full px-3 py-1 text-[10px] font-medium ${i === 0 ? "bg-[#8B5CF6] text-white" : "bg-[#F4F4F5] text-[#6B6560]"}`}
             >
               {chip}
             </span>
@@ -675,7 +690,7 @@ function AuditPhone() {
               <span
                 className={`h-2 w-2 shrink-0 rounded-full ${riskColors[post.risk].dot}`}
               />
-              <span className="text-xs text-text-primary">{post.text}</span>
+              <span className="text-xs text-[#1A1816]">{post.text}</span>
             </div>
           ))}
         </div>
@@ -691,8 +706,8 @@ function AuditPhone() {
       {/* Tab bar */}
       <div className="flex items-center justify-center gap-2 px-5 pb-7 pt-3">
         <div className="flex flex-1 items-center justify-center gap-1.5 rounded-full bg-[#F4F4F5] px-4 py-2.5">
-          <Home size={14} className="text-text-secondary" />
-          <span className="text-[11px] font-medium text-text-secondary">
+          <Home size={14} className="text-[#6B6560]" />
+          <span className="text-[11px] font-medium text-[#6B6560]">
             Home
           </span>
         </div>

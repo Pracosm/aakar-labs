@@ -27,38 +27,66 @@ export default function Services() {
   return (
     <section
       id="services"
-      className="flex w-full flex-col gap-12 border-y border-border-subtle bg-bg-surface px-5 py-12 md:px-10 md:py-16 lg:px-16 lg:py-20"
+      className="relative w-full px-5 py-16 md:px-10 md:py-20 lg:px-14 lg:py-24"
+      style={{
+        borderTop: "1px solid rgba(236,238,245,0.05)",
+      }}
     >
-      {/* Header */}
-      <div className="flex w-full flex-col gap-5">
-        <SectionLabel code="AKR-002" label="WHAT_WE_DO" />
-        <h2 className="font-display text-2xl font-bold tracking-[-1px] text-text-primary md:text-3xl lg:text-[40px]">
-          End-to-end design, ready for handoff.
-        </h2>
-        <p className="max-w-[600px] text-sm leading-[1.7] text-text-secondary md:text-base">
-          Every project follows our structured process — from research to
-          final deliverables, packaged for seamless developer handover.
-        </p>
-      </div>
-
-      {/* 4-Column Grid with 1px gap */}
-      <div className="flex w-full flex-col gap-px bg-border md:flex-row md:flex-wrap lg:flex-nowrap">
-        {services.map((svc) => (
-          <div
-            key={svc.num}
-            className="flex w-full flex-col gap-5 border border-border bg-bg-panel p-8 md:w-[calc(50%-1px)] lg:w-auto lg:flex-1"
+      <div className="max-w-[1160px] mx-auto">
+        {/* Header */}
+        <div className="flex w-full flex-col gap-5 mb-12">
+          <SectionLabel code="AKR-002" label="WHAT_WE_DO" />
+          <p
+            className="max-w-[600px]"
+            style={{
+              fontFamily: "Outfit",
+              fontWeight: 300,
+              fontSize: 16,
+              color: "rgba(236,238,245,0.5)",
+              lineHeight: 1.7,
+            }}
           >
-            <span className="font-mono text-[11px] font-medium tracking-[2px] text-accent">
-              {svc.num}
-            </span>
-            <h3 className="whitespace-pre-line font-display text-[22px] font-bold leading-[1.2] tracking-[-0.5px] text-text-primary">
-              {svc.title}
-            </h3>
-            <p className="text-sm leading-[1.6] text-text-secondary">
-              {svc.desc}
-            </p>
-          </div>
-        ))}
+            Every project follows our structured process — from research to
+            final deliverables, packaged for seamless developer handover.
+          </p>
+        </div>
+
+        {/* 4-Column Grid */}
+        <div className="grid w-full grid-cols-1 gap-px md:grid-cols-2 lg:grid-cols-4 rounded-2xl overflow-hidden glass-panel">
+          {services.map((svc) => (
+            <div
+              key={svc.num}
+              className="flex flex-col gap-5 p-8 transition-colors"
+              style={{
+                background: "rgba(26,29,46,0.35)",
+              }}
+            >
+              <span
+                className="font-mono text-[11px] font-medium tracking-[2px]"
+                style={{ color: "var(--coral)" }}
+              >
+                {svc.num}
+              </span>
+              <h3
+                className="whitespace-pre-line font-display text-[22px] font-bold leading-[1.15] tracking-[-0.5px]"
+                style={{ color: "var(--rim-white)" }}
+              >
+                {svc.title}
+              </h3>
+              <p
+                style={{
+                  fontFamily: "Outfit",
+                  fontWeight: 300,
+                  fontSize: 14,
+                  color: "rgba(236,238,245,0.6)",
+                  lineHeight: 1.7,
+                }}
+              >
+                {svc.desc}
+              </p>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );

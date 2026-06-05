@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
-import { Space_Grotesk, Inter, Roboto_Mono } from "next/font/google";
+import { Space_Grotesk, Outfit, Roboto_Mono } from "next/font/google";
 import "./globals.css";
+import BackgroundLayer from "@/components/BackgroundLayer";
+import LenisProvider from "@/components/LenisProvider";
+import PageTransition from "@/components/PageTransition";
 
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",
@@ -8,10 +11,11 @@ const spaceGrotesk = Space_Grotesk({
   display: "swap",
 });
 
-const inter = Inter({
-  variable: "--font-inter",
+const outfit = Outfit({
+  variable: "--font-outfit",
   subsets: ["latin"],
   display: "swap",
+  weight: ["300", "400", "500", "600", "700"],
 });
 
 const robotoMono = Roboto_Mono({
@@ -34,9 +38,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${spaceGrotesk.variable} ${inter.variable} ${robotoMono.variable} antialiased`}
+        className={`${spaceGrotesk.variable} ${outfit.variable} ${robotoMono.variable} antialiased`}
       >
-        {children}
+        <BackgroundLayer />
+        <LenisProvider />
+        <div className="relative z-10">
+          <PageTransition>{children}</PageTransition>
+        </div>
       </body>
     </html>
   );

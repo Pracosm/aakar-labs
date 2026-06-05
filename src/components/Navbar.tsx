@@ -12,22 +12,28 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
 
   return (
-    <nav className="sticky top-0 z-50 flex h-[72px] w-full items-center justify-between border-b border-border-subtle bg-bg-page px-5 md:px-10 lg:px-16">
+    <nav className="sticky top-0 z-50 flex h-[72px] w-full items-center justify-between px-5 md:px-10 lg:px-14 backdrop-blur-md bg-[rgba(5,5,9,0.35)] border-b border-[rgba(236,238,245,0.05)]">
       {/* Left — Logo */}
-      <Link href="/" className="flex items-center gap-2">
-        <Image src={aakarLogo} alt="Aakar Labs" width={36} height={28} />
-        <span className="font-display text-base font-bold tracking-[3px] text-text-primary">
+      <Link href="/" className="flex items-center gap-2.5">
+        <Image
+          src={aakarLogo}
+          alt="Aakar Labs"
+          width={42}
+          height={32}
+          priority
+        />
+        <span className="font-display text-[17px] font-bold tracking-[2px] text-white drop-shadow-md">
           AAKAR LABS
         </span>
       </Link>
 
       {/* Center — Links (desktop) */}
-      <div className="hidden items-center gap-10 lg:flex">
+      <div className="hidden items-center gap-9 lg:flex">
         {NAV_LINKS.map((link) => (
           <a
             key={link}
             href={`/#${link.toLowerCase()}`}
-            className="font-mono text-[11px] font-medium tracking-[2px] text-text-secondary transition-colors hover:text-text-primary"
+            className="text-[11px] uppercase font-sans font-medium tracking-[0.16em] text-white/75 hover:text-white transition-colors"
           >
             {link}
           </a>
@@ -35,46 +41,47 @@ export default function Navbar() {
       </div>
 
       {/* Right — CTA (desktop) */}
-      <a
+      <Link
         href="/start-project"
-        className="hidden bg-accent px-7 py-3 font-mono text-[13px] font-semibold tracking-[1px] text-bg-page transition-all duration-300 ease-out hover:-translate-y-[2px] hover:bg-accent-hover hover:shadow-xl active:scale-[0.98] lg:block"
+        className="hidden lg:inline-flex items-center justify-center rounded-full px-5 py-2 text-[10px] uppercase font-sans font-semibold tracking-[0.22em] transition-all duration-300"
+        style={{
+          background: "var(--laptop-glow)",
+          color: "#000",
+        }}
       >
         START PROJECT
-      </a>
+      </Link>
 
       {/* Hamburger (mobile/tablet) */}
       <button
-        className="flex items-center justify-center lg:hidden"
+        className="flex items-center justify-center lg:hidden text-white/80"
         onClick={() => setOpen(!open)}
         aria-label="Toggle menu"
       >
-        {open ? (
-          <X size={24} className="text-text-primary" />
-        ) : (
-          <Menu size={24} className="text-text-primary" />
-        )}
+        {open ? <X size={22} /> : <Menu size={22} />}
       </button>
 
       {/* Mobile Menu */}
       {open && (
-        <div className="absolute left-0 top-[72px] z-40 flex w-full flex-col border-b border-border-subtle bg-bg-page px-5 pb-6 pt-4 md:px-10 lg:hidden">
+        <div className="absolute left-0 top-[72px] z-40 flex w-full flex-col bg-[rgba(5,5,9,0.92)] backdrop-blur-md px-5 pb-6 pt-4 md:px-10 lg:hidden border-b border-[rgba(236,238,245,0.08)]">
           {NAV_LINKS.map((link) => (
             <a
               key={link}
               href={`/#${link.toLowerCase()}`}
               onClick={() => setOpen(false)}
-              className="border-b border-border-subtle py-3 font-mono text-[11px] font-medium tracking-[2px] text-text-secondary transition-colors hover:text-text-primary"
+              className="border-b border-[rgba(236,238,245,0.06)] py-3 text-[10px] uppercase font-sans tracking-[0.25em] text-white/60 hover:text-white transition-colors"
             >
               {link}
             </a>
           ))}
-          <a
+          <Link
             href="/start-project"
             onClick={() => setOpen(false)}
-            className="mt-4 block w-full bg-accent px-7 py-3 text-center font-mono text-[13px] font-semibold tracking-[1px] text-bg-page transition-all duration-300 ease-out hover:-translate-y-[2px] hover:bg-accent-hover hover:shadow-xl active:scale-[0.98]"
+            className="mt-5 inline-flex items-center justify-center rounded-full px-5 py-3 text-[11px] uppercase font-sans font-semibold tracking-[0.22em]"
+            style={{ background: "var(--laptop-glow)", color: "#000" }}
           >
             START PROJECT
-          </a>
+          </Link>
         </div>
       )}
     </nav>
