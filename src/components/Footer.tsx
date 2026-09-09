@@ -27,38 +27,28 @@ export default function Footer() {
       >
         <div className="max-w-[1160px] mx-auto flex flex-col gap-12">
           <div className="flex w-full flex-col gap-8 lg:flex-row lg:justify-between lg:gap-0">
-            {/* Brand */}
             <div className="flex w-full flex-col gap-4 lg:w-[300px]">
               <div className="flex items-center gap-2">
                 <Image
                   src={aakarLogo}
                   alt="Aakar Labs"
                   width={36}
-                  height={28}
+                  height={18}
                 />
                 <span className="font-display text-base font-bold tracking-[3px] text-white">
                   AAKAR LABS
                 </span>
               </div>
-              <p
-                style={{
-                  fontFamily: "Outfit",
-                  fontWeight: 300,
-                  fontSize: 13,
-                  color: "rgba(236,238,245,0.55)",
-                  lineHeight: 1.6,
-                }}
-              >
+              <p className="body-copy text-[15px] md:text-[13px] md:text-[rgba(236,238,245,0.55)]">
                 Design studio.
                 <br />
                 Industry-standard deliverables.
               </p>
             </div>
 
-            {/* Link Columns */}
             <div className="grid grid-cols-2 gap-8 md:grid-cols-3">
               <FooterColumn title="NAVIGATION">
-                {["Work", "Services", "Process", "About"].map((link) => (
+                {["Work", "Process", "About", "Contact"].map((link) => (
                   <FooterLink key={link} href={`/#${link.toLowerCase()}`}>
                     {link}
                   </FooterLink>
@@ -80,10 +70,10 @@ export default function Footer() {
                     style={{
                       fontFamily: "Outfit",
                       fontWeight: 400,
-                      fontSize: 13,
-                      color: "rgba(236,238,245,0.6)",
+                      fontSize: 15,
+                      color: "rgba(236,238,245,0.78)",
                     }}
-                    className="hover:text-white transition-colors"
+                    className="min-h-11 inline-flex items-center hover:text-white transition-colors md:min-h-0 md:text-[13px] md:text-[rgba(236,238,245,0.6)]"
                   >
                     {link.name}
                   </a>
@@ -99,10 +89,10 @@ export default function Footer() {
                     style={{
                       fontFamily: "Outfit",
                       fontWeight: 400,
-                      fontSize: 13,
-                      color: "rgba(236,238,245,0.6)",
+                      fontSize: 15,
+                      color: "rgba(236,238,245,0.78)",
                     }}
-                    className="hover:text-white transition-colors"
+                    className="min-h-11 inline-flex items-center hover:text-white transition-colors md:min-h-0 md:text-[13px] md:text-[rgba(236,238,245,0.6)]"
                   >
                     {link}
                   </a>
@@ -124,7 +114,7 @@ export default function Footer() {
                 color: "rgba(236,238,245,0.4)",
               }}
             >
-              © 2025 Aakar Labs. All rights reserved.
+              © 2026 Aakar Labs. All rights reserved.
             </span>
             <div className="flex items-center gap-2">
               <span
@@ -162,8 +152,10 @@ export default function Footer() {
                 }}
               >
                 <button
+                  type="button"
                   onClick={() => setShowPopup(false)}
-                  className="absolute right-4 top-4 text-white/50 hover:text-white transition-colors"
+                  aria-label="Close"
+                  className="absolute right-3 top-3 inline-flex h-11 w-11 items-center justify-center text-white/70 hover:text-white transition-colors"
                 >
                   <X size={20} />
                 </button>
@@ -256,10 +248,10 @@ function FooterLink({
       style={{
         fontFamily: "Outfit",
         fontWeight: 400,
-        fontSize: 13,
-        color: "rgba(236,238,245,0.6)",
+        fontSize: 15,
+        color: "rgba(236,238,245,0.78)",
       }}
-      className="hover:text-white transition-colors"
+      className="min-h-11 inline-flex items-center hover:text-white transition-colors md:min-h-0 md:text-[13px] md:text-[rgba(236,238,245,0.6)]"
     >
       {children}
     </a>

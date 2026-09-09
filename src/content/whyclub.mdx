@@ -1,0 +1,64 @@
+import {
+  WhyClubBrandBookCta,
+  WhyClubCaseStudy,
+  WhyClubCaseStudyHero,
+  WhyClubCategoryGrid,
+  WhyClubInterfacePair,
+  WhyClubMotionBand,
+  WhyClubProjectMeta,
+  WhyClubSectionIntro,
+  WhyClubSectionNav,
+  WhyClubBuildGrid,
+  WhyClubWorldSystem,
+} from "@/components/whyclub/WhyClubCaseStudy";
+
+<WhyClubCaseStudy>
+  <WhyClubCaseStudyHero />
+
+  <WhyClubProjectMeta />
+
+  <WhyClubSectionNav />
+
+  <section id="brief" className="bg-[#f3f3f0] py-16 text-[#0a0a0a] md:py-24 lg:py-32">
+    <WhyClubSectionIntro index="02" label="The brief" title="Build the world before the wardrobe.">
+      WhyClub needed more than a storefront. It needed a point of view that could
+      hold a campaign, a product drop, and the operational details behind both.
+    </WhyClubSectionIntro>
+
+    <WhyClubWorldSystem />
+  </section>
+
+  <section id="world" className="bg-[#0a0a0a] py-16 text-white md:py-24 lg:py-32">
+    <WhyClubSectionIntro index="03" label="The world" title="A visual language with a little static in it." inverse>
+      Hard black, soft canvas, electric signal colour, and product photography
+      that keeps the person in the frame. The system is direct enough for a drop
+      and flexible enough for a whole season.
+    </WhyClubSectionIntro>
+
+    <WhyClubCategoryGrid />
+  </section>
+
+  <section id="interfaces" className="bg-[#e5e5df] py-16 text-[#0a0a0a] md:py-24 lg:py-32">
+    <WhyClubSectionIntro index="04" label="Two modes" title="Desktop and mobile do not tell the same story.">
+      The desktop experience opens wide like a campaign poster. Mobile becomes
+      a swipeable drop, a bottom dock, and a faster path to the product.
+    </WhyClubSectionIntro>
+
+    <WhyClubInterfacePair />
+  </section>
+
+  <WhyClubMotionBand />
+
+  <section id="motion" className="bg-[#0a0a0a] py-16 text-white md:py-24 lg:py-32">
+    <WhyClubSectionIntro index="05" label="The build" title="One studio. Every layer." inverse>
+      Identity, art direction, storefront, checkout, and the admin system behind
+      every drop. The work keeps the surface sharp without losing the machinery.
+    </WhyClubSectionIntro>
+
+    <WhyClubBuildGrid />
+  </section>
+
+  <div className="bg-[#0a0a0a] text-white">
+    <WhyClubBrandBookCta />
+  </div>
+</WhyClubCaseStudy>

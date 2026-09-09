@@ -2,118 +2,85 @@
 
 import Link from "next/link";
 import { ArrowUpRight } from "@phosphor-icons/react";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import { useRef } from "react";
 import Magnetic from "./Magnetic";
 import Twinkles from "./Twinkles";
+import BookCallButton from "./BookCallButton";
+
+const HEADLINE = "we design digital identities that people remember";
 
 export default function Hero() {
+  const root = useRef<HTMLElement>(null);
+
+  useGSAP(
+    () => {
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+      const words = root.current?.querySelectorAll(".hero-word");
+      const rest = root.current?.querySelectorAll(".hero-rise");
+      if (!words?.length || !rest?.length) return;
+
+      const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+      tl.from(words, {
+        y: 32,
+        opacity: 0,
+        duration: 0.7,
+        stagger: 0.045,
+      });
+      tl.from(
+        rest,
+        { y: 18, opacity: 0, duration: 0.55, stagger: 0.08 },
+        "-=0.35",
+      );
+    },
+    { scope: root },
+  );
+
   return (
     <section
-      className="hero relative min-h-[100dvh] w-full flex flex-col items-center justify-start px-6 md:px-14 pt-[12vh] md:pt-[14vh] pb-12 overflow-hidden"
+      ref={root}
+      className="hero relative min-h-[100dvh] w-full flex flex-col items-center justify-start px-5 pt-[8vh] pb-[max(5.5rem,env(safe-area-inset-bottom))] overflow-hidden md:px-14 md:pt-[14vh] md:pb-12"
       style={{ isolation: "isolate" }}
     >
-      {/* Subtle veil — sits over the video only, behind text */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0"
-        style={{
-          zIndex: 0,
-          background:
-            "linear-gradient(180deg, rgba(5,5,9,0.30) 0%, rgba(5,5,9,0.28) 60%, rgba(5,5,9,0.18) 85%, rgba(5,5,9,0) 100%)",
-        }}
-      />
+      <div aria-hidden className="hero-veil pointer-events-none absolute inset-0" />
       <Twinkles />
 
-      {/* All visible content sits above the veil */}
-      <div className="relative z-10 flex flex-col items-center w-full">
-        <h1
-          className="font-display text-center"
-          style={{
-            fontSize: "clamp(2.4rem, 7vw, 5.5rem)",
-            fontWeight: 700,
-            lineHeight: 1.05,
-            letterSpacing: "-0.06em",
-            color: "var(--rim-white)",
-            textTransform: "lowercase",
-            maxWidth: "18ch",
-          }}
-        >
-          we design digital identities that people remember
-        </h1>
+      <div className="relative z-10 flex w-full max-w-[720px] flex-1 flex-col items-center max-md:justify-between">
+        <div className="flex flex-col items-center">
+          <p className="hero-rise mb-4 font-mono text-[11px] font-medium tracking-[0.22em] text-[rgba(236,238,245,0.72)] md:hidden">
+            DESIGN STUDIO
+          </p>
+          <h1
+            className="hero-title text-center lowercase max-w-[16ch] md:max-w-[18ch]"
+            style={{ perspective: 600 }}
+          >
+            {HEADLINE.split(" ").map((word) => (
+              <span key={word} className="hero-word inline-block">
+                {word}&nbsp;
+              </span>
+            ))}
+          </h1>
 
-        <p
-          className="mt-6 text-center max-w-[640px]"
-          style={{
-            fontFamily: "Outfit",
-            fontWeight: 300,
-            fontSize: 16,
-            lineHeight: 1.65,
-            color: "rgba(236,238,245,0.65)",
-            letterSpacing: "0.01em",
-          }}
-        >
-          Branding, UX/UI, and web experiences for founders, studios, and
-          growing teams.
-        </p>
+          <p className="hero-rise mt-4 font-mono text-[12px] font-medium tracking-[0.18em] uppercase text-[rgba(236,238,245,0.78)] md:hidden">
+            Brand · UX/UI · Web
+          </p>
+          <p className="hero-rise body-copy mt-6 hidden text-center max-w-[640px] md:block">
+            Branding, UX/UI, and web experiences for founders, studios, and
+            growing teams — designed to industry standard, ready for handover.
+          </p>
+        </div>
 
-        <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row">
-          <Magnetic strength={0.3}>
-            <Link
-              href="/start-project"
-              className="inline-flex items-center justify-center gap-2 rounded-full transition-all duration-300"
-              style={{
-                padding: "13px 24px",
-                background: "var(--laptop-glow)",
-                color: "#000",
-                fontFamily: "Outfit",
-                fontWeight: 600,
-                fontSize: 11,
-                letterSpacing: "0.22em",
-                textTransform: "uppercase",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = "var(--rim-white)";
-                e.currentTarget.style.boxShadow =
-                  "0 0 22px rgba(240,232,213,0.3)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = "var(--laptop-glow)";
-                e.currentTarget.style.boxShadow = "none";
-              }}
-            >
+        <div className="hero-rise mt-8 flex w-full max-w-[22rem] flex-col items-stretch gap-3 sm:max-w-none sm:flex-row sm:items-center sm:justify-center md:mt-8">
+          <Magnetic strength={0.3} className="w-full sm:w-auto">
+            <Link href="/start-project" className="btn-cta btn-cta-primary">
               Start a project
-              <ArrowUpRight size={14} weight="bold" />
+              <ArrowUpRight size={16} weight="bold" />
             </Link>
           </Magnetic>
-          <Magnetic strength={0.25}>
-            <a
-              href="#work"
-              className="inline-flex items-center justify-center gap-2 rounded-full transition-all duration-300"
-              style={{
-                padding: "13px 24px",
-                background: "rgba(236,238,245,0.04)",
-                color: "var(--rim-white)",
-                border: "1px solid rgba(236,238,245,0.22)",
-                fontFamily: "Outfit",
-                fontWeight: 500,
-                fontSize: 11,
-                letterSpacing: "0.22em",
-                textTransform: "uppercase",
-                backdropFilter: "blur(12px)",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = "rgba(236,238,245,0.1)";
-                e.currentTarget.style.borderColor = "rgba(236,238,245,0.4)";
-                e.currentTarget.style.boxShadow =
-                  "0 0 22px rgba(236,238,245,0.15)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = "rgba(236,238,245,0.04)";
-                e.currentTarget.style.borderColor = "rgba(236,238,245,0.22)";
-                e.currentTarget.style.boxShadow = "none";
-              }}
-            >
-              View work
-            </a>
+          <Magnetic strength={0.25} className="w-full sm:w-auto">
+            <BookCallButton />
           </Magnetic>
         </div>
       </div>

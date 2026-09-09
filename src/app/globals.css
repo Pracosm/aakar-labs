@@ -84,6 +84,8 @@
 html {
   height: 100%;
   scroll-padding-top: 84px;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 html.lenis,
@@ -107,6 +109,29 @@ body {
   color: var(--rim-white);
   font-family: var(--font-body), "Outfit", system-ui, sans-serif;
   font-weight: 300;
+}
+
+:focus-visible {
+  outline: 2px solid var(--laptop-glow);
+  outline-offset: 3px;
+}
+
+.skip-link {
+  position: absolute;
+  left: 12px;
+  top: -80px;
+  z-index: 100;
+  border-radius: 9999px;
+  background: var(--laptop-glow);
+  color: #000;
+  padding: 10px 16px;
+  font-family: var(--font-body), Outfit, system-ui, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.skip-link:focus {
+  top: 12px;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -180,21 +205,12 @@ body {
 
 /* Page transition — soft fade + blur lift on route change */
 @keyframes pageReveal {
-  from {
-    opacity: 0;
-    filter: blur(8px);
-    transform: scale(0.985);
-  }
-  to {
-    opacity: 1;
-    filter: blur(0);
-    transform: scale(1);
-  }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 .page-transition {
-  animation: pageReveal 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
-  will-change: opacity, filter, transform;
+  animation: pageReveal 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -334,4 +350,186 @@ body {
     opacity: 1;
     transform: none;
   }
+}
+
+/* ===== TYPE + CTA UTILITIES ===== */
+
+.section-heading,
+.hero-title {
+  font-family: var(--font-display), "Space Grotesk", sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  color: var(--rim-white);
+  line-height: 1.15;
+  font-size: clamp(1.75rem, 8.2vw, 2.35rem);
+  text-wrap: balance;
+}
+
+.body-copy {
+  font-family: var(--font-body), Outfit, system-ui, sans-serif;
+  font-weight: 400;
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  color: rgba(236, 238, 245, 0.82);
+  text-wrap: pretty;
+}
+
+.btn-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  min-height: 48px;
+  padding: 14px 22px;
+  font-family: var(--font-body), Outfit, system-ui, sans-serif;
+  font-weight: 600;
+  font-size: 0.875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: background 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  touch-action: manipulation;
+  width: 100%;
+}
+
+.btn-cta-primary {
+  background: var(--laptop-glow);
+  color: #000;
+}
+
+.btn-cta-ghost {
+  background: rgba(236, 238, 245, 0.06);
+  color: var(--rim-white);
+  border: 1px solid rgba(236, 238, 245, 0.28);
+  backdrop-filter: blur(12px);
+}
+
+.btn-cta:active {
+  transform: scale(0.98);
+}
+
+.hero-veil {
+  z-index: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(5, 5, 9, 0.78) 0%,
+    rgba(5, 5, 9, 0.7) 48%,
+    rgba(5, 5, 9, 0.84) 100%
+  );
+}
+
+@media (min-width: 768px) {
+  .section-heading {
+    letter-spacing: -0.06em;
+    line-height: 1.05;
+    font-size: clamp(2rem, 4vw, 3.25rem);
+  }
+
+  .hero-title {
+    letter-spacing: -0.06em;
+    line-height: 1.05;
+    font-size: clamp(2.4rem, 7vw, 5.5rem);
+  }
+
+  .body-copy {
+    font-weight: 300;
+    font-size: 1rem;
+    line-height: 1.7;
+    color: rgba(236, 238, 245, 0.55);
+  }
+
+  .btn-cta {
+    width: auto;
+    min-height: 44px;
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    padding: 13px 24px;
+  }
+
+  .hero-veil {
+    background: linear-gradient(
+      180deg,
+      rgba(5, 5, 9, 0.3) 0%,
+      rgba(5, 5, 9, 0.28) 60%,
+      rgba(5, 5, 9, 0.18) 85%,
+      rgba(5, 5, 9, 0) 100%
+    );
+  }
+}
+
+/* ===== MOBILE READABILITY SHELL ===== */
+
+@media (max-width: 767px) {
+  :root {
+    --text-secondary: rgba(236, 238, 245, 0.82);
+    --text-tertiary: rgba(236, 238, 245, 0.7);
+  }
+
+  html {
+    scroll-padding-top: 76px;
+  }
+
+  body {
+    font-weight: 400;
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+
+  input,
+  textarea,
+  select {
+    font-size: 16px !important;
+  }
+
+  button,
+  a {
+    touch-action: manipulation;
+  }
+
+  .twinkle {
+    display: none;
+  }
+
+  .start-project-veil {
+    background: rgba(5, 5, 9, 0.78) !important;
+  }
+
+  body.nav-open .mobile-estimate {
+    display: none;
+  }
+}
+
+/* ===== THE FOLDING COMPANY CASE STUDY ===== */
+
+.tfc-page {
+  position: relative;
+  isolation: isolate;
+  background: #041713;
+}
+
+.tfc-page ::selection {
+  background: #1cd1ad;
+  color: #041713;
+}
+
+.tfc-page .tfc-content {
+  background: #041713;
+}
+
+.tfc-page .tfc-content p {
+  text-wrap: pretty;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tfc-page img {
+    transition: none !important;
+  }
+}
+
+/* ===== WHYCLUB REFERENCE MOCKUP ===== */
+
+.whyclub-reference-image {
+  z-index: 0;
 }

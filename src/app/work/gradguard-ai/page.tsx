@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import Navbar from "@/components/Navbar";
+import JsonLd from "@/components/JsonLd";
+import { SITE_NAME, SITE_URL } from "@/lib/site";
 import Link from "next/link";
 import {
   ArrowLeft,
@@ -30,22 +32,72 @@ function SectionLabel({ code, label }: { code: string; label: string }) {
 }
 
 export const metadata: Metadata = {
-  title: "GradGuard AI — Case Study | Aakar Labs",
+  title: "GradGuard AI Case Study — Social Media Audit App UX/UI",
   description:
-    "An AI-powered social media auditing platform that scans posts across Instagram, Reddit, X, LinkedIn, and YouTube.",
+    "Case study: Aakar Labs designed GradGuard AI, an AI-powered social media auditing app that scans Instagram, Reddit, X, LinkedIn, and YouTube for high-risk content.",
+  alternates: { canonical: "/work/gradguard-ai" },
+  openGraph: {
+    type: "article",
+    title: "GradGuard AI Case Study — Social Media Audit App UX/UI",
+    description:
+      "End-to-end UX/UI for an AI social media auditing platform covering five networks, 40 screens, and a production-ready handoff.",
+    url: `${SITE_URL}/work/gradguard-ai`,
+  },
+};
+
+const caseStudyJsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      headline: "GradGuard AI — Case Study",
+      description:
+        "An AI-powered social media auditing platform that scans posts across Instagram, Reddit, X, LinkedIn, and YouTube.",
+      author: { "@type": "Organization", name: SITE_NAME, url: SITE_URL },
+      publisher: { "@type": "Organization", name: SITE_NAME, url: SITE_URL },
+      mainEntityOfPage: `${SITE_URL}/work/gradguard-ai`,
+      about: "UX/UI design for a mobile social media audit product",
+    },
+    {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "Home",
+          item: SITE_URL,
+        },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: "Work",
+          item: `${SITE_URL}/#work`,
+        },
+        {
+          "@type": "ListItem",
+          position: 3,
+          name: "GradGuard AI",
+          item: `${SITE_URL}/work/gradguard-ai`,
+        },
+      ],
+    },
+  ],
 };
 
 export default function GradGuardCaseStudy() {
   return (
     <div className="flex min-h-screen w-full flex-col">
+      <JsonLd data={caseStudyJsonLd} />
       <Navbar />
-      <CaseStudyHero />
-      <ProjectOverview />
-      <Challenge />
-      <Solution />
-      <ScreenShowcase />
-      <Results />
-      <CTASection />
+      <main id="main">
+        <CaseStudyHero />
+        <ProjectOverview />
+        <Challenge />
+        <Solution />
+        <ScreenShowcase />
+        <Results />
+        <CTASection />
+      </main>
       <CaseStudyFooter />
     </div>
   );
@@ -192,7 +244,7 @@ function CaseStudyHero() {
       {/* Back link */}
       <Link
         href="/#work"
-        className="absolute left-5 top-10 z-[50] flex items-center gap-2 rounded-full border border-[#D1D5DB]/40 bg-white/80 px-5 py-2.5 font-mono text-[11px] font-semibold tracking-[1.5px] text-[#4B5563] shadow-[0_4px_16px_rgba(0,0,0,0.06)] backdrop-blur-md transition-all hover:bg-white hover:text-[#111827] hover:shadow-[0_4px_20px_rgba(0,0,0,0.12)] active:scale-[0.98] md:left-10 lg:left-16"
+        className="absolute left-4 top-6 z-[50] flex min-h-11 items-center gap-2 rounded-full border border-[#D1D5DB]/40 bg-white/80 px-4 py-2.5 font-mono text-[12px] font-semibold tracking-[1.5px] text-[#374151] shadow-[0_4px_16px_rgba(0,0,0,0.06)] backdrop-blur-md transition-all hover:bg-white hover:text-[#111827] hover:shadow-[0_4px_20px_rgba(0,0,0,0.12)] active:scale-[0.98] md:left-10 md:top-10 md:text-[11px] lg:left-16"
       >
         <ArrowLeft size={16} />
         BACK TO WORK
@@ -202,11 +254,11 @@ function CaseStudyHero() {
       <div className="relative z-10 flex flex-col gap-8 px-5 pt-24 md:px-10 lg:w-[560px] lg:px-0 lg:pl-[120px] lg:pt-[160px]">
         <SectionLabel code="PRJ-001" label="CASE_STUDY" />
 
-        <h1 className="font-display text-4xl font-bold leading-[1.05] tracking-[-2px] text-[#1A1816] md:text-5xl lg:text-[64px] lg:tracking-[-2.5px]">
+        <h1 className="font-display text-[2.15rem] font-bold leading-[1.12] tracking-[-0.04em] text-[#1A1816] md:text-5xl md:leading-[1.05] md:tracking-[-2px] lg:text-[64px] lg:tracking-[-2.5px]">
           GradGuard AI
         </h1>
 
-        <p className="max-w-[520px] font-body text-base leading-[1.7] text-[#6B6560] lg:text-[18px]">
+        <p className="max-w-[520px] font-body text-[1.0625rem] leading-[1.7] text-[#4A453F] lg:text-[18px] lg:text-[#6B6560]">
           An AI-powered social media auditing platform that scans posts across
           Instagram, Reddit, X, LinkedIn, and YouTube — flagging high-risk
           content before it becomes a problem.
@@ -245,7 +297,7 @@ function ProjectOverview() {
           <br />
           one post at a time.
         </h2>
-        <div className="flex flex-col gap-4 text-[15px] leading-[1.7] text-[#6B6560] lg:text-base">
+        <div className="flex flex-col gap-4 text-[1.0625rem] leading-[1.7] text-[#4A453F] md:text-[15px] lg:text-base lg:text-[#6B6560]">
           <p>
             GradGuard AI helps students and professionals audit their social
             media presence before job applications, college admissions, or public
@@ -316,7 +368,7 @@ function Challenge() {
           <h3 className="font-display text-xl font-bold tracking-[-0.5px] text-[#1A1816]">
             The problem
           </h3>
-          <p className="text-[15px] leading-[1.7] text-[#6B6560]">
+          <p className="text-[1.0625rem] leading-[1.7] text-[#4A453F] md:text-[15px] md:text-[#6B6560]">
             Students and early-career professionals have years of unfiltered
             social media history. A single controversial post can derail a job
             application or college admission — and most people don&apos;t know
@@ -327,7 +379,7 @@ function Challenge() {
           <h3 className="font-display text-xl font-bold tracking-[-0.5px] text-[#1A1816]">
             Why it matters
           </h3>
-          <p className="text-[15px] leading-[1.7] text-[#6B6560]">
+          <p className="text-[1.0625rem] leading-[1.7] text-[#4A453F] md:text-[15px] md:text-[#6B6560]">
             70% of employers screen candidates&apos; social media. Manual
             auditing across 5+ platforms is tedious, inconsistent, and easy to
             miss. Users needed a tool that&apos;s fast, thorough, and
@@ -491,16 +543,16 @@ function CTASection() {
         We bring ideas to life with polished interfaces, structured design
         systems, and pixel-perfect handoff — ready for your engineering team.
       </p>
-      <div className="flex flex-col items-center gap-4 sm:flex-row">
+      <div className="flex w-full max-w-[22rem] flex-col items-stretch gap-3 sm:max-w-none sm:flex-row sm:items-center sm:justify-center">
         <Link
           href="/start-project"
-          className="bg-[#FF5C1B] px-7 py-3 font-mono text-[13px] font-semibold tracking-[1px] text-[#F5F1EB] transition-colors hover:bg-[#FF7A42]"
+          className="inline-flex min-h-12 w-full items-center justify-center bg-[#FF5C1B] px-7 py-3 font-mono text-[14px] font-semibold tracking-[1px] text-[#F5F1EB] transition-colors hover:bg-[#FF7A42] sm:w-auto md:text-[13px]"
         >
           START A PROJECT
         </Link>
         <Link
           href="/#work"
-          className="border border-[#E0DCD4] px-7 py-3 font-mono text-[13px] font-medium tracking-[1px] text-[#6B6560] transition-colors hover:border-text-secondary"
+          className="inline-flex min-h-12 w-full items-center justify-center border border-[#E0DCD4] px-7 py-3 font-mono text-[14px] font-medium tracking-[1px] text-[#4A453F] transition-colors hover:border-text-secondary sm:w-auto md:text-[13px] md:text-[#6B6560]"
         >
           VIEW MORE WORK
         </Link>

@@ -12,35 +12,34 @@ if (typeof window !== "undefined") {
 export default function AnimateOnScroll({ children }: { children: ReactNode }) {
   const container = useRef<HTMLDivElement>(null);
 
-  useGSAP(() => {
-    const el = container.current;
-    if (!el) return;
+  useGSAP(
+    () => {
+      const el = container.current;
+      if (!el) return;
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      gsap.set(el, { opacity: 1, y: 0 });
-      return;
-    }
+      const mobile = window.matchMedia("(max-width: 767px)").matches;
+      const bits = el.querySelectorAll(".g-rise");
 
-    gsap.fromTo(
-      el,
-      { opacity: 0, y: 50 },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 1.2,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: el,
-          start: "top 85%",
-          toggleActions: "play none none none",
+      gsap.fromTo(
+        bits.length ? bits : el,
+        { opacity: 0, y: mobile ? 28 : 50 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: mobile ? 0.55 : 1.2,
+          stagger: bits.length ? 0.05 : 0,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: el,
+            start: mobile ? "top 88%" : "top 85%",
+            toggleActions: "play none none none",
+          },
         },
-      }
-    );
-  }, { scope: container });
-
-  return (
-    <div ref={container} className="will-change-[opacity,transform] opacity-0" style={{ transform: "translateZ(0)" }}>
-      {children}
-    </div>
+      );
+    },
+    { scope: container },
   );
+
+  return <div ref={container}>{children}</div>;
 }

@@ -59,10 +59,14 @@ export default function Magnetic({
   }, [strength]);
 
   return (
-    <div ref={wrapRef} className={className} style={{ display: "inline-block" }}>
+    <div
+      ref={wrapRef}
+      className={className}
+      style={{ display: className ? undefined : "inline-block" }}
+    >
       <div
         ref={innerRef}
-        style={{ display: "inline-block", willChange: "transform" }}
+        className={className?.includes("w-full") ? "block" : "inline-block"}
       >
         {children}
       </div>

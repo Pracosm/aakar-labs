@@ -7,11 +7,24 @@ import Leadership from "@/components/Leadership";
 import ContactCTA from "@/components/ContactCTA";
 import Footer from "@/components/Footer";
 import AnimateOnScroll from "@/components/AnimateOnScroll";
+import JsonLd from "@/components/JsonLd";
+import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
+
+const pageJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  name: `${SITE_NAME} — Branding, UX/UI & Digital Identity Studio`,
+  url: SITE_URL,
+  description: SITE_DESCRIPTION,
+  isPartOf: { "@id": `${SITE_URL}/#website` },
+  about: { "@id": `${SITE_URL}/#studio` },
+  primaryImageOfPage: `${SITE_URL}/hero-poster.jpg`,
+};
 
 export default function Home() {
   return (
     <div className="relative mx-auto flex min-h-screen w-full flex-col">
-      {/* Dark veil — transparent over the hero, fades in as you reach the next section */}
+      <JsonLd data={pageJsonLd} />
       <div
         aria-hidden
         className="pointer-events-none absolute inset-x-0"
@@ -25,22 +38,24 @@ export default function Home() {
       />
 
       <Navbar />
-      <Hero />
-      <AnimateOnScroll>
-        <SelectedWork />
-      </AnimateOnScroll>
-      <AnimateOnScroll>
-        <Process />
-      </AnimateOnScroll>
-      <AnimateOnScroll>
-        <About />
-      </AnimateOnScroll>
-      <AnimateOnScroll>
-        <Leadership />
-      </AnimateOnScroll>
-      <AnimateOnScroll>
-        <ContactCTA />
-      </AnimateOnScroll>
+      <main id="main">
+        <Hero />
+        <AnimateOnScroll>
+          <SelectedWork />
+        </AnimateOnScroll>
+        <AnimateOnScroll>
+          <Process />
+        </AnimateOnScroll>
+        <AnimateOnScroll>
+          <About />
+        </AnimateOnScroll>
+        <AnimateOnScroll>
+          <Leadership />
+        </AnimateOnScroll>
+        <AnimateOnScroll>
+          <ContactCTA />
+        </AnimateOnScroll>
+      </main>
       <Footer />
     </div>
   );

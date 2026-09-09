@@ -1,0 +1,60 @@
+import {
+  TfcApplications,
+  TfcBrandBookCta,
+  TfcCaseStudyHero,
+  TfcDigitalWork,
+  TfcLogoSystem,
+  TfcPaletteAndType,
+  TfcProjectMeta,
+  TfcSectionNav,
+  TfcSectionIntro,
+} from "@/components/tfc/TfcCaseStudy";
+
+<TfcCaseStudyHero />
+
+<TfcProjectMeta />
+
+<TfcSectionNav />
+
+<section id="approach" className="bg-[#f4f8f4] py-16 text-[#041713] md:py-24 lg:py-32">
+  <TfcSectionIntro index="02" label="The idea" title="Start with a fold.">
+    Two planes open into an ownable silhouette. Then the same gesture becomes a
+    grid, a crop, and a wayfinding device.
+  </TfcSectionIntro>
+
+  <TfcLogoSystem />
+</section>
+
+<section id="system" className="bg-[#041713] py-16 text-white md:py-24 lg:py-32">
+  <TfcSectionIntro
+    index="03"
+    label="The visual system"
+    title="A small system, not a single logo."
+    inverse
+  >
+    Unfolding Teal brings energy. Folded Black gives it weight. Instrument Sans
+    keeps every application clear.
+  </TfcSectionIntro>
+
+  <TfcPaletteAndType />
+</section>
+
+<section id="applications" className="bg-[#f4f8f4] py-16 text-[#041713] md:py-24 lg:py-32">
+  <TfcSectionIntro index="04" label="The applications" title="The mark leaves the page.">
+    One system, many surfaces: box, sign, textile, glass.
+  </TfcSectionIntro>
+
+  <TfcApplications />
+</section>
+
+<section id="digital" className="bg-[#eaf6f1] py-16 text-[#041713] md:py-24 lg:py-32">
+  <TfcSectionIntro index="05" label="The digital layer" title="Built to travel.">
+    Designed to move from screen to object without losing its shape.
+  </TfcSectionIntro>
+
+  <TfcDigitalWork />
+</section>
+
+<div className="bg-[#041713]">
+  <TfcBrandBookCta />
+</div>

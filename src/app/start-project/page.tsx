@@ -1,183 +1,68 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import SectionLabel from "@/components/ui/SectionLabel";
+import {
+  CURRENCIES,
+  convertFromINR,
+  currencyFromCountry,
+  currencyFromLocale,
+  formatMoney,
+  getCurrency,
+  type CurrencyCode,
+} from "@/lib/currency";
+import {
+  BUNDLE_DISCOUNT,
+  TIMELINE_OPTIONS,
+  TRACKS,
+  computeEstimate,
+  findModule,
+} from "@/lib/pricing";
 
-// ─── Pricing model ─────────────────────────────────────────────────────────
-// Anchored to the Yodhai proposal: Brand ₹70K–1L, UI/UX ₹80K–1L,
-// Brand+UI/UX bundle ₹1.8L–2.5L. Dev is "available on request".
-// Each module carries a [min, max] range in INR. The form sums what the user
-// picks, applies a bundle discount when both tracks are meaningfully selected,
-// and a rush multiplier for tight timelines.
+type Step = 1 | 2 | 3;
 
-type Module = {
-  id: string;
-  name: string;
-  desc: string;
-  min: number;
-  max: number;
-};
+const STORAGE_KEY = "aakar-start-project-v1";
 
-type Track = {
-  id: "brand" | "product" | "dev";
-  label: string;
-  code: string;
-  blurb: string;
-  modules: Module[];
-};
-
-const TRACKS: Track[] = [
-  {
-    id: "brand",
-    label: "Brand Identity",
-    code: "TRK-01",
-    blurb: "Visual system and assets for your product.",
-    modules: [
-      {
-        id: "brand_digital",
-        name: "Logo + type + color",
-        desc: "Logo, typography pairing and color system — sized for digital use.",
-        min: 50000,
-        max: 75000,
-      },
-      {
-        id: "brand_full",
-        name: "Full brand identity",
-        desc: "Everything: audit, logo, type, color, iconography, illustration system, guidelines and production-ready exports.",
-        min: 130000,
-        max: 180000,
-      },
-    ],
-  },
-  {
-    id: "product",
-    label: "Product Design (UI/UX)",
-    code: "TRK-02",
-    blurb: "Designed product surfaces, ready for engineering.",
-    modules: [
-      {
-        id: "product_screens",
-        name: "Hi-fi screens",
-        desc: "Polished UI screens for your core flows. Static, handoff-ready.",
-        min: 75000,
-        max: 110000,
-      },
-      {
-        id: "product_full",
-        name: "Full UX + interactive prototype",
-        desc: "Everything: UX audit, journey maps, IA, wireframes, screens, clickable prototype, design system and dev handoff.",
-        min: 150000,
-        max: 200000,
-      },
-    ],
-  },
-  {
-    id: "dev",
-    label: "Development",
-    code: "TRK-03",
-    blurb: "Engineer the design into a production-ready product.",
-    modules: [
-      {
-        id: "dev_frontend",
-        name: "Frontend build",
-        desc: "Next.js / React implementation, 1:1 with the design system.",
-        min: 100000,
-        max: 150000,
-      },
-      {
-        id: "dev_full",
-        name: "Full development",
-        desc: "Everything: frontend, backend, APIs, authentication, deployment, performance and accessibility.",
-        min: 220000,
-        max: 320000,
-      },
-    ],
-  },
+const STEPS: { id: Step; code: string; label: string }[] = [
+  { id: 1, code: "01", label: "Scope" },
+  { id: 2, code: "02", label: "Timeline" },
+  { id: 3, code: "03", label: "Estimate" },
 ];
 
-const TIMELINE_OPTIONS = [
-  { id: "standard", label: "Standard · 4–6 weeks", multiplier: 1 },
-  { id: "rush", label: "Rush · 2–3 weeks", multiplier: 1.2 },
-  { id: "flexible", label: "Flexible · 6+ weeks", multiplier: 0.95 },
-];
+const inputClass =
+  "border-b border-[rgba(236,238,245,0.18)] bg-transparent py-2.5 font-body text-[15px] text-[color:var(--rim-white)] outline-none transition-colors placeholder:text-[rgba(236,238,245,0.55)] focus:border-[color:var(--coral)]";
 
-// Bundle: any Brand option + any Product option triggers the package discount.
-const BUNDLE_DISCOUNT = 30000;
+const labelClass =
+  "font-mono text-[11px] font-medium tracking-[1.5px] text-[rgba(236,238,245,0.72)]";
 
-const ALL_MODULES = TRACKS.flatMap((t) =>
-  t.modules.map((m) => ({ ...m, trackId: t.id })),
-);
-
-function findModule(id: string) {
-  return ALL_MODULES.find((m) => m.id === id);
-}
-
-// ─── Currencies & regional pricing ─────────────────────────────────────────
-// INR is the base. Every other region pays the equivalent + 25% premium.
-// `rate` is "1 of that currency, in INR" (e.g. 1 USD ≈ 83 INR).
-// `round` snaps converted values to clean increments for psychological pricing.
-
-type Currency = {
-  code: "INR" | "USD" | "EUR" | "GBP" | "AED";
-  symbol: string;
-  region: string;
-  flag: string;
-  rate: number;
-  markup: number;
-  round: number;
-  locale: string;
-};
-
-const CURRENCIES: Currency[] = [
-  { code: "INR", symbol: "₹", region: "India",          flag: "🇮🇳", rate: 1,     markup: 1,    round: 500,  locale: "en-IN" },
-  { code: "USD", symbol: "$", region: "United States",  flag: "🇺🇸", rate: 83,    markup: 1.25, round: 25,   locale: "en-US" },
-  { code: "EUR", symbol: "€", region: "Europe",         flag: "🇪🇺", rate: 90,    markup: 1.25, round: 25,   locale: "en-IE" },
-  { code: "GBP", symbol: "£", region: "United Kingdom", flag: "🇬🇧", rate: 105,   markup: 1.25, round: 25,   locale: "en-GB" },
-  { code: "AED", symbol: "AED", region: "UAE",          flag: "🇦🇪", rate: 22.6,  markup: 1.25, round: 100,  locale: "en-AE" },
-];
-
-const REGION_TO_CURRENCY: Record<string, Currency["code"]> = {
-  IN: "INR",
-  US: "USD", CA: "USD", AU: "USD", NZ: "USD", SG: "USD", HK: "USD",
-  GB: "GBP",
-  AE: "AED", SA: "AED", QA: "AED", KW: "AED", OM: "AED", BH: "AED",
-  // Eurozone
-  DE: "EUR", FR: "EUR", IT: "EUR", ES: "EUR", NL: "EUR", BE: "EUR",
-  AT: "EUR", PT: "EUR", IE: "EUR", FI: "EUR", GR: "EUR", LU: "EUR",
-};
-
-function detectCurrency(): Currency["code"] {
-  if (typeof navigator === "undefined") return "USD";
+async function detectCurrencyFromIp(): Promise<CurrencyCode | null> {
   try {
-    const locale = navigator.language || "en-US";
-    const region = new Intl.Locale(locale).region;
-    if (region && REGION_TO_CURRENCY[region]) return REGION_TO_CURRENCY[region];
+    const res = await fetch("/api/geo", { cache: "no-store" });
+    if (res.ok) {
+      const data = (await res.json()) as { currency: CurrencyCode | null };
+      if (data.currency) return data.currency;
+    }
   } catch {
-    // ignore
+    // fall through to a browser-side IP lookup (covers local dev)
   }
-  return "USD"; // default for international visitors
-}
 
-function convertFromINR(inrValue: number, currency: Currency): number {
-  if (currency.code === "INR") return inrValue;
-  const converted = (inrValue / currency.rate) * currency.markup;
-  return Math.round(converted / currency.round) * currency.round;
+  try {
+    const res = await fetch("https://api.country.is/", {
+      cache: "no-store",
+      signal: AbortSignal.timeout(2500),
+    });
+    if (!res.ok) return null;
+    const data = (await res.json()) as { country?: string };
+    return currencyFromCountry(data.country ?? null);
+  } catch {
+    return null;
+  }
 }
-
-function formatMoney(value: number, currency: Currency): string {
-  const formatted = new Intl.NumberFormat(currency.locale, {
-    maximumFractionDigits: 0,
-  }).format(value);
-  // AED reads better with the code after the number; symbol currencies stay prefixed.
-  if (currency.code === "AED") return `${formatted} ${currency.symbol}`;
-  return `${currency.symbol}${formatted}`;
-}
-
-// ─── Page ──────────────────────────────────────────────────────────────────
 
 export default function StartProjectPage() {
+  const [step, setStep] = useState<Step>(1);
   const [submitted, setSubmitted] = useState(false);
   const [sending, setSending] = useState(false);
   const [error, setError] = useState("");
@@ -187,86 +72,107 @@ export default function StartProjectPage() {
   const [details, setDetails] = useState("");
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [timeline, setTimeline] = useState("standard");
-  const [currencyCode, setCurrencyCode] = useState<Currency["code"]>("INR");
-  // Snapshot taken at the moment "Calculate" is hit. Live selection is wiped,
-  // so users can't diff pricing by toggling one module at a time.
-  const [revealedEstimate, setRevealedEstimate] = useState<{
-    selectedIds: string[];
-    min: number;
-    max: number;
-    bundle: boolean;
-    brandCount: number;
-    productCount: number;
-    devCount: number;
-    timelineLabel: string;
-  } | null>(null);
-  const [company, setCompany] = useState(""); // honeypot
+  const [currencyCode, setCurrencyCode] = useState<CurrencyCode>("INR");
+  const [currencyTouched, setCurrencyTouched] = useState(false);
+  const [company, setCompany] = useState("");
+  const [hydrated, setHydrated] = useState(false);
+  const currencyTouchedRef = useRef(false);
 
-  // Auto-detect on mount. SSR renders INR; we only switch client-side to
-  // avoid hydration mismatches.
   useEffect(() => {
-    setCurrencyCode(detectCurrency());
+    try {
+      const raw = sessionStorage.getItem(STORAGE_KEY);
+      if (raw) {
+        const saved = JSON.parse(raw) as {
+          step?: Step;
+          name?: string;
+          email?: string;
+          projectName?: string;
+          details?: string;
+          selected?: string[];
+          timeline?: string;
+          currencyCode?: CurrencyCode;
+          currencyTouched?: boolean;
+        };
+        if (saved.step === 1 || saved.step === 2 || saved.step === 3) setStep(saved.step);
+        if (saved.name) setName(saved.name);
+        if (saved.email) setEmail(saved.email);
+        if (saved.projectName) setProjectName(saved.projectName);
+        if (saved.details) setDetails(saved.details);
+        if (Array.isArray(saved.selected)) setSelected(new Set(saved.selected));
+        if (saved.timeline) setTimeline(saved.timeline);
+        if (saved.currencyTouched && saved.currencyCode) {
+          setCurrencyCode(saved.currencyCode);
+          setCurrencyTouched(true);
+          currencyTouchedRef.current = true;
+        }
+      }
+    } catch {
+      // ignore bad session data
+    }
+    setHydrated(true);
   }, []);
 
-  const currency =
-    CURRENCIES.find((c) => c.code === currencyCode) ?? CURRENCIES[0];
+  useEffect(() => {
+    if (!hydrated) return;
+    sessionStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify({
+        step,
+        name,
+        email,
+        projectName,
+        details,
+        selected: Array.from(selected),
+        timeline,
+        currencyCode,
+        currencyTouched,
+      }),
+    );
+  }, [
+    hydrated,
+    step,
+    name,
+    email,
+    projectName,
+    details,
+    selected,
+    timeline,
+    currencyCode,
+    currencyTouched,
+  ]);
 
-  // ─── Live estimate ───────────────────────────────────────────────────────
-  const estimate = useMemo(() => {
-    const ids = Array.from(selected);
-    let min = 0;
-    let max = 0;
-    const brandSelected: Module[] = [];
-    const productSelected: Module[] = [];
-    const devSelected: Module[] = [];
+  useEffect(() => {
+    if (!hydrated || currencyTouchedRef.current) return;
 
-    ids.forEach((id) => {
-      const m = findModule(id);
-      if (!m) return;
-      min += m.min;
-      max += m.max;
-      if (m.trackId === "brand") brandSelected.push(m);
-      else if (m.trackId === "product") productSelected.push(m);
-      else devSelected.push(m);
-    });
+    let cancelled = false;
+    (async () => {
+      const detected = await detectCurrencyFromIp();
+      if (cancelled || currencyTouchedRef.current) return;
+      setCurrencyCode(detected ?? currencyFromLocale());
+    })();
 
-    const bundle =
-      brandSelected.length > 0 && productSelected.length > 0;
-    if (bundle) {
-      min = Math.max(0, min - BUNDLE_DISCOUNT);
-      max = Math.max(0, max - BUNDLE_DISCOUNT);
-    }
-
-    const mult =
-      TIMELINE_OPTIONS.find((t) => t.id === timeline)?.multiplier ?? 1;
-    min = Math.round(min * mult);
-    max = Math.round(max * mult);
-
-    const displayMin = convertFromINR(min, currency);
-    const displayMax = convertFromINR(max, currency);
-
-    return {
-      min,
-      max,
-      displayMin,
-      displayMax,
-      bundle,
-      brandCount: brandSelected.length,
-      productCount: productSelected.length,
-      devCount: devSelected.length,
-      moduleCount: ids.length,
+    return () => {
+      cancelled = true;
     };
-  }, [selected, timeline, currency]);
+  }, [hydrated]);
+
+  const currency = getCurrency(currencyCode);
+  const selectedIds = useMemo(() => Array.from(selected), [selected]);
+  const estimate = useMemo(
+    () => computeEstimate(selectedIds, timeline),
+    [selectedIds, timeline],
+  );
+  const timelineLabel =
+    TIMELINE_OPTIONS.find((t) => t.id === timeline)?.label ?? timeline;
 
   function toggle(id: string) {
-    setRevealedEstimate(null);
+    setError("");
     setSelected((prev) => {
       const next = new Set(prev);
       if (next.has(id)) {
         next.delete(id);
         return next;
       }
-      // Picking any option in a track replaces the other option in that track.
       const picked = findModule(id);
       if (picked) {
         const sameTrack = TRACKS.find((t) => t.id === picked.trackId);
@@ -279,61 +185,46 @@ export default function StartProjectPage() {
     });
   }
 
-  function handleTimelineChange(id: string) {
-    setRevealedEstimate(null);
-    setTimeline(id);
-  }
-
-  function handleCalculate() {
-    setError("");
-    if (estimate.moduleCount === 0) {
+  function goNext() {
+    if (step === 1 && selected.size === 0) {
       setError("Pick at least one module so we know what you need.");
       return;
     }
-    const timelineLabel =
-      TIMELINE_OPTIONS.find((t) => t.id === timeline)?.label.split(" · ")[0] ??
-      "Standard";
-    setRevealedEstimate({
-      selectedIds: Array.from(selected),
-      min: estimate.min,
-      max: estimate.max,
-      bundle: estimate.bundle,
-      brandCount: estimate.brandCount,
-      productCount: estimate.productCount,
-      devCount: estimate.devCount,
-      timelineLabel,
-    });
-    setSelected(new Set()); // wipe so users can't diff pricing
+    setError("");
+    if (step < 3) setStep((step + 1) as Step);
+  }
+
+  function goBack() {
+    setError("");
+    if (step > 1) setStep((step - 1) as Step);
   }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!revealedEstimate) {
-      setError("Calculate your estimate before sending.");
+    if (selected.size === 0) {
+      setError("Pick at least one module so we know what you need.");
+      setStep(1);
       return;
     }
     setSending(true);
     setError("");
 
     const tracksUsed = [
-      revealedEstimate.brandCount && "Brand",
-      revealedEstimate.productCount && "Product",
-      revealedEstimate.devCount && "Development",
+      estimate.brandCount && "Brand",
+      estimate.productCount && "Product",
+      estimate.devCount && "Development",
     ]
       .filter(Boolean)
       .join(" + ");
 
-    const selectedNames = revealedEstimate.selectedIds
+    const selectedNames = selectedIds
       .map((id) => findModule(id)?.name)
       .filter(Boolean)
       .join(", ");
 
-    const timelineLabel =
-      TIMELINE_OPTIONS.find((t) => t.id === timeline)?.label ?? timeline;
-
-    const displayMin = convertFromINR(revealedEstimate.min, currency);
-    const displayMax = convertFromINR(revealedEstimate.max, currency);
-    const budgetStr = `${formatMoney(displayMin, currency)} – ${formatMoney(displayMax, currency)} ${currency.code}${revealedEstimate.bundle ? " (bundle)" : ""}`;
+    const displayMin = convertFromINR(estimate.min, currency);
+    const displayMax = convertFromINR(estimate.max, currency);
+    const budgetStr = `${formatMoney(displayMin, currency)} – ${formatMoney(displayMax, currency)} ${currency.code}${estimate.bundle ? " (bundle)" : ""}`;
 
     const detailsPayload = [
       projectName && `Project: ${projectName}`,
@@ -362,6 +253,7 @@ export default function StartProjectPage() {
         const data = await res.json();
         throw new Error(data.error || "Something went wrong.");
       }
+      sessionStorage.removeItem(STORAGE_KEY);
       setSubmitted(true);
     } catch (err) {
       setError(
@@ -372,23 +264,20 @@ export default function StartProjectPage() {
     }
   }
 
-  // ─── Render ──────────────────────────────────────────────────────────────
-
   return (
     <div className="relative flex min-h-screen w-full flex-col">
-      {/* Constant dark veil over the video for readability */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0"
-        style={{
-          zIndex: -1,
-          background: "rgba(5,5,9,0.55)",
-        }}
+        style={{ zIndex: -1, background: "rgba(5,5,9,0.72)" }}
       />
 
       <Navbar />
 
-      <main className="mx-auto flex w-full max-w-[1100px] flex-1 flex-col px-5 py-16 md:px-10 md:py-20">
+      <main
+        id="main"
+        className="mx-auto flex w-full max-w-[1100px] flex-1 flex-col px-5 py-10 pb-28 md:px-10 md:py-20"
+      >
         {submitted ? (
           <div className="flex flex-1 flex-col items-center justify-center gap-6 text-center">
             <span className="font-mono text-[11px] font-medium tracking-[2px] text-accent">
@@ -416,143 +305,181 @@ export default function StartProjectPage() {
               <SectionLabel code="AKR-007" label="START_PROJECT" />
             </div>
 
-            <h1
-              className="mb-5 font-display"
-              style={{
-                fontSize: "clamp(2.25rem, 5vw, 3.75rem)",
-                fontWeight: 700,
-                letterSpacing: "-0.06em",
-                color: "var(--rim-white)",
-                lineHeight: 1.05,
-              }}
-            >
-              Build your scope.
-              <br />
-              <span style={{ color: "var(--laptop-glow)" }}>
-                We&apos;ll show your estimate.
-              </span>
+            <ol className="mb-8 flex items-center gap-2 sm:gap-4" aria-label="Progress">
+              {STEPS.map((s, i) => {
+                const active = step === s.id;
+                const done = step > s.id;
+                return (
+                  <li key={s.id} className="flex items-center gap-2 sm:gap-4">
+                    {i > 0 && (
+                      <span
+                        aria-hidden
+                        className="h-px w-6 bg-[rgba(236,238,245,0.16)] sm:w-10"
+                      />
+                    )}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (s.id < step) {
+                          setError("");
+                          setStep(s.id);
+                        }
+                      }}
+                      disabled={s.id > step}
+                      className={`flex items-center gap-2 font-mono text-[11px] tracking-[0.14em] uppercase transition-colors ${
+                        active
+                          ? "text-[color:var(--laptop-glow)]"
+                          : done
+                            ? "text-text-primary"
+                            : "text-[rgba(236,238,245,0.4)]"
+                      }`}
+                      aria-current={active ? "step" : undefined}
+                    >
+                      <span>{s.code}</span>
+                      <span className="hidden sm:inline">{s.label}</span>
+                    </button>
+                  </li>
+                );
+              })}
+            </ol>
+
+            <h1 className="section-heading mb-5 md:text-[clamp(2.25rem,5vw,3.75rem)]">
+              {step === 1 && (
+                <>
+                  What do you need?
+                  <br />
+                  <span style={{ color: "var(--laptop-glow)" }}>Pick your modules.</span>
+                </>
+              )}
+              {step === 2 && (
+                <>
+                  When do you need it?
+                  <br />
+                  <span style={{ color: "var(--laptop-glow)" }}>Choose a pace.</span>
+                </>
+              )}
+              {step === 3 && (
+                <>
+                  Here&apos;s your range.
+                  <br />
+                  <span style={{ color: "var(--laptop-glow)" }}>Send the brief.</span>
+                </>
+              )}
             </h1>
-            <p
-              className="mb-12 max-w-[560px]"
-              style={{
-                fontFamily: "Outfit",
-                fontWeight: 300,
-                fontSize: 15,
-                color: "rgba(236,238,245,0.6)",
-                lineHeight: 1.7,
-              }}
-            >
-              Pick the modules you need. Your indicative range updates on the
-              right — final pricing depends on screen count, feedback rounds
-              and complexity.
+            <p className="body-copy mb-10 max-w-[560px] md:mb-12">
+              {step === 1 &&
+                "Brand identity, UX/UI, and development. One option per track. You can combine tracks."}
+              {step === 2 &&
+                "Rush adds 20%. A looser timeline takes 5% off. You can change this after you see the estimate."}
+              {step === 3 &&
+                "Indicative range from your scope. Final pricing depends on screen count, feedback rounds and complexity."}
             </p>
 
-            <form
-              onSubmit={handleSubmit}
-              className="grid grid-cols-1 gap-10 lg:grid-cols-[1fr_340px]"
-            >
-              <div className="flex flex-col gap-12">
-                {/* Honeypot */}
-                <div
-                  className="absolute -left-[9999px] opacity-0"
-                  aria-hidden="true"
-                >
-                  <label htmlFor="company">Company</label>
-                  <input
-                    id="company"
-                    type="text"
-                    tabIndex={-1}
-                    autoComplete="off"
-                    value={company}
-                    onChange={(e) => setCompany(e.target.value)}
-                  />
+            <form id="scope-form" onSubmit={handleSubmit} className="flex flex-col gap-10">
+              <div
+                className="absolute -left-[9999px] opacity-0"
+                aria-hidden="true"
+              >
+                <label htmlFor="company">Company</label>
+                <input
+                  id="company"
+                  type="text"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  value={company}
+                  onChange={(e) => setCompany(e.target.value)}
+                />
+              </div>
+
+              {step === 1 && (
+                <div className="flex flex-col gap-12">
+                  {TRACKS.map((track) => (
+                    <section
+                      key={track.id}
+                      className="flex flex-col gap-5"
+                      aria-labelledby={`track-${track.id}`}
+                    >
+                      <div className="flex flex-col gap-1.5">
+                        <SectionLabel
+                          code={track.code}
+                          label={track.label.toUpperCase().replace(/[^A-Z0-9]+/g, "_")}
+                        />
+                        <h2
+                          id={`track-${track.id}`}
+                          className="mt-2 font-display text-2xl font-bold tracking-[-0.5px] text-text-primary"
+                        >
+                          {track.label}
+                        </h2>
+                        <p className="text-[14px] leading-[1.6] text-text-secondary">
+                          {track.blurb}
+                        </p>
+                      </div>
+
+                      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                        {track.modules.map((m) => {
+                          const isSelected = selected.has(m.id);
+                          return (
+                            <button
+                              key={m.id}
+                              type="button"
+                              onClick={() => toggle(m.id)}
+                              aria-pressed={isSelected}
+                              className={`group flex min-h-[7.5rem] flex-col gap-2 rounded-xl border p-5 text-left transition-all backdrop-blur-md md:min-h-0 md:p-4 ${
+                                isSelected
+                                  ? "border-[color:var(--coral)] bg-[rgba(212,117,106,0.08)] shadow-[0_0_0_1px_var(--coral)]"
+                                  : "border-[rgba(236,238,245,0.08)] bg-[rgba(26,29,46,0.4)] hover:border-[rgba(236,238,245,0.25)]"
+                              }`}
+                            >
+                              <div className="flex items-start justify-between gap-3">
+                                <span className="font-display text-[15px] font-semibold leading-[1.3] text-text-primary">
+                                  {m.name}
+                                </span>
+                                <span
+                                  className={`mt-0.5 flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-sm border transition-colors ${
+                                    isSelected
+                                      ? "border-[color:var(--coral)] bg-[color:var(--coral)] text-black"
+                                      : "border-[rgba(236,238,245,0.3)] bg-transparent"
+                                  }`}
+                                  aria-hidden="true"
+                                >
+                                  {isSelected && (
+                                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                                      <path
+                                        d="M1.5 5.2L4 7.5L8.5 2.5"
+                                        stroke="currentColor"
+                                        strokeWidth="1.8"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                      />
+                                    </svg>
+                                  )}
+                                </span>
+                              </div>
+                              <span className="text-[13px] leading-[1.55] text-text-secondary">
+                                {m.desc}
+                              </span>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </section>
+                  ))}
                 </div>
+              )}
 
-                {/* Tracks */}
-                {TRACKS.map((track) => (
-                  <section
-                    key={track.id}
-                    className="flex flex-col gap-5"
-                    aria-labelledby={`track-${track.id}`}
-                  >
-                    <div className="flex flex-col gap-1.5">
-                      <SectionLabel code={track.code} label={track.label.toUpperCase().replace(/[^A-Z0-9]+/g, "_")} />
-                      <h2
-                        id={`track-${track.id}`}
-                        className="mt-2 font-display text-2xl font-bold tracking-[-0.5px] text-text-primary"
-                      >
-                        {track.label}
-                      </h2>
-                      <p className="text-[14px] leading-[1.6] text-text-secondary">
-                        {track.blurb}
-                      </p>
-                    </div>
-
-                    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                      {track.modules.map((m) => {
-                        const isSelected = selected.has(m.id);
-                        return (
-                          <button
-                            key={m.id}
-                            type="button"
-                            onClick={() => toggle(m.id)}
-                            aria-pressed={isSelected}
-                            className={`group flex flex-col gap-2 rounded-xl border p-4 text-left transition-all backdrop-blur-md ${
-                              isSelected
-                                ? "border-[color:var(--coral)] bg-[rgba(212,117,106,0.08)] shadow-[0_0_0_1px_var(--coral)]"
-                                : "border-[rgba(236,238,245,0.08)] bg-[rgba(26,29,46,0.4)] hover:border-[rgba(236,238,245,0.25)]"
-                            }`}
-                          >
-                            <div className="flex items-start justify-between gap-3">
-                              <span className="font-display text-[15px] font-semibold leading-[1.3] text-text-primary">
-                                {m.name}
-                              </span>
-                              <span
-                                className={`mt-0.5 flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-sm border transition-colors ${
-                                  isSelected
-                                    ? "border-[color:var(--coral)] bg-[color:var(--coral)] text-black"
-                                    : "border-[rgba(236,238,245,0.3)] bg-transparent"
-                                }`}
-                                aria-hidden="true"
-                              >
-                                {isSelected && (
-                                  <svg
-                                    width="10"
-                                    height="10"
-                                    viewBox="0 0 10 10"
-                                    fill="none"
-                                  >
-                                    <path
-                                      d="M1.5 5.2L4 7.5L8.5 2.5"
-                                      stroke="currentColor"
-                                      strokeWidth="1.8"
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                    />
-                                  </svg>
-                                )}
-                              </span>
-                            </div>
-                            <span className="text-[13px] leading-[1.55] text-text-secondary">
-                              {m.desc}
-                            </span>
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </section>
-                ))}
-
-                {/* Timeline */}
+              {step === 2 && (
                 <section className="flex flex-col gap-4">
                   <SectionLabel code="TRK-04" label="TIMELINE" />
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
                     {TIMELINE_OPTIONS.map((opt) => (
                       <button
                         key={opt.id}
                         type="button"
-                        onClick={() => handleTimelineChange(opt.id)}
-                        className={`rounded-full border px-4 py-2 font-mono text-[12px] font-medium tracking-[0.5px] transition-colors ${
+                        onClick={() => {
+                          setError("");
+                          setTimeline(opt.id);
+                        }}
+                        className={`min-h-12 rounded-full border px-5 py-3 text-left font-mono text-[13px] font-medium tracking-[0.5px] transition-colors ${
                           timeline === opt.id
                             ? "border-[color:var(--laptop-glow)] bg-[color:var(--laptop-glow)] text-black"
                             : "border-[rgba(236,238,245,0.18)] bg-transparent text-[rgba(236,238,245,0.7)] hover:border-[rgba(236,238,245,0.4)]"
@@ -570,235 +497,197 @@ export default function StartProjectPage() {
                     ))}
                   </div>
                 </section>
+              )}
 
-                {/* Contact details */}
-                <section className="flex flex-col gap-6 border-t border-[rgba(236,238,245,0.08)] pt-10">
-                  <SectionLabel code="TRK-05" label="ABOUT_YOU" />
+              {step === 3 && (
+                <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1fr_340px]">
+                  <section className="flex flex-col gap-6">
+                    <SectionLabel code="TRK-05" label="ABOUT_YOU" />
 
-                  <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                      <div className="flex flex-col gap-2">
+                        <label htmlFor="name" className={labelClass}>
+                          YOUR NAME
+                        </label>
+                        <input
+                          id="name"
+                          type="text"
+                          required
+                          value={name}
+                          onChange={(e) => setName(e.target.value)}
+                          placeholder="Jane Doe"
+                          className={inputClass}
+                        />
+                      </div>
+                      <div className="flex flex-col gap-2">
+                        <label htmlFor="email" className={labelClass}>
+                          EMAIL
+                        </label>
+                        <input
+                          id="email"
+                          type="email"
+                          required
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          placeholder="jane@company.com"
+                          className={inputClass}
+                        />
+                      </div>
+                    </div>
+
                     <div className="flex flex-col gap-2">
-                      <label
-                        htmlFor="name"
-                        className="font-mono text-[11px] font-medium tracking-[1.5px] text-[rgba(236,238,245,0.72)]"
-                      >
-                        YOUR NAME
+                      <label htmlFor="projectName" className={labelClass}>
+                        PROJECT NAME
                       </label>
                       <input
-                        id="name"
+                        id="projectName"
                         type="text"
-                        required
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        placeholder="Jane Doe"
-                        className="border-b border-[rgba(236,238,245,0.18)] bg-transparent py-2.5 font-body text-[15px] text-[color:var(--rim-white)] outline-none transition-colors placeholder:text-[rgba(236,238,245,0.55)] focus:border-[color:var(--coral)]"
+                        value={projectName}
+                        onChange={(e) => setProjectName(e.target.value)}
+                        placeholder="Project Yodhai"
+                        className={inputClass}
                       />
                     </div>
+
                     <div className="flex flex-col gap-2">
-                      <label
-                        htmlFor="email"
-                        className="font-mono text-[11px] font-medium tracking-[1.5px] text-[rgba(236,238,245,0.72)]"
-                      >
-                        EMAIL
+                      <label htmlFor="details" className={labelClass}>
+                        TELL US ABOUT YOUR PROJECT
                       </label>
-                      <input
-                        id="email"
-                        type="email"
-                        required
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        placeholder="jane@company.com"
-                        className="border-b border-[rgba(236,238,245,0.18)] bg-transparent py-2.5 font-body text-[15px] text-[color:var(--rim-white)] outline-none transition-colors placeholder:text-[rgba(236,238,245,0.55)] focus:border-[color:var(--coral)]"
+                      <textarea
+                        id="details"
+                        rows={4}
+                        value={details}
+                        onChange={(e) => setDetails(e.target.value)}
+                        placeholder="A brief overview of what you're building and what you need help with..."
+                        className={`resize-none ${inputClass} leading-[1.6]`}
                       />
                     </div>
-                  </div>
+                  </section>
 
-                  <div className="flex flex-col gap-2">
-                    <label
-                      htmlFor="projectName"
-                      className="font-mono text-[11px] font-medium tracking-[1.5px] text-[rgba(236,238,245,0.72)]"
-                    >
-                      PROJECT NAME
-                    </label>
-                    <input
-                      id="projectName"
-                      type="text"
-                      value={projectName}
-                      onChange={(e) => setProjectName(e.target.value)}
-                      placeholder="Project Yodhai"
-                      className="border-b border-[rgba(236,238,245,0.18)] bg-transparent py-2.5 font-body text-[15px] text-[color:var(--rim-white)] outline-none transition-colors placeholder:text-[rgba(236,238,245,0.55)] focus:border-[color:var(--coral)]"
-                    />
-                  </div>
+                  <aside className="lg:sticky lg:top-24 lg:self-start">
+                    <div className="flex flex-col gap-5 rounded-2xl p-6 glass-panel">
+                      <div className="flex items-center justify-between gap-3">
+                        <span className={labelClass}>ESTIMATE</span>
+                        {estimate.bundle && (
+                          <span className="font-mono text-[10px] font-medium tracking-[1.2px] text-accent">
+                            BUNDLE −
+                            {formatMoney(convertFromINR(BUNDLE_DISCOUNT, currency), currency)}
+                          </span>
+                        )}
+                      </div>
 
-                  <div className="flex flex-col gap-2">
-                    <label
-                      htmlFor="details"
-                      className="font-mono text-[11px] font-medium tracking-[1.5px] text-[rgba(236,238,245,0.72)]"
-                    >
-                      TELL US ABOUT YOUR PROJECT
-                    </label>
-                    <textarea
-                      id="details"
-                      rows={4}
-                      value={details}
-                      onChange={(e) => setDetails(e.target.value)}
-                      placeholder="A brief overview of what you're building and what you need help with..."
-                      className="resize-none border-b border-[rgba(236,238,245,0.18)] bg-transparent py-2.5 font-body text-[15px] leading-[1.6] text-[color:var(--rim-white)] outline-none transition-colors placeholder:text-[rgba(236,238,245,0.55)] focus:border-[color:var(--coral)]"
-                    />
-                  </div>
-                </section>
-              </div>
+                      <label className="flex flex-col gap-1.5">
+                        <span className="font-mono text-[10px] font-medium tracking-[1.2px] text-[rgba(236,238,245,0.72)]">
+                          BILLING REGION
+                        </span>
+                        <select
+                          value={currency.code}
+                          onChange={(e) => {
+                            currencyTouchedRef.current = true;
+                            setCurrencyTouched(true);
+                            setCurrencyCode(e.target.value as CurrencyCode);
+                          }}
+                          className="appearance-none rounded-md border border-[rgba(236,238,245,0.12)] bg-[rgba(5,5,9,0.6)] px-3 py-2 pr-8 font-mono text-[12px] tracking-[0.5px] text-[color:var(--rim-white)] outline-none transition-colors hover:border-[rgba(236,238,245,0.3)] focus:border-[color:var(--coral)]"
+                          style={{
+                            backgroundImage:
+                              "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6' fill='none'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%239A948E' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E\")",
+                            backgroundRepeat: "no-repeat",
+                            backgroundPosition: "right 12px center",
+                          }}
+                        >
+                          {CURRENCIES.map((c) => (
+                            <option key={c.code} value={c.code}>
+                              {c.flag} {c.region} · {c.symbol} {c.code}
+                            </option>
+                          ))}
+                        </select>
+                      </label>
 
-              {/* ─── RIGHT: sticky estimate ───────────────────────────── */}
-              <aside className="lg:sticky lg:top-24 lg:self-start">
-                <div className="flex flex-col gap-5 rounded-2xl p-6 glass-panel">
-                  <div className="flex items-center justify-between gap-3">
-                    <span className="font-mono text-[11px] font-medium tracking-[1.5px] text-[rgba(236,238,245,0.72)]">
-                      ESTIMATE
-                    </span>
-                    {revealedEstimate?.bundle && (
-                      <span className="font-mono text-[10px] font-medium tracking-[1.2px] text-accent">
-                        BUNDLE −{formatMoney(convertFromINR(BUNDLE_DISCOUNT, currency), currency)}
-                      </span>
-                    )}
-                  </div>
-
-                  {/* Currency dropdown */}
-                  <label className="flex flex-col gap-1.5">
-                    <span className="font-mono text-[10px] font-medium tracking-[1.2px] text-[rgba(236,238,245,0.72)]">
-                      BILLING REGION
-                    </span>
-                    <select
-                      value={currency.code}
-                      onChange={(e) =>
-                        setCurrencyCode(e.target.value as Currency["code"])
-                      }
-                      className="appearance-none rounded-md border border-[rgba(236,238,245,0.12)] bg-[rgba(5,5,9,0.6)] px-3 py-2 pr-8 font-mono text-[12px] tracking-[0.5px] text-[color:var(--rim-white)] outline-none transition-colors hover:border-[rgba(236,238,245,0.3)] focus:border-[color:var(--coral)]"
-                      style={{
-                        backgroundImage:
-                          "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6' fill='none'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%239A948E' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E\")",
-                        backgroundRepeat: "no-repeat",
-                        backgroundPosition: "right 12px center",
-                      }}
-                    >
-                      {CURRENCIES.map((c) => (
-                        <option key={c.code} value={c.code}>
-                          {c.flag} {c.region} · {c.symbol} {c.code}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
-
-                  {/* Scope counters — show snapshot if revealed, else live */}
-                  {(() => {
-                    const view = revealedEstimate ?? {
-                      brandCount: estimate.brandCount,
-                      productCount: estimate.productCount,
-                      devCount: estimate.devCount,
-                      timelineLabel:
-                        TIMELINE_OPTIONS.find((t) => t.id === timeline)?.label.split(
-                          " · ",
-                        )[0] ?? "Standard",
-                    };
-                    return (
                       <div className="flex flex-col gap-2 font-mono text-[11px] tracking-[0.5px] text-text-secondary">
                         <div className="flex justify-between">
                           <span>Brand modules</span>
-                          <span className="text-text-primary">{view.brandCount}</span>
+                          <span className="text-text-primary">{estimate.brandCount}</span>
                         </div>
                         <div className="flex justify-between">
                           <span>Product modules</span>
-                          <span className="text-text-primary">{view.productCount}</span>
+                          <span className="text-text-primary">{estimate.productCount}</span>
                         </div>
                         <div className="flex justify-between">
                           <span>Dev modules</span>
-                          <span className="text-text-primary">{view.devCount}</span>
+                          <span className="text-text-primary">{estimate.devCount}</span>
                         </div>
                         <div className="flex justify-between">
                           <span>Timeline</span>
-                          <span className="text-text-primary">{view.timelineLabel}</span>
+                          <span className="text-text-primary">
+                            {timelineLabel.split(" · ")[0]}
+                          </span>
                         </div>
                       </div>
-                    );
-                  })()}
 
-                  <div className="h-px w-full bg-border-subtle" />
+                      <div className="h-px w-full bg-border-subtle" />
 
-                  {/* Price reveal — gated behind Calculate. Snapshot-based. */}
-                  {revealedEstimate ? (
-                    <>
                       <div className="flex flex-col gap-1.5">
                         <span className="font-mono text-[10px] font-medium tracking-[1.2px] text-[rgba(236,238,245,0.72)]">
                           FROM · {currency.code}
                         </span>
                         <span className="font-display text-[26px] font-bold leading-tight tracking-[-1px] text-text-primary">
-                          {formatMoney(
-                            convertFromINR(revealedEstimate.min, currency),
-                            currency,
-                          )}
+                          {formatMoney(convertFromINR(estimate.min, currency), currency)}
                           <span className="text-[rgba(236,238,245,0.72)]"> – </span>
-                          {formatMoney(
-                            convertFromINR(revealedEstimate.max, currency),
-                            currency,
-                          )}
+                          {formatMoney(convertFromINR(estimate.max, currency), currency)}
                         </span>
                       </div>
 
                       <p className="text-[11px] leading-[1.55] text-[rgba(236,238,245,0.72)]">
-                        Indicative range based on your snapshot. To rework it,
-                        select your modules again from scratch.
+                        Go back to change scope or timeline — the range updates with you.
                       </p>
-
-                      {error && (
-                        <p className="font-mono text-[12px] text-[#ff8a7e]">
-                          {error}
-                        </p>
-                      )}
-
-                      <button
-                        type="submit"
-                        disabled={sending}
-                        className="w-full rounded-full py-3.5 font-sans text-[11px] font-semibold tracking-[0.22em] uppercase transition-all disabled:opacity-60"
-                        style={{
-                          background: "var(--laptop-glow)",
-                          color: "#000",
-                        }}
-                      >
-                        {sending ? "SENDING..." : "SEND BRIEF"}
-                      </button>
-                    </>
-                  ) : (
-                    <>
-                      <p className="text-[12px] leading-[1.55] text-text-secondary">
-                        {estimate.moduleCount === 0
-                          ? "Pick the modules you need, then calculate. Selections clear after calculating."
-                          : "Hit calculate to reveal your range. Heads up: your selections will clear after."}
-                      </p>
-
-                      {error && (
-                        <p className="font-mono text-[12px] text-[#ff8a7e]">
-                          {error}
-                        </p>
-                      )}
-
-                      <button
-                        type="button"
-                        onClick={handleCalculate}
-                        className="w-full rounded-full border border-[rgba(236,238,245,0.25)] bg-transparent py-3.5 font-sans text-[11px] font-semibold tracking-[0.22em] uppercase text-[color:var(--rim-white)] transition-all hover:bg-white/10 disabled:opacity-60"
-                      >
-                        CALCULATE ESTIMATE
-                      </button>
-                    </>
-                  )}
+                    </div>
+                  </aside>
                 </div>
-              </aside>
-            </form>
+              )}
 
-            <Link
-              href="/"
-              className="mt-12 self-center font-mono text-[11px] font-medium tracking-[1.5px] text-[rgba(236,238,245,0.72)] transition-colors hover:text-text-primary"
-            >
-              BACK TO HOME
-            </Link>
+              {error && (
+                <p className="font-mono text-[12px] text-[#ff8a7e]" role="alert">
+                  {error}
+                </p>
+              )}
+
+              <div className="flex flex-col-reverse gap-3 sm:flex-row sm:items-center sm:justify-between">
+                {step > 1 ? (
+                  <button
+                    type="button"
+                    onClick={goBack}
+                    className="min-h-11 font-mono text-[13px] font-medium tracking-[1.5px] text-[rgba(236,238,245,0.72)] transition-colors hover:text-text-primary"
+                  >
+                    BACK
+                  </button>
+                ) : (
+                  <Link
+                    href="/"
+                    className="min-h-11 inline-flex items-center font-mono text-[13px] font-medium tracking-[1.5px] text-[rgba(236,238,245,0.72)] transition-colors hover:text-text-primary"
+                  >
+                    BACK TO HOME
+                  </Link>
+                )}
+
+                {step < 3 ? (
+                  <button
+                    type="button"
+                    onClick={goNext}
+                    className="btn-cta btn-cta-primary sm:w-auto"
+                  >
+                    Continue
+                  </button>
+                ) : (
+                  <button
+                    type="submit"
+                    disabled={sending}
+                    className="btn-cta btn-cta-primary sm:w-auto disabled:opacity-60"
+                  >
+                    {sending ? "Sending..." : "Send brief"}
+                  </button>
+                )}
+              </div>
+            </form>
           </>
         )}
       </main>

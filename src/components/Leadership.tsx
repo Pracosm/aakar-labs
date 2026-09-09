@@ -94,93 +94,47 @@ const members: Array<{
 export default function Leadership() {
   return (
     <section
-      className="relative w-full px-5 py-16 md:px-10 md:py-20 lg:px-14 lg:py-24"
+      className="relative w-full px-5 py-10 md:px-10 md:py-20 lg:px-14 lg:py-24"
       style={{ borderTop: "1px solid rgba(236,238,245,0.05)" }}
     >
       <div className="max-w-[1160px] mx-auto">
-        <div className="flex w-full flex-col gap-6 mb-12">
+        <div className="flex w-full flex-col gap-4 mb-8 md:gap-6 md:mb-12">
           <SectionLabel code="AKR-005" label="LEADERSHIP" />
-          <h2
-            className="font-display max-w-[600px]"
-            style={{
-              fontSize: "clamp(2rem, 4vw, 3.25rem)",
-              fontWeight: 700,
-              letterSpacing: "-0.06em",
-              color: "var(--rim-white)",
-              lineHeight: 1.05,
-            }}
-          >
+          <h2 className="section-heading max-w-[600px]">
             The people behind
             <br />
             <span style={{ color: "var(--laptop-glow)" }}>the pixels.</span>
           </h2>
+          <p className="md:hidden font-mono text-[12px] tracking-[0.14em] uppercase text-[rgba(236,238,245,0.7)]">
+            Swipe the team.
+          </p>
         </div>
 
-        <div className="grid w-full grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <div className="md:hidden -mx-5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-5 pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {members.map((m) => (
-            <div
-              key={m.name}
-              className="flex flex-col gap-4 p-5 rounded-2xl glass-panel"
+            <article
+              key={`${m.name}-m`}
+              className="g-rise flex w-[78vw] max-w-[300px] shrink-0 snap-center flex-col gap-3 rounded-2xl glass-panel p-4"
             >
               <div
-                className="relative h-[240px] w-full overflow-hidden rounded-xl md:h-[260px] lg:h-[300px]"
+                className="relative h-44 w-full overflow-hidden rounded-xl"
                 style={{ background: "rgba(5,5,9,0.5)" }}
               >
                 <Image
                   src={m.photo}
-                  alt={m.name}
+                  alt={`${m.name}, ${m.role.toLowerCase()} at Aakar Labs`}
                   fill
-                  sizes="(max-width: 768px) 100vw, (max-width: 1160px) 50vw, 25vw"
+                  sizes="78vw"
                   className="object-cover"
-                  style={{
-                    filter: "saturate(0.85) contrast(1.05)",
-                  }}
-                />
-                <div
-                  className="absolute inset-0 pointer-events-none"
-                  style={{
-                    background:
-                      "linear-gradient(180deg, rgba(5,5,9,0) 55%, rgba(5,5,9,0.45) 100%)",
-                  }}
                 />
               </div>
-              <div className="flex flex-col gap-1.5">
-                <span
-                  className="font-display text-xl"
-                  style={{
-                    fontWeight: 700,
-                    letterSpacing: "-0.02em",
-                    color: "var(--rim-white)",
-                  }}
-                >
-                  {m.name}
-                </span>
-                <span
-                  className="font-mono"
-                  style={{
-                    fontSize: 10,
-                    fontWeight: 500,
-                    letterSpacing: "0.2em",
-                    color: "var(--coral)",
-                  }}
-                >
-                  {m.role}
-                </span>
-                <p
-                  style={{
-                    fontFamily: "Outfit",
-                    fontWeight: 300,
-                    fontSize: 13,
-                    color: "rgba(236,238,245,0.6)",
-                    lineHeight: 1.6,
-                  }}
-                >
-                  {m.desc}
-                </p>
-              </div>
-
-              {/* Socials */}
-              <div className="mt-auto flex items-center gap-2 pt-2">
+              <h3 className="font-display text-lg font-bold tracking-[-0.02em] text-[color:var(--rim-white)]">
+                {m.name}
+              </h3>
+              <p className="font-mono text-[11px] font-medium tracking-[0.16em] text-[color:var(--coral)]">
+                {m.role}
+              </p>
+              <div className="flex items-center gap-2">
                 {m.socials.map(({ href, label, Icon }) => (
                   <a
                     key={href}
@@ -188,34 +142,94 @@ export default function Leadership() {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={`${m.name} on ${label}`}
-                    className="inline-flex items-center justify-center rounded-full transition-all duration-300"
+                    className="inline-flex h-11 w-11 items-center justify-center rounded-full"
                     style={{
-                      width: 32,
-                      height: 32,
                       background: "rgba(236,238,245,0.04)",
                       border: "1px solid rgba(236,238,245,0.12)",
-                      color: "rgba(236,238,245,0.7)",
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.background =
-                        "rgba(212,117,106,0.12)";
-                      e.currentTarget.style.borderColor =
-                        "rgba(212,117,106,0.45)";
-                      e.currentTarget.style.color = "var(--coral)";
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.background =
-                        "rgba(236,238,245,0.04)";
-                      e.currentTarget.style.borderColor =
-                        "rgba(236,238,245,0.12)";
-                      e.currentTarget.style.color = "rgba(236,238,245,0.7)";
+                      color: "rgba(236,238,245,0.85)",
                     }}
                   >
-                    <Icon size={14} weight="regular" />
+                    <Icon size={16} weight="regular" />
                   </a>
                 ))}
               </div>
-            </div>
+            </article>
+          ))}
+        </div>
+
+        <div className="hidden w-full grid-cols-1 gap-4 md:grid md:grid-cols-2 md:gap-6 lg:grid-cols-4">
+          {members.map((m) => (
+            <article
+              key={m.name}
+              className="flex flex-row gap-4 p-4 rounded-2xl glass-panel md:flex-col md:gap-4 md:p-5"
+            >
+              <div
+                className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl md:h-[260px] md:w-full lg:h-[300px]"
+                style={{ background: "rgba(5,5,9,0.5)" }}
+              >
+                <Image
+                  src={m.photo}
+                  alt={`${m.name}, ${m.role.toLowerCase()} at Aakar Labs`}
+                  fill
+                  sizes="(max-width: 768px) 96px, (max-width: 1160px) 50vw, 25vw"
+                  className="object-cover"
+                  style={{
+                    filter: "saturate(0.85) contrast(1.05)",
+                  }}
+                />
+                <div
+                  className="absolute inset-0 pointer-events-none hidden md:block"
+                  style={{
+                    background:
+                      "linear-gradient(180deg, rgba(5,5,9,0) 55%, rgba(5,5,9,0.45) 100%)",
+                  }}
+                />
+              </div>
+              <div className="flex min-w-0 flex-1 flex-col gap-1.5">
+                <h3 className="font-display text-lg font-bold tracking-[-0.02em] text-[color:var(--rim-white)] md:text-xl">
+                  {m.name}
+                </h3>
+                <p className="font-mono text-[11px] font-medium tracking-[0.16em] text-[color:var(--coral)] md:text-[10px] md:tracking-[0.2em]">
+                  {m.role}
+                </p>
+                <p className="body-copy text-[0.95rem] md:text-[13px] md:text-[rgba(236,238,245,0.6)]">
+                  {m.desc}
+                </p>
+                <div className="mt-auto flex items-center gap-2 pt-2">
+                  {m.socials.map(({ href, label, Icon }) => (
+                    <a
+                      key={href}
+                      href={href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`${m.name} on ${label}`}
+                      className="inline-flex h-11 w-11 items-center justify-center rounded-full transition-[background-color,border-color,color] duration-300 md:h-8 md:w-8"
+                      style={{
+                        background: "rgba(236,238,245,0.04)",
+                        border: "1px solid rgba(236,238,245,0.12)",
+                        color: "rgba(236,238,245,0.85)",
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.background =
+                          "rgba(212,117,106,0.12)";
+                        e.currentTarget.style.borderColor =
+                          "rgba(212,117,106,0.45)";
+                        e.currentTarget.style.color = "var(--coral)";
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.background =
+                          "rgba(236,238,245,0.04)";
+                        e.currentTarget.style.borderColor =
+                          "rgba(236,238,245,0.12)";
+                        e.currentTarget.style.color = "rgba(236,238,245,0.85)";
+                      }}
+                    >
+                      <Icon size={16} weight="regular" />
+                    </a>
+                  ))}
+                </div>
+              </div>
+            </article>
           ))}
         </div>
       </div>
