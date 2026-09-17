@@ -68,12 +68,11 @@ export default function Footer() {
                     rel={link.href !== "#" ? "noopener noreferrer" : undefined}
                     onClick={link.href === "#" ? handleWipClick : undefined}
                     style={{
-                      fontFamily: "Outfit",
                       fontWeight: 400,
                       fontSize: 15,
                       color: "rgba(236,238,245,0.78)",
                     }}
-                    className="min-h-11 inline-flex items-center hover:text-white transition-colors md:min-h-0 md:text-[13px] md:text-[rgba(236,238,245,0.6)]"
+                    className="font-body inline-flex min-h-11 items-center transition-colors hover:text-white md:min-h-0 md:text-[13px] md:text-[rgba(236,238,245,0.6)]"
                   >
                     {link.name}
                   </a>
@@ -87,12 +86,11 @@ export default function Footer() {
                     href="#"
                     onClick={handleWipClick}
                     style={{
-                      fontFamily: "Outfit",
                       fontWeight: 400,
                       fontSize: 15,
                       color: "rgba(236,238,245,0.78)",
                     }}
-                    className="min-h-11 inline-flex items-center hover:text-white transition-colors md:min-h-0 md:text-[13px] md:text-[rgba(236,238,245,0.6)]"
+                    className="font-body inline-flex min-h-11 items-center transition-colors hover:text-white md:min-h-0 md:text-[13px] md:text-[rgba(236,238,245,0.6)]"
                   >
                     {link}
                   </a>
@@ -173,9 +171,9 @@ export default function Footer() {
                     Build in process
                   </h3>
                   <p
+                    className="font-body"
                     style={{
-                      fontFamily: "Outfit",
-                      fontWeight: 300,
+                      fontWeight: 400,
                       fontSize: 13,
                       color: "rgba(236,238,245,0.6)",
                       lineHeight: 1.6,
@@ -188,11 +186,10 @@ export default function Footer() {
 
                 <button
                   onClick={() => setShowPopup(false)}
-                  className="mt-2 w-full rounded-full px-6 py-3"
+                  className="font-body mt-2 w-full rounded-full px-6 py-3"
                   style={{
                     background: "var(--laptop-glow)",
                     color: "#000",
-                    fontFamily: "Outfit",
                     fontWeight: 600,
                     fontSize: 11,
                     letterSpacing: "0.22em",
@@ -246,12 +243,11 @@ function FooterLink({
     <a
       href={href}
       style={{
-        fontFamily: "Outfit",
         fontWeight: 400,
         fontSize: 15,
         color: "rgba(236,238,245,0.78)",
       }}
-      className="min-h-11 inline-flex items-center hover:text-white transition-colors md:min-h-0 md:text-[13px] md:text-[rgba(236,238,245,0.6)]"
+      className="font-body inline-flex min-h-11 items-center transition-colors hover:text-white md:min-h-0 md:text-[13px] md:text-[rgba(236,238,245,0.6)]"
     >
       {children}
     </a>

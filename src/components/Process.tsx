@@ -132,9 +132,9 @@ export default function Process() {
               {step.title}
             </h3>
             <p
+              className="font-body"
               style={{
-                fontFamily: "Outfit",
-                fontWeight: 300,
+                fontWeight: 400,
                 fontSize: 14,
                 color: "rgba(236,238,245,0.6)",
                 lineHeight: 1.7,
