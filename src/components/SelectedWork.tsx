@@ -35,7 +35,6 @@ const foldingCompanyScope = [
 export default function SelectedWork() {
   const sectionRef = useRef<HTMLElement>(null);
   const foldingCompanyCardRef = useRef<HTMLElement>(null);
-  const foldingCompanyPreviewRef = useRef<HTMLDivElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
   const previewRef = useRef<HTMLDivElement>(null);
 
@@ -65,19 +64,6 @@ export default function SelectedWork() {
             },
           );
         });
-
-      if (foldingCompanyPreviewRef.current && desktop) {
-        gsap.to(foldingCompanyPreviewRef.current, {
-          y: -30,
-          ease: "none",
-          scrollTrigger: {
-            trigger: sectionRef.current!,
-            start: "top bottom",
-            end: "bottom top",
-            scrub: true,
-          },
-        });
-      }
 
       if (previewRef.current && desktop) {
         gsap.to(previewRef.current, {
@@ -153,12 +139,11 @@ export default function SelectedWork() {
           }}
         >
           <div
-            className="relative h-[300px] overflow-hidden lg:col-span-3 lg:h-auto lg:min-h-[560px]"
+            className="relative flex items-center overflow-hidden bg-[#06241e] p-4 md:p-6 lg:col-span-3 lg:self-stretch lg:p-8"
             style={{ borderRight: "1px solid rgba(236,238,245,0.08)" }}
           >
             <div
-              ref={foldingCompanyPreviewRef}
-              className="absolute inset-0 transition-transform duration-700 ease-out group-hover:scale-[1.025] lg:h-[calc(100%+60px)] lg:-top-[30px]"
+              className="relative aspect-[950/1200] overflow-hidden transition-transform duration-700 ease-out group-hover:scale-[1.025] lg:aspect-[1703/1200]"
             >
               <Image
                 src="/images/work/tfc-case-study/hero.webp"
@@ -226,21 +211,23 @@ export default function SelectedWork() {
             </div>
 
             <div className="mt-auto w-full self-stretch sm:self-start sm:w-auto">
-              <Link
-                href="/work/the-folding-company"
-                className="btn-cta btn-cta-primary w-full sm:w-auto"
-              >
-                View the case study
-                <ArrowUpRight size={16} weight="bold" />
-              </Link>
               <a
                 href="/work/tfc-brand-book.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-3 inline-flex min-h-11 items-center justify-center font-body text-[10px] font-medium uppercase tracking-[0.18em] text-white/50 transition-colors hover:text-white sm:justify-start"
+                className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-full border border-white/25 px-5 font-body text-[10px] font-semibold uppercase tracking-[0.17em] text-white/80 transition-colors hover:border-white/60 hover:text-white sm:w-auto"
               >
-                Open the brand book PDF
-                <ArrowUpRight size={14} weight="bold" className="ml-2" />
+                View the case study PDF
+                <ArrowUpRight size={16} weight="bold" />
+              </a>
+              <a
+                href="https://foldingcompany.design/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-cta mt-3 w-full bg-[#1CD1AD] text-[#041713] hover:bg-[#73f2d7] sm:w-auto"
+              >
+                Visit foldingcompany.design
+                <ArrowUpRight size={16} weight="bold" />
               </a>
             </div>
           </div>
