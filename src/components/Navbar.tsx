@@ -119,7 +119,7 @@ export default function Navbar() {
           <a
             key={link.href}
             href={link.href}
-            className="text-[11px] uppercase font-sans font-medium tracking-[0.16em] text-white/75 hover:text-white transition-colors"
+            className="font-body text-[11px] uppercase font-medium tracking-[0.16em] text-white/75 transition-colors hover:text-white"
           >
             {link.label}
           </a>
@@ -128,7 +128,7 @@ export default function Navbar() {
 
       <Link
         href="/start-project"
-        className="hidden lg:inline-flex items-center justify-center rounded-full px-5 py-2 text-[10px] uppercase font-sans font-semibold tracking-[0.22em] transition-all duration-300"
+        className="font-body hidden items-center justify-center rounded-full px-5 py-2 text-[10px] uppercase font-semibold tracking-[0.22em] transition-all duration-300 lg:inline-flex"
         style={{
           background: "var(--laptop-glow)",
           color: "#000",

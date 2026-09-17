@@ -6,10 +6,11 @@ import Image from "next/image";
 export default function BackgroundLayer() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [loadVideo, setLoadVideo] = useState(false);
+  const [videoReady, setVideoReady] = useState(false);
+  const [videoError, setVideoError] = useState(false);
 
   useEffect(() => {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const narrow = window.matchMedia("(max-width: 767px)").matches;
     const saveData =
       "connection" in navigator &&
       Boolean(
@@ -17,15 +18,22 @@ export default function BackgroundLayer() {
           .connection?.saveData,
       );
 
-    if (reduce || narrow || saveData) return;
+    if (reduce || saveData) return;
 
-    const start = () => setLoadVideo(true);
+    const probe = document.createElement("video");
+    if (!probe.canPlayType("video/mp4")) return;
+
+    let cancelled = false;
+    const start = () => {
+      if (!cancelled) setLoadVideo(true);
+    };
     const idle =
       window.requestIdleCallback ??
       ((cb: () => void) => window.setTimeout(cb, 900));
     const id = idle(start);
 
     return () => {
+      cancelled = true;
       if (typeof window.cancelIdleCallback === "function") {
         window.cancelIdleCallback(id as number);
       } else {
@@ -38,15 +46,36 @@ export default function BackgroundLayer() {
     const video = videoRef.current;
     if (!video || !loadVideo) return;
 
+    let disposed = false;
+    const tryPlay = () => {
+      if (disposed || document.hidden) return;
+      void video.play().catch(() => {});
+    };
+    const onCanPlay = () => tryPlay();
+    const onPlaying = () => setVideoReady(true);
+    const onError = () => {
+      setVideoError(true);
+      setVideoReady(false);
+    };
     const onVis = () => {
       if (document.hidden) video.pause();
-      else void video.play().catch(() => {});
+      else tryPlay();
     };
 
+    video.addEventListener("canplay", onCanPlay);
+    video.addEventListener("playing", onPlaying);
+    video.addEventListener("error", onError);
     document.addEventListener("visibilitychange", onVis);
-    void video.play().catch(() => {});
+    if (video.readyState >= HTMLMediaElement.HAVE_FUTURE_DATA) tryPlay();
 
-    return () => document.removeEventListener("visibilitychange", onVis);
+    return () => {
+      disposed = true;
+      video.pause();
+      video.removeEventListener("canplay", onCanPlay);
+      video.removeEventListener("playing", onPlaying);
+      video.removeEventListener("error", onError);
+      document.removeEventListener("visibilitychange", onVis);
+    };
   }, [loadVideo]);
 
   return (
@@ -63,16 +92,18 @@ export default function BackgroundLayer() {
         sizes="100vw"
         className="object-cover object-center"
       />
-      {loadVideo && (
+      {loadVideo && !videoError && (
         <video
           ref={videoRef}
           src="/hero-video.mp4"
-          className="absolute inset-0 h-full w-full object-cover object-center"
+          className={`absolute inset-0 h-full w-full object-cover object-center transition-opacity duration-700 ${
+            videoReady ? "opacity-100" : "opacity-0"
+          }`}
           autoPlay
           loop
           muted
           playsInline
-          preload="metadata"
+          preload="auto"
           poster="/hero-poster.jpg"
         />
       )}

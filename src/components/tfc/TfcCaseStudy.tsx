@@ -63,28 +63,32 @@ export function TfcCaseStudyHero() {
           </Link>
         </div>
 
-        <div className="order-1 relative min-h-[430px] md:min-h-[560px] lg:order-2 lg:min-h-full">
-          <Image
-            src={`${CASE_STUDY_ASSET}/hero.webp`}
-            alt="The Folding Company identity over a teal mountain landscape"
-            fill
-            priority
-            sizes="(max-width: 1023px) 100vw, 65vw"
-            className="hidden object-cover object-center lg:block"
-          />
-          <Image
-            src={`${CASE_STUDY_ASSET}/hero-mobile.webp`}
-            alt="The Folding Company identity over a teal mountain landscape"
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover object-center lg:hidden"
-          />
-          <div className="absolute bottom-5 left-5 flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.2em] text-white/70 md:bottom-8 md:left-8">
-            <span className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/30 bg-[#041713]/20 backdrop-blur-sm">
-              <ArrowDown size={15} aria-hidden="true" />
-            </span>
-            Scroll to explore
+        <div className="order-1 flex items-center bg-[#06241e] p-4 md:p-8 lg:order-2 lg:p-10">
+          <div className="relative w-full overflow-hidden border border-white/10 bg-[#041713]">
+            <div className="relative aspect-[950/1200] lg:aspect-[1703/1200]">
+              <Image
+                src={`${CASE_STUDY_ASSET}/hero.webp`}
+                alt="The Folding Company identity over a teal mountain landscape"
+                fill
+                priority
+                sizes="(max-width: 1023px) 100vw, 65vw"
+                className="hidden object-cover object-center lg:block"
+              />
+              <Image
+                src={`${CASE_STUDY_ASSET}/hero-mobile.webp`}
+                alt="The Folding Company identity over a teal mountain landscape"
+                fill
+                priority
+                sizes="100vw"
+                className="object-cover object-center lg:hidden"
+              />
+            </div>
+            <div className="absolute bottom-5 left-5 flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.2em] text-white/70 md:bottom-8 md:left-8">
+              <span className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/30 bg-[#041713]/40 backdrop-blur-sm">
+                <ArrowDown size={15} aria-hidden="true" />
+              </span>
+              Scroll to explore
+            </div>
           </div>
         </div>
       </div>

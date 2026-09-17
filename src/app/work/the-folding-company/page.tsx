@@ -12,6 +12,12 @@ export const metadata: Metadata = {
   description:
     "Aakar Labs built a flexible identity system for The Folding Company, from a geometric monogram and wordmark to applications and a complete brand book.",
   alternates: { canonical: "/work/the-folding-company" },
+  // Keep this long-form case study available to anyone with the URL without
+  // advertising it as a primary portfolio destination.
+  robots: {
+    index: false,
+    follow: false,
+  },
   openGraph: {
     type: "article",
     url: pageUrl,

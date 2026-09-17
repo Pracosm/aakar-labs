@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Space_Grotesk, Outfit, Roboto_Mono } from "next/font/google";
+import { IBM_Plex_Sans, Space_Grotesk, Roboto_Mono } from "next/font/google";
 import "./globals.css";
 import BackgroundLayer from "@/components/BackgroundLayer";
 import LenisProvider from "@/components/LenisProvider";
@@ -22,11 +22,12 @@ const spaceGrotesk = Space_Grotesk({
   display: "swap",
 });
 
-const outfit = Outfit({
-  variable: "--font-outfit",
+const ibmPlexSans = IBM_Plex_Sans({
+  variable: "--font-ibm-plex-sans",
   subsets: ["latin"],
   display: "swap",
-  weight: ["300", "400", "500", "600", "700"],
+  weight: "variable",
+  fallback: ["system-ui", "sans-serif"],
 });
 
 const robotoMono = Roboto_Mono({
@@ -142,7 +143,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${spaceGrotesk.variable} ${outfit.variable} ${robotoMono.variable} antialiased`}
+        className={`${spaceGrotesk.variable} ${ibmPlexSans.variable} ${robotoMono.variable} antialiased`}
       >
         <JsonLd data={jsonLd} />
         <a href="#main" className="skip-link">
