@@ -6,6 +6,7 @@ import LenisProvider from "@/components/LenisProvider";
 import PageTransition from "@/components/PageTransition";
 import JsonLd from "@/components/JsonLd";
 import CalProvider from "@/components/CalProvider";
+import AgentationToolbar from "@/components/AgentationToolbar";
 import {
   SITE_DESCRIPTION,
   SITE_EMAIL,
@@ -155,6 +156,7 @@ export default function RootLayout({
         <div className="relative z-10">
           <PageTransition>{children}</PageTransition>
         </div>
+        <AgentationToolbar />
       </body>
     </html>
   );

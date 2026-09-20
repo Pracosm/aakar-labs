@@ -373,6 +373,17 @@ body {
   text-wrap: balance;
 }
 
+.hero-title-lockup {
+  font-size: clamp(1.5rem, 6.55vw, 2.35rem);
+  letter-spacing: -0.05em;
+}
+
+@media (min-width: 768px) {
+  .hero-title-lockup {
+    font-size: clamp(2.4rem, 6.4vw, 5.5rem);
+  }
+}
+
 .body-copy {
   max-width: 65ch;
   font-family: var(--font-ibm-plex-sans, "IBM Plex Sans"), system-ui, sans-serif;

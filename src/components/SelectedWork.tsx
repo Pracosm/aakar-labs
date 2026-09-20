@@ -5,32 +5,20 @@ import Image from "next/image";
 import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { ArrowUpRight } from "@phosphor-icons/react";
+import {
+  ArrowUpRight,
+  BookOpen,
+  CalendarBlank,
+  Folders,
+  GlobeSimple,
+  Storefront,
+} from "@phosphor-icons/react";
 import Magnetic from "./Magnetic";
-import SectionLabel from "./ui/SectionLabel";
 import { WhyClubReferenceMockup } from "./whyclub/WhyClubReferenceMockup";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
-
-const scope = [
-  "Concept & positioning",
-  "Brand identity",
-  "UX & UI design",
-  "Frontend & storefront build",
-  "Checkout experience",
-  "Admin dashboard",
-  "Launch & handover",
-];
-
-const foldingCompanyScope = [
-  "Brand identity",
-  "Logo system",
-  "Colour & type",
-  "Applications",
-  "Brand book",
-];
 
 export default function SelectedWork() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -78,24 +66,6 @@ export default function SelectedWork() {
         });
       }
 
-      if (desktop && cardRef.current) {
-        gsap.fromTo(
-          cardRef.current.querySelectorAll(".scope-item"),
-          { x: -10, opacity: 0 },
-          {
-            x: 0,
-            opacity: 1,
-            duration: 0.6,
-            stagger: 0.05,
-            ease: "power2.out",
-            scrollTrigger: {
-              trigger: cardRef.current,
-              start: "top 75%",
-              once: true,
-            },
-          },
-        );
-      }
     }, sectionRef);
 
     return () => ctx.revert();
@@ -105,45 +75,31 @@ export default function SelectedWork() {
     <section
       id="work"
       ref={sectionRef}
-      className="relative w-full overflow-hidden py-10 md:py-24 lg:py-32"
-      style={{
-        borderTop: "1px solid rgba(236,238,245,0.05)",
-      }}
+      className="relative w-full overflow-hidden border-y border-white/10 bg-[rgba(5,18,16,0.38)] py-16 text-[color:var(--rim-white)] backdrop-blur-md md:py-24 lg:py-32"
     >
       <div className="max-w-[1160px] mx-auto px-5 md:px-10 lg:px-14">
-        <div className="mb-8 max-w-2xl flex flex-col gap-4 md:mb-12 md:gap-5">
-          <SectionLabel code="AKR-003" label="FEATURED_WORK" />
-          <h2 className="section-heading">
-            Identity systems that{" "}
-            <span style={{ color: "var(--laptop-glow)" }}>
-              move.
-            </span>
-          </h2>
-          <p className="md:hidden text-[1.05rem] leading-relaxed text-[rgba(236,238,245,0.82)]">
-            The Folding Company. Brand identity, visual system, and brand book.
-          </p>
-          <p className="body-copy hidden md:block">
-            The Folding Company identity system — an expressive mark, flexible
-            colour language, and a brand book built to travel.
+        <div className="mb-9 grid gap-5 md:mb-12 md:grid-cols-[minmax(0,1fr)_minmax(15rem,0.72fr)] md:items-end md:gap-12">
+          <div>
+            <div className="mb-3 flex items-center gap-3 font-mono text-[10px] font-semibold tracking-[0.24em] text-[#b9d5ce]">
+              <span className="h-px w-7 bg-[#b9d5ce]" />
+              SELECTED WORK
+            </div>
+            <h2 className="font-display text-[clamp(2.35rem,5.1vw,4.8rem)] font-bold leading-[0.96] tracking-[-0.065em] text-[color:var(--rim-white)]">
+              Selected Work
+            </h2>
+          </div>
+          <p className="max-w-[31ch] font-body text-base leading-relaxed text-white/70 md:pb-1 md:text-[1.05rem]">
+            Brands, products, and experiences for a brighter tomorrow.
           </p>
         </div>
 
         <article
           ref={foldingCompanyCardRef}
-          className="group mb-8 grid grid-cols-1 gap-0 overflow-hidden rounded-[1.25rem] lg:mb-12 lg:grid-cols-5 lg:rounded-[1.75rem]"
-          style={{
-            background: "#06201c",
-            border: "1px solid rgba(97, 219, 194, 0.24)",
-            boxShadow:
-              "0 30px 100px rgba(0,0,0,0.48), 0 0 0 1px rgba(236,238,245,0.04)",
-          }}
+          className="group mb-12 overflow-hidden rounded-[1.5rem] border border-[#d7e2de] bg-[#f9fbfa] shadow-[0_24px_70px_rgba(7,28,25,0.12)] lg:mb-16 lg:grid lg:grid-cols-[1.17fr_0.83fr] lg:rounded-[1.8rem]"
         >
-          <div
-            className="relative flex items-center overflow-hidden bg-[#06241e] p-4 md:p-6 lg:col-span-3 lg:self-stretch lg:p-8"
-            style={{ borderRight: "1px solid rgba(236,238,245,0.08)" }}
-          >
+          <div className="relative overflow-hidden bg-[#06241e] lg:order-1 lg:border-r lg:border-white/10">
             <div
-              className="relative aspect-[950/1200] overflow-hidden transition-transform duration-700 ease-out group-hover:scale-[1.025] lg:aspect-[1703/1200]"
+              className="relative aspect-[4/3] overflow-hidden lg:absolute lg:inset-0 lg:aspect-auto"
             >
               <Image
                 src="/images/work/tfc-case-study/hero.webp"
@@ -151,83 +107,82 @@ export default function SelectedWork() {
                 fill
                 priority
                 sizes="(max-width: 767px) 100vw, 60vw"
-                className="hidden object-cover object-center lg:block"
+                className="hidden object-cover object-center transition-transform duration-700 ease-out group-hover:scale-[1.025] lg:block"
               />
               <Image
                 src="/images/work/tfc-case-study/hero-mobile.webp"
                 alt="The Folding Company identity over a teal mountain landscape"
                 fill
                 sizes="100vw"
-                className="object-cover object-center lg:hidden"
+                className="object-cover object-center transition-transform duration-700 ease-out group-hover:scale-[1.025] lg:hidden"
               />
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[#f9fbfa] to-transparent lg:hidden" />
             </div>
           </div>
 
-          <div className="flex flex-col px-5 py-7 md:px-9 md:py-10 lg:col-span-2">
-            <div className="mb-5 flex flex-wrap items-center gap-2 md:mb-7">
+          <div className="flex flex-col bg-[#f9fbfa] px-5 py-5 sm:px-7 sm:py-7 lg:order-2 lg:bg-[#06201c] lg:px-10 lg:py-10 xl:px-12 xl:py-12">
+            <div className="mb-4 flex flex-wrap items-center gap-2 lg:mb-8">
               <span
                 className="rounded-full px-2.5 py-1 font-body text-[10px] font-semibold uppercase tracking-[0.22em]"
                 style={{
-                  color: "#67dec6",
-                  background: "rgba(97,219,194,0.12)",
-                  border: "1px solid rgba(97,219,194,0.28)",
+                  color: "#075b4c",
+                  background: "rgba(23,137,115,0.12)",
+                  border: "1px solid rgba(23,137,115,0.25)",
                 }}
               >
                 Brand identity
               </span>
-              <span className="font-body text-[10px] uppercase tracking-[0.25em] text-white/45">
+              <span className="font-body text-[10px] uppercase tracking-[0.23em] text-[#71827e] lg:text-white/45">
                 Brand book
               </span>
             </div>
 
-            <h3 className="mb-3 font-display text-[2.1rem] font-bold leading-[0.98] tracking-[-0.06em] text-[color:var(--rim-white)] md:text-[2.8rem]">
+            <h3 className="mb-2 font-display text-[2.15rem] font-bold leading-[0.94] tracking-[-0.065em] text-[#071c19] sm:text-[2.7rem] lg:mb-3 lg:text-[clamp(2.65rem,3.2vw,3.85rem)] lg:text-[color:var(--rim-white)]">
               the folding
               <br />
               company
             </h3>
-            <p className="mb-6 font-body text-sm leading-relaxed text-white/60 md:mb-8 md:text-[15px]">
+            <p className="mb-4 line-clamp-2 max-w-[35rem] font-body text-[15px] leading-relaxed text-[#647470] lg:mb-9 lg:line-clamp-none lg:text-base lg:text-white/65">
               A flexible visual identity built around movement, structure, and
               a mark that can fold into many forms.
             </p>
 
-            <div className="mb-7 hidden md:block md:mb-8">
-              <span className="mb-3 block font-body text-[10px] font-medium uppercase tracking-[0.4em] text-white/35">
-                Scope
-              </span>
-              <ul className="flex flex-col gap-2">
-                {foldingCompanyScope.map((item) => (
-                  <li
-                    key={item}
-                    className="scope-item inline-flex items-center gap-2 font-body text-[13px] text-white/70"
-                  >
-                    <span
-                      className="h-1 w-1 rounded-full"
-                      style={{ background: "#67dec6", opacity: 0.8 }}
-                    />
-                    {item}
-                  </li>
-                ))}
-              </ul>
+            <div className="mb-6 grid grid-cols-3 divide-x divide-[#d9e2df] lg:mb-10 lg:divide-white/15">
+              <div className="pr-3">
+                <Folders size={22} weight="light" className="mb-2 text-[#075b4c] lg:text-[#9ed7cb]" />
+                <p className="font-body text-[12px] font-semibold leading-tight text-[#071c19] lg:text-white">Brand identity</p>
+                <p className="mt-1 hidden font-body text-[11px] text-[#758682] lg:block lg:text-white/50">Category</p>
+              </div>
+              <div className="px-3">
+                <CalendarBlank size={22} weight="light" className="mb-2 text-[#075b4c] lg:text-[#9ed7cb]" />
+                <p className="font-body text-[12px] font-semibold leading-tight text-[#071c19] lg:text-white">2024</p>
+                <p className="mt-1 hidden font-body text-[11px] text-[#758682] lg:block lg:text-white/50">Year</p>
+              </div>
+              <div className="pl-3">
+                <BookOpen size={22} weight="light" className="mb-2 text-[#075b4c] lg:text-[#9ed7cb]" />
+                <p className="font-body text-[12px] font-semibold leading-tight text-[#071c19] lg:text-white">Available</p>
+                <p className="mt-1 hidden font-body text-[11px] text-[#758682] lg:block lg:text-white/50">Brand book</p>
+              </div>
             </div>
 
-            <div className="mt-auto w-full self-stretch sm:self-start sm:w-auto">
-              <a
-                href="/work/tfc-brand-book.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-full border border-white/25 px-5 font-body text-[10px] font-semibold uppercase tracking-[0.17em] text-white/80 transition-colors hover:border-white/60 hover:text-white sm:w-auto"
-              >
-                View the case study PDF
-                <ArrowUpRight size={16} weight="bold" />
-              </a>
+            <div className="mt-auto w-full">
               <a
                 href="https://foldingcompany.design/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn-cta mt-3 w-full bg-[#1CD1AD] text-[#041713] hover:bg-[#73f2d7] sm:w-auto"
+                className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-[#06201c] px-5 font-body text-[11px] font-bold uppercase tracking-[0.18em] text-white transition-colors hover:bg-[#0d3b34] lg:bg-[#f5efe3] lg:text-[#06201c] lg:hover:bg-white"
               >
                 Visit foldingcompany.design
-                <ArrowUpRight size={16} weight="bold" />
+                <ArrowUpRight size={17} weight="bold" />
+              </a>
+              <a
+                href="/work/tfc-brand-book.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-3 inline-flex min-h-8 items-center gap-2 font-body text-[10px] font-semibold uppercase tracking-[0.19em] text-[#677975] transition-colors hover:text-[#06201c] lg:mt-4 lg:min-h-9 lg:text-white/55 lg:hover:text-white"
+              >
+                View the case study PDF
+                <ArrowUpRight size={15} weight="bold" />
               </a>
             </div>
           </div>
@@ -235,7 +190,7 @@ export default function SelectedWork() {
 
         <article
           ref={cardRef}
-          className="grid grid-cols-1 lg:grid-cols-5 gap-0 overflow-hidden rounded-[1.25rem] lg:rounded-[1.75rem]"
+          className="grid grid-cols-1 gap-0 overflow-hidden rounded-[1.25rem] lg:grid-cols-[1.17fr_0.83fr] lg:rounded-[1.75rem]"
           style={{
             background: "rgba(26,29,46,0.4)",
             backdropFilter: "blur(20px)",
@@ -246,7 +201,7 @@ export default function SelectedWork() {
           }}
         >
           <div
-            className="relative aspect-[4/3] overflow-hidden lg:col-span-3 lg:aspect-auto lg:h-auto lg:min-h-[520px]"
+            className="relative aspect-[4/3] overflow-hidden lg:aspect-auto"
             style={{
               background: "#0a0a0a",
               borderRight: "1px solid rgba(236,238,245,0.05)",
@@ -285,7 +240,7 @@ export default function SelectedWork() {
             </div>
           </div>
 
-          <div className="lg:col-span-2 flex flex-col px-5 py-6 md:px-9 md:py-10">
+          <div className="flex flex-col px-5 py-6 md:px-9 md:py-10">
             <div className="flex flex-wrap items-center gap-2 mb-4 md:mb-5">
               <span
                 className="rounded-full text-[11px] font-semibold tracking-[0.16em] uppercase px-2.5 py-1 md:text-[9px] md:tracking-[0.3em] md:px-[11px] md:py-1"
@@ -309,34 +264,27 @@ export default function SelectedWork() {
               &ldquo;Perfect is boring.&rdquo;
             </p>
 
-            <p className="body-copy mb-5 hidden text-[1.0625rem] md:mb-6 md:block md:text-[14px] md:text-[rgba(236,238,245,0.6)]">
-              An Indian streetwear label built on rebellion. We owned the entire
-              pipeline — naming, identity, art direction, the storefront, the
-              checkout experience, and the admin dashboard the team runs
-              operations from. One studio, every layer.
+            <p className="body-copy mb-6 hidden max-w-[34rem] text-[1.0625rem] md:block md:text-[14px] md:text-[rgba(236,238,245,0.6)]">
+              An end-to-end fashion commerce experience, from identity to the
+              storefront the team runs every day.
             </p>
 
-            <div className="mb-5 hidden md:block md:mb-6">
-              <span className="block mb-3 font-body text-xs font-medium tracking-[0.16em] uppercase text-[rgba(236,238,245,0.55)] md:text-[10px] md:tracking-[0.4em] md:text-[rgba(236,238,245,0.35)]">
-                Scope
-              </span>
-              <ul className="flex flex-wrap gap-2 md:flex-col md:gap-2">
-                {scope.map((item) => (
-                  <li
-                    key={item}
-                    className="scope-item inline-flex items-center gap-2 rounded-full border border-[rgba(236,238,245,0.12)] bg-[rgba(236,238,245,0.04)] px-3 py-1.5 text-sm text-[rgba(236,238,245,0.88)] md:rounded-none md:border-0 md:bg-transparent md:px-0 md:py-0 md:text-[13px] md:text-[rgba(236,238,245,0.7)]"
-                  >
-                    <span
-                      className="hidden h-1 w-1 rounded-full md:block"
-                      style={{
-                        background: "var(--laptop-glow)",
-                        opacity: 0.7,
-                      }}
-                    />
-                    {item}
-                  </li>
-                ))}
-              </ul>
+            <div className="mb-7 hidden grid-cols-3 divide-x divide-white/15 md:grid">
+              <div className="pr-3">
+                <Storefront size={22} weight="light" className="mb-2 text-[#9ed7cb]" />
+                <p className="font-body text-[12px] font-semibold leading-tight text-white">Commerce</p>
+                <p className="mt-1 font-body text-[11px] text-white/50">Category</p>
+              </div>
+              <div className="px-3">
+                <CalendarBlank size={22} weight="light" className="mb-2 text-[#9ed7cb]" />
+                <p className="font-body text-[12px] font-semibold leading-tight text-white">2026</p>
+                <p className="mt-1 font-body text-[11px] text-white/50">Year</p>
+              </div>
+              <div className="pl-3">
+                <GlobeSimple size={22} weight="light" className="mb-2 text-[#9ed7cb]" />
+                <p className="font-body text-[12px] font-semibold leading-tight text-white">Live</p>
+                <p className="mt-1 font-body text-[11px] text-white/50">Storefront</p>
+              </div>
             </div>
 
             <div className="mt-auto flex w-full flex-col gap-3 self-stretch sm:flex-row sm:items-center sm:self-start">

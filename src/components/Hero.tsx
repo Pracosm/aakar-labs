@@ -9,8 +9,6 @@ import Magnetic from "./Magnetic";
 import Twinkles from "./Twinkles";
 import BookCallButton from "./BookCallButton";
 
-const HEADLINE = "we design digital identities that people remember";
-
 export default function Hero() {
   const root = useRef<HTMLElement>(null);
 
@@ -53,14 +51,15 @@ export default function Hero() {
             DESIGN STUDIO
           </p>
           <h1
-            className="hero-title text-center lowercase max-w-[16ch] md:max-w-[18ch]"
+            className="hero-title hero-title-lockup w-full text-center lowercase"
             style={{ perspective: 600 }}
           >
-            {HEADLINE.split(" ").map((word) => (
-              <span key={word} className="hero-word inline-block">
-                {word}&nbsp;
-              </span>
-            ))}
+            <span className="hero-word block whitespace-nowrap">
+              we design digital identities
+            </span>
+            <span className="hero-word block whitespace-nowrap">
+              that people remember
+            </span>
           </h1>
 
           <p className="hero-rise mt-4 font-mono text-[12px] font-medium tracking-[0.18em] uppercase text-[rgba(236,238,245,0.78)] md:hidden">

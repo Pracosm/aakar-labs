@@ -13,7 +13,7 @@ test("featured work points to the PDF and live Folding Company site", async () =
   assert.match(selectedWork, /View the case study PDF/);
   assert.match(selectedWork, /href="https:\/\/foldingcompany\.design\/"/);
   assert.match(selectedWork, /Visit foldingcompany\.design/);
-  assert.match(selectedWork, /bg-\[#1CD1AD\]/);
+  assert.match(selectedWork, /bg-\[#f5efe3\]/);
   assert.doesNotMatch(selectedWork, /href="\/work\/the-folding-company"/);
 });
 
@@ -26,10 +26,26 @@ test("long-form case study stays URL-only and out of the sitemap", async () => {
   assert.doesNotMatch(sitemap, /work\/the-folding-company/);
 });
 
-test("hero image frames preserve each supplied asset ratio", async () => {
+test("Folding Company card uses the compact shared project-image ratio on mobile", async () => {
   const selectedWork = await source("../src/components/SelectedWork.tsx");
   const caseStudy = await source("../src/components/tfc/TfcCaseStudy.tsx");
 
-  assert.match(selectedWork, /aspect-\[950\/1200\].*lg:aspect-\[1703\/1200\]/s);
+  assert.match(selectedWork, /aspect-\[4\/3\].*lg:absolute.*lg:inset-0/s);
   assert.match(caseStudy, /aspect-\[950\/1200\].*lg:aspect-\[1703\/1200\]/s);
+});
+
+test("hero headline has a deliberate two-line lockup", async () => {
+  const hero = await source("../src/components/Hero.tsx");
+
+  assert.match(hero, /hero-title-lockup/);
+  assert.match(hero, /we design digital identities/);
+  assert.match(hero, /that people remember/);
+  assert.match(hero, /block whitespace-nowrap/);
+});
+
+test("work section keeps the motion layer visible behind a light blur", async () => {
+  const selectedWork = await source("../src/components/SelectedWork.tsx");
+
+  assert.match(selectedWork, /bg-\[rgba\(5,18,16,0\.38\)\]/);
+  assert.match(selectedWork, /backdrop-blur-md/);
 });
