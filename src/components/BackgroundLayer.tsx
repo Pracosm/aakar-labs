@@ -23,23 +23,10 @@ export default function BackgroundLayer() {
     const probe = document.createElement("video");
     if (!probe.canPlayType("video/mp4")) return;
 
-    let cancelled = false;
-    const start = () => {
-      if (!cancelled) setLoadVideo(true);
-    };
-    const idle =
-      window.requestIdleCallback ??
-      ((cb: () => void) => window.setTimeout(cb, 900));
-    const id = idle(start);
-
-    return () => {
-      cancelled = true;
-      if (typeof window.cancelIdleCallback === "function") {
-        window.cancelIdleCallback(id as number);
-      } else {
-        window.clearTimeout(id as number);
-      }
-    };
+    // Start loading on the next task. Deferring this to idle time made the
+    // poster look frozen on slower mobile devices.
+    const timer = window.setTimeout(() => setLoadVideo(true), 0);
+    return () => window.clearTimeout(timer);
   }, []);
 
   useEffect(() => {
@@ -47,34 +34,76 @@ export default function BackgroundLayer() {
     if (!video || !loadVideo) return;
 
     let disposed = false;
+    let workVisible = false;
+    const workSection = document.getElementById("work");
+
+    const isWorkVisible = () => {
+      if (!workSection) return false;
+      const bounds = workSection.getBoundingClientRect();
+      return bounds.top < window.innerHeight && bounds.bottom > 0;
+    };
+
+    const canPlay = () => !disposed && !document.hidden && !workVisible;
     const tryPlay = () => {
-      if (disposed || document.hidden) return;
-      void video.play().catch(() => {});
+      if (!canPlay()) return;
+      void video
+        .play()
+        .then(() => {
+          // Autoplay can begin before the effect attaches its media event
+          // listeners. The resolved play promise is still reliable in that
+          // case, so do not leave the real video hidden behind the poster.
+          if (canPlay()) setVideoReady(true);
+        })
+        .catch(() => {});
     };
     const onCanPlay = () => tryPlay();
-    const onPlaying = () => setVideoReady(true);
+    const onPlaying = () => {
+      if (canPlay()) setVideoReady(true);
+    };
     const onError = () => {
       setVideoError(true);
       setVideoReady(false);
     };
+    const onPause = () => {
+      // Keep the hero motion alive if the browser pauses an otherwise
+      // visible autoplay video. The work section is the intentional stop.
+      if (canPlay()) tryPlay();
+    };
     const onVis = () => {
-      if (document.hidden) video.pause();
+      if (document.hidden || workVisible) video.pause();
       else tryPlay();
     };
 
+    const observer = workSection
+      ? new IntersectionObserver(
+          ([entry]) => {
+            workVisible = entry.isIntersecting;
+            if (workVisible) video.pause();
+            else tryPlay();
+          },
+          { threshold: 0.01 },
+        )
+      : null;
+
+    workVisible = isWorkVisible();
+    if (workSection) observer?.observe(workSection);
+
     video.addEventListener("canplay", onCanPlay);
     video.addEventListener("playing", onPlaying);
+    video.addEventListener("pause", onPause);
     video.addEventListener("error", onError);
     document.addEventListener("visibilitychange", onVis);
-    if (video.readyState >= HTMLMediaElement.HAVE_FUTURE_DATA) tryPlay();
+    tryPlay();
 
     return () => {
       disposed = true;
       video.pause();
       video.removeEventListener("canplay", onCanPlay);
       video.removeEventListener("playing", onPlaying);
+      video.removeEventListener("pause", onPause);
       video.removeEventListener("error", onError);
       document.removeEventListener("visibilitychange", onVis);
+      observer?.disconnect();
     };
   }, [loadVideo]);
 

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowUpRight } from "@phosphor-icons/react";
+import { ArrowDown, ArrowUpRight } from "@phosphor-icons/react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { useRef } from "react";
@@ -45,7 +45,7 @@ export default function Hero() {
       <div aria-hidden className="hero-veil pointer-events-none absolute inset-0" />
       <Twinkles />
 
-      <div className="relative z-10 flex w-full max-w-[720px] flex-1 flex-col items-center max-md:justify-between">
+      <div className="relative z-10 flex w-full max-w-[720px] flex-1 flex-col items-center">
         <div className="flex flex-col items-center">
           <p className="hero-rise mb-4 font-mono text-[11px] font-medium tracking-[0.22em] text-[rgba(236,238,245,0.72)] md:hidden">
             DESIGN STUDIO
@@ -71,16 +71,26 @@ export default function Hero() {
           </p>
         </div>
 
-        <div className="hero-rise mt-8 flex w-full max-w-[22rem] flex-col items-stretch gap-3 sm:max-w-none sm:flex-row sm:items-center sm:justify-center md:mt-8">
-          <Magnetic strength={0.3} className="w-full sm:w-auto">
-            <Link href="/start-project" className="btn-cta btn-cta-primary">
-              Start a project
-              <ArrowUpRight size={16} weight="bold" />
-            </Link>
-          </Magnetic>
-          <Magnetic strength={0.25} className="w-full sm:w-auto">
-            <BookCallButton />
-          </Magnetic>
+        <div className="mt-auto flex w-full flex-col items-center pb-[clamp(1.5rem,6vh,4rem)] md:mt-8 md:pb-0">
+          <div className="hero-rise mx-auto flex w-full max-w-[22rem] flex-col items-center gap-3 sm:max-w-none sm:flex-row sm:justify-center">
+            <Magnetic strength={0.3} className="w-full max-w-[18rem] sm:w-auto sm:max-w-none">
+              <Link href="/start-project" className="btn-cta btn-cta-primary">
+                Start a project
+                <ArrowUpRight size={16} weight="bold" />
+              </Link>
+            </Magnetic>
+            <Magnetic strength={0.25} className="w-full max-w-[18rem] sm:w-auto sm:max-w-none">
+              <BookCallButton />
+            </Magnetic>
+          </div>
+
+          <a
+            href="#work"
+            className="hero-rise mt-5 inline-flex min-h-11 items-center gap-2 rounded-full px-4 font-mono text-[10px] font-medium uppercase tracking-[0.18em] text-[rgba(236,238,245,0.7)] transition-colors duration-200 hover:text-[rgba(236,238,245,0.95)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white md:hidden"
+          >
+            Scroll to view selected work
+            <ArrowDown aria-hidden size={14} weight="bold" />
+          </a>
         </div>
       </div>
     </section>

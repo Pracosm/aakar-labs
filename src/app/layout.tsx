@@ -4,6 +4,7 @@ import "./globals.css";
 import BackgroundLayer from "@/components/BackgroundLayer";
 import LenisProvider from "@/components/LenisProvider";
 import PageTransition from "@/components/PageTransition";
+import { WorkCaseStudyTransitionProvider } from "@/components/WorkCaseStudyTransition";
 import JsonLd from "@/components/JsonLd";
 import CalProvider from "@/components/CalProvider";
 import AgentationToolbar from "@/components/AgentationToolbar";
@@ -154,7 +155,9 @@ export default function RootLayout({
         <LenisProvider />
         <CalProvider />
         <div className="relative z-10">
-          <PageTransition>{children}</PageTransition>
+          <WorkCaseStudyTransitionProvider>
+            <PageTransition>{children}</PageTransition>
+          </WorkCaseStudyTransitionProvider>
         </div>
         <AgentationToolbar />
       </body>

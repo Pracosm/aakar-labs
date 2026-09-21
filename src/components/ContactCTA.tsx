@@ -24,11 +24,11 @@ export default function ContactCTA() {
           timeline, and deliverables outline.
         </p>
 
-        <div className="mt-2 flex w-full max-w-[22rem] flex-col items-stretch gap-3 sm:max-w-none sm:flex-row sm:items-center sm:justify-center">
-          <Magnetic strength={0.3} className="w-full sm:w-auto">
+        <div className="mx-auto mt-2 flex w-full max-w-[22rem] flex-col items-center gap-3 sm:max-w-none sm:flex-row sm:justify-center">
+          <Magnetic strength={0.3} className="w-full max-w-[18rem] sm:w-auto sm:max-w-none">
             <BookCallButton className="btn-cta btn-cta-primary" />
           </Magnetic>
-          <Magnetic strength={0.2} className="w-full sm:w-auto">
+          <Magnetic strength={0.2} className="w-full max-w-[18rem] sm:w-auto sm:max-w-none">
             <Link href="/start-project" className="btn-cta btn-cta-ghost">
               Start a project
               <ArrowUpRight size={16} weight="bold" />

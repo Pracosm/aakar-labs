@@ -38,8 +38,11 @@ test("background video can run on mobile with safe fallbacks", async () => {
   assert.match(background, /muted/);
   assert.match(background, /playsInline/);
   assert.match(background, /preload="auto"/);
-  assert.match(background, /video\.play\(\)/);
+  assert.match(background, /video\s*\.play\(\)/);
   assert.match(background, /video\.pause\(\)/);
+  assert.match(background, /IntersectionObserver/);
+  assert.match(background, /getElementById\("work"\)/);
+  assert.match(background, /workVisible/);
   assert.match(background, /videoReady/);
   assert.match(background, /videoError/);
   assert.match(css, /height:\s*100lvh/);

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, type MouseEvent } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import gsap from "gsap";
@@ -14,7 +14,7 @@ import {
   Storefront,
 } from "@phosphor-icons/react";
 import Magnetic from "./Magnetic";
-import { WhyClubReferenceMockup } from "./whyclub/WhyClubReferenceMockup";
+import { useWorkCaseStudyTransition } from "./WorkCaseStudyTransition";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -25,6 +25,26 @@ export default function SelectedWork() {
   const foldingCompanyCardRef = useRef<HTMLElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
   const previewRef = useRef<HTMLDivElement>(null);
+  const whyClubPanelRef = useRef<HTMLDivElement>(null);
+  const { startCaseStudyTransition } = useWorkCaseStudyTransition();
+
+  const handleWhyClubCaseStudyClick = (
+    event: MouseEvent<HTMLAnchorElement>,
+  ) => {
+    if (
+      event.defaultPrevented ||
+      event.button !== 0 ||
+      event.detail === 0 ||
+      event.metaKey || event.ctrlKey || event.shiftKey || event.altKey
+    ) {
+      return;
+    }
+
+    const panel = whyClubPanelRef.current;
+    if (panel && startCaseStudyTransition(panel, "/work/whyclub")) {
+      event.preventDefault();
+    }
+  };
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -179,7 +199,7 @@ export default function SelectedWork() {
                 href="/work/tfc-brand-book.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-3 inline-flex min-h-8 items-center gap-2 font-body text-[10px] font-semibold uppercase tracking-[0.19em] text-[#677975] transition-colors hover:text-[#06201c] lg:mt-4 lg:min-h-9 lg:text-white/55 lg:hover:text-white"
+                className="mt-3 inline-flex min-h-8 w-full items-center justify-center gap-2 text-center font-body text-[10px] font-semibold uppercase tracking-[0.19em] text-[#677975] transition-colors hover:text-[#06201c] lg:mt-4 lg:min-h-9 lg:text-white/55 lg:hover:text-white"
               >
                 View the case study PDF
                 <ArrowUpRight size={15} weight="bold" />
@@ -190,42 +210,43 @@ export default function SelectedWork() {
 
         <article
           ref={cardRef}
-          className="grid grid-cols-1 gap-0 overflow-hidden rounded-[1.25rem] lg:grid-cols-[1.17fr_0.83fr] lg:rounded-[1.75rem]"
+          className="why-club-work-card group overflow-hidden rounded-[1.5rem] border border-[#d9ddd4] bg-[#f3f3f0] shadow-[0_24px_70px_rgba(7,28,25,0.12)] lg:grid lg:grid-cols-[1.17fr_0.83fr] lg:rounded-[1.8rem]"
           style={{
-            background: "rgba(26,29,46,0.4)",
-            backdropFilter: "blur(20px)",
-            WebkitBackdropFilter: "blur(20px)",
-            border: "1px solid rgba(236,238,245,0.08)",
-            boxShadow:
-              "0 30px 100px rgba(0,0,0,0.55), 0 0 0 1px rgba(236,238,245,0.04)",
+            boxShadow: "0 30px 90px rgba(2, 20, 16, 0.22)",
           }}
         >
           <div
-            className="relative aspect-[4/3] overflow-hidden lg:aspect-auto"
+            className="relative aspect-[4/3] overflow-hidden bg-[#e9eee6] lg:aspect-auto lg:border-r lg:border-black/10"
             style={{
-              background: "#0a0a0a",
-              borderRight: "1px solid rgba(236,238,245,0.05)",
+              background: "#e9eee6",
             }}
           >
             <div
               ref={previewRef}
               className="absolute inset-0 lg:h-[calc(100%+60px)] lg:-top-[30px]"
             >
-              <WhyClubReferenceMockup
-                alt="WhyClub handheld phone mockup showing the Please I’m a Star storefront"
-                sizes="(max-width: 1024px) 100vw, 60vw"
-              />
+              <div className="why-club-work-media absolute inset-0">
+                <Image
+                  src="/images/work/whyclub-case-study/hero-desktop.webp"
+                  alt="WhyClub model wearing the Please I’m a Star T-shirt"
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 60vw"
+                  className="object-cover object-[62%_center] lg:object-center"
+                />
+              </div>
             </div>
 
             <div
               className="absolute inset-0 pointer-events-none"
               style={{
                 background:
-                  "linear-gradient(180deg, rgba(5,5,9,0) 60%, rgba(5,5,9,0.6) 100%)",
+                  "linear-gradient(180deg, rgba(5,5,9,0) 58%, rgba(5,5,9,0.28) 100%)",
               }}
             />
 
-            <div className="absolute bottom-4 left-4 flex items-center gap-2 z-10 md:bottom-5 md:left-6">
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-28 bg-gradient-to-t from-[#f3f3f0] to-transparent lg:hidden" />
+
+            <div className="absolute bottom-4 left-4 z-10 flex items-center gap-2 md:bottom-5 md:left-6">
               <span
                 className="h-1.5 w-1.5 rounded-full"
                 style={{
@@ -234,78 +255,81 @@ export default function SelectedWork() {
                   animation: "rimPulse 2s ease-in-out infinite",
                 }}
               />
-              <span className="font-body text-xs font-medium tracking-[0.12em] uppercase text-white/90 md:text-[10px] md:tracking-[0.35em]">
+              <span className="font-body text-[10px] font-semibold uppercase tracking-[0.18em] text-[#17351a] lg:text-white/90">
                 Live at whyclub.in
               </span>
             </div>
           </div>
 
-          <div className="flex flex-col px-5 py-6 md:px-9 md:py-10">
-            <div className="flex flex-wrap items-center gap-2 mb-4 md:mb-5">
-              <span
-                className="rounded-full text-[11px] font-semibold tracking-[0.16em] uppercase px-2.5 py-1 md:text-[9px] md:tracking-[0.3em] md:px-[11px] md:py-1"
-                style={{
-                  color: "var(--stem-green)",
-                  background: "rgba(74,140,63,0.12)",
-                  border: "1px solid rgba(74,140,63,0.25)",
-                }}
-              >
-                D2C • E-commerce
-              </span>
-              <span className="font-body text-xs tracking-[0.12em] uppercase text-[rgba(236,238,245,0.55)] md:text-[10px] md:tracking-[0.3em]">
-                Feb 2026 — Apr 2026
-              </span>
-            </div>
-
-            <h3 className="font-display text-[1.75rem] font-bold tracking-[-0.04em] text-[color:var(--rim-white)] mb-1.5 md:text-[2rem] md:tracking-[-0.06em]">
-              WhyClub
-            </h3>
-            <p className="font-body text-sm tracking-[0.08em] uppercase text-[color:var(--laptop-glow)] mb-4 opacity-90 md:text-[13px] md:tracking-[0.15em] md:mb-[18px] md:opacity-75">
-              &ldquo;Perfect is boring.&rdquo;
-            </p>
-
-            <p className="body-copy mb-6 hidden max-w-[34rem] text-[1.0625rem] md:block md:text-[14px] md:text-[rgba(236,238,245,0.6)]">
-              An end-to-end fashion commerce experience, from identity to the
-              storefront the team runs every day.
-            </p>
-
-            <div className="mb-7 hidden grid-cols-3 divide-x divide-white/15 md:grid">
-              <div className="pr-3">
-                <Storefront size={22} weight="light" className="mb-2 text-[#9ed7cb]" />
-                <p className="font-body text-[12px] font-semibold leading-tight text-white">Commerce</p>
-                <p className="mt-1 font-body text-[11px] text-white/50">Category</p>
-              </div>
-              <div className="px-3">
-                <CalendarBlank size={22} weight="light" className="mb-2 text-[#9ed7cb]" />
-                <p className="font-body text-[12px] font-semibold leading-tight text-white">2026</p>
-                <p className="mt-1 font-body text-[11px] text-white/50">Year</p>
-              </div>
-              <div className="pl-3">
-                <GlobeSimple size={22} weight="light" className="mb-2 text-[#9ed7cb]" />
-                <p className="font-body text-[12px] font-semibold leading-tight text-white">Live</p>
-                <p className="mt-1 font-body text-[11px] text-white/50">Storefront</p>
-              </div>
-            </div>
-
-            <div className="mt-auto flex w-full flex-col gap-3 self-stretch sm:flex-row sm:items-center sm:self-start">
-              <Magnetic strength={0.3} className="w-full sm:w-auto">
-                <Link
-                  href="/work/whyclub"
-                  className="btn-cta btn-cta-primary w-full sm:w-auto"
+          <div
+            ref={whyClubPanelRef}
+            className="why-club-work-panel flex flex-col bg-[#f3f3f0] px-5 py-5 text-[#0a0a0a] sm:px-7 sm:py-7 lg:px-10 lg:py-10 xl:px-12 xl:py-12"
+          >
+            <div className="why-club-work-panel-content flex flex-1 flex-col">
+              <div className="mb-4 flex flex-wrap items-center gap-2 lg:mb-8">
+                <span
+                  className="rounded-full px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.22em]"
+                  style={{
+                    color: "#356934",
+                    background: "rgba(74,140,63,0.12)",
+                    border: "1px solid rgba(74,140,63,0.24)",
+                  }}
                 >
-                  View the case study
-                  <ArrowUpRight size={16} weight="bold" />
-                </Link>
-              </Magnetic>
-              <a
-                href="https://whyclub.in"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex min-h-11 items-center justify-center font-body text-[10px] font-medium uppercase tracking-[0.18em] text-white/50 transition-colors hover:text-white sm:justify-start"
-              >
-                Visit the store
-                <ArrowUpRight size={14} weight="bold" className="ml-2" />
-              </a>
+                  D2C • E-commerce
+                </span>
+                <span className="font-body text-[10px] uppercase tracking-[0.23em] text-[#70706a]">
+                  Digital product
+                </span>
+              </div>
+
+              <h3 className="mb-2 font-display text-[2.15rem] font-bold leading-[0.94] tracking-[-0.065em] text-[#0a0a0a] sm:text-[2.7rem] lg:mb-3 lg:text-[clamp(2.65rem,3.2vw,3.85rem)]">
+                WhyClub
+              </h3>
+
+              <p className="mb-5 max-w-[35rem] font-body text-[15px] leading-relaxed text-[#62625c] lg:mb-9 lg:text-base">
+                We shaped the brand, product experience, full-stack store, and
+                every image customers see.
+              </p>
+
+              <div className="mb-6 grid grid-cols-3 divide-x divide-black/15 lg:mb-10">
+                <div className="pr-3">
+                  <Storefront size={22} weight="light" className="mb-2 text-[#356934]" />
+                  <p className="font-body text-[12px] font-semibold leading-tight text-[#0a0a0a]">Full-stack</p>
+                  <p className="mt-1 hidden font-body text-[11px] text-[#777770] lg:block">Scope</p>
+                </div>
+                <div className="px-3">
+                  <CalendarBlank size={22} weight="light" className="mb-2 text-[#356934]" />
+                  <p className="font-body text-[12px] font-semibold leading-tight text-[#0a0a0a]">2026</p>
+                  <p className="mt-1 hidden font-body text-[11px] text-[#777770] lg:block">Year</p>
+                </div>
+                <div className="pl-3">
+                  <GlobeSimple size={22} weight="light" className="mb-2 text-[#356934]" />
+                  <p className="font-body text-[12px] font-semibold leading-tight text-[#0a0a0a]">Live</p>
+                  <p className="mt-1 hidden font-body text-[11px] text-[#777770] lg:block">Storefront</p>
+                </div>
+              </div>
+
+              <div className="mt-auto w-full">
+                <Magnetic strength={0.3} className="w-full">
+                  <Link
+                    href="/work/whyclub"
+                    onClick={handleWhyClubCaseStudyClick}
+                    className="case-study-trigger inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-[#0a0a0a] px-5 font-body text-[11px] font-bold uppercase tracking-[0.18em] text-[#f3f3f0]"
+                  >
+                    View the case study
+                    <ArrowUpRight size={16} weight="bold" />
+                  </Link>
+                </Magnetic>
+                <a
+                  href="https://whyclub.in"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-3 inline-flex min-h-8 w-full items-center justify-center font-body text-[10px] font-semibold uppercase tracking-[0.19em] text-[#6a6a64] transition-colors duration-150 ease-out hover:text-[#0a0a0a] lg:mt-4 lg:min-h-9"
+                >
+                  Visit the store
+                  <ArrowUpRight size={14} weight="bold" className="ml-2" />
+                </a>
+              </div>
             </div>
           </div>
         </article>
