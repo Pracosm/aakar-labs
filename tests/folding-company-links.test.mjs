@@ -12,9 +12,20 @@ test("featured work points to the PDF and live Folding Company site", async () =
   assert.match(selectedWork, /href="\/work\/tfc-brand-book\.pdf"/);
   assert.match(selectedWork, /View the case study PDF/);
   assert.match(selectedWork, /href="https:\/\/foldingcompany\.design\/"/);
-  assert.match(selectedWork, /Visit foldingcompany\.design/);
+  assert.match(selectedWork, /Visit [\s\S]*foldingcompany\.design/);
   assert.match(selectedWork, /bg-\[#f5efe3\]/);
   assert.doesNotMatch(selectedWork, /href="\/work\/the-folding-company"/);
+});
+
+test("selected work copy uses sentence case and identifies the external URL", async () => {
+  const selectedWork = await source("../src/components/SelectedWork.tsx");
+
+  assert.doesNotMatch(selectedWork, /SELECTED WORK/);
+  assert.doesNotMatch(selectedWork, /\buppercase\b/);
+  assert.match(
+    selectedWork,
+    /font-mono text-\[11px\] font-medium tracking-\[0\.03em\]">foldingcompany\.design<\/span>/,
+  );
 });
 
 test("long-form case study stays URL-only and out of the sitemap", async () => {

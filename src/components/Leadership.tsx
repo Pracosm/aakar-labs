@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import {
   LinkedinLogo,
@@ -44,7 +45,7 @@ const members: Array<{
     photo: "/images/team/soumik.png",
     name: "Soumik Halder",
     role: "CO-FOUNDER",
-    desc: "Operations, partnerships, and the engine behind every smooth delivery.",
+    desc: "Design engineer focused on interface, code, craft, and taste.",
     socials: [
       {
         href: "https://www.linkedin.com/in/soumik7/",
@@ -91,7 +92,139 @@ const members: Array<{
   },
 ];
 
+const FIRST_CARD_DELAY = 2500;
+const FOLLOWING_CARD_DELAY = 6500;
+
 export default function Leadership() {
+  const mobileCarouselRef = useRef<HTMLDivElement>(null);
+  const [activeMobileCard, setActiveMobileCard] = useState(0);
+
+  useEffect(() => {
+    const scroller = mobileCarouselRef.current;
+    if (!scroller || members.length < 2) return;
+
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (reduceMotion.matches) return;
+
+    const cards = Array.from(
+      scroller.querySelectorAll<HTMLElement>("[data-leadership-card]"),
+    );
+    if (cards.length < 2 || !("IntersectionObserver" in window)) return;
+
+    let advanceTimer: number | null = null;
+    let scrollEndTimer: number | null = null;
+    let isVisible = false;
+    let userPaused = false;
+
+    const getNearestCardIndex = () => {
+      const viewportCenter = scroller.scrollLeft + scroller.clientWidth / 2;
+      return cards.reduce(
+        (nearestIndex, card, index) => {
+          const nearestDistance = Math.abs(
+            cards[nearestIndex].offsetLeft +
+              cards[nearestIndex].offsetWidth / 2 -
+              viewportCenter,
+          );
+          const cardDistance = Math.abs(
+            card.offsetLeft + card.offsetWidth / 2 - viewportCenter,
+          );
+          return cardDistance < nearestDistance ? index : nearestIndex;
+        },
+        0,
+      );
+    };
+
+    const clearAdvanceTimer = () => {
+      if (advanceTimer !== null) {
+        window.clearTimeout(advanceTimer);
+        advanceTimer = null;
+      }
+    };
+
+    const scheduleAdvance = (delay?: number) => {
+      clearAdvanceTimer();
+      if (!isVisible || userPaused) return;
+
+      const currentIndex = getNearestCardIndex();
+      advanceTimer = window.setTimeout(
+        advance,
+        delay ??
+          (currentIndex === 0 ? FIRST_CARD_DELAY : FOLLOWING_CARD_DELAY),
+      );
+    };
+
+    const advance = () => {
+      const nextIndex = (getNearestCardIndex() + 1) % cards.length;
+      setActiveMobileCard(nextIndex);
+      cards[nextIndex].scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+        inline: "center",
+      });
+      scheduleAdvance(FOLLOWING_CARD_DELAY);
+    };
+
+    const pauseForInteraction = () => {
+      userPaused = true;
+      clearAdvanceTimer();
+    };
+
+    const resumeAfterInteraction = () => {
+      if (!userPaused) return;
+      userPaused = false;
+      scheduleAdvance(FOLLOWING_CARD_DELAY);
+    };
+
+    const handleScroll = () => {
+      if (scrollEndTimer !== null) window.clearTimeout(scrollEndTimer);
+      scrollEndTimer = window.setTimeout(() => {
+        setActiveMobileCard(getNearestCardIndex());
+      }, 80);
+    };
+
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        clearAdvanceTimer();
+      } else {
+        scheduleAdvance();
+      }
+    };
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isVisible = entry.isIntersecting;
+        if (isVisible) {
+          scheduleAdvance();
+        } else {
+          clearAdvanceTimer();
+        }
+      },
+      { threshold: 0.4 },
+    );
+
+    observer.observe(scroller);
+    scroller.addEventListener("scroll", handleScroll, { passive: true });
+    scroller.addEventListener("pointerdown", pauseForInteraction);
+    scroller.addEventListener("pointerup", resumeAfterInteraction);
+    scroller.addEventListener("pointercancel", resumeAfterInteraction);
+    scroller.addEventListener("focusin", pauseForInteraction);
+    scroller.addEventListener("focusout", resumeAfterInteraction);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      clearAdvanceTimer();
+      if (scrollEndTimer !== null) window.clearTimeout(scrollEndTimer);
+      observer.disconnect();
+      scroller.removeEventListener("scroll", handleScroll);
+      scroller.removeEventListener("pointerdown", pauseForInteraction);
+      scroller.removeEventListener("pointerup", resumeAfterInteraction);
+      scroller.removeEventListener("pointercancel", resumeAfterInteraction);
+      scroller.removeEventListener("focusin", pauseForInteraction);
+      scroller.removeEventListener("focusout", resumeAfterInteraction);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, []);
+
   return (
     <section
       className="relative w-full px-5 py-10 md:px-10 md:py-20 lg:px-14 lg:py-24"
@@ -110,11 +243,17 @@ export default function Leadership() {
           </p>
         </div>
 
-        <div className="md:hidden -mx-5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-5 pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          {members.map((m) => (
+        <div
+          ref={mobileCarouselRef}
+          role="region"
+          aria-label="Leadership team"
+          className="leadership-carousel md:hidden -mx-5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-5 pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        >
+          {members.map((m, index) => (
             <article
               key={`${m.name}-m`}
-              className="g-rise flex w-[78vw] max-w-[300px] shrink-0 snap-center flex-col gap-3 rounded-2xl glass-panel p-4"
+              data-leadership-card
+              className={`leadership-card g-rise flex w-[78vw] max-w-[300px] shrink-0 snap-center flex-col gap-3 rounded-2xl glass-panel p-4 ${activeMobileCard === index ? "leadership-card--active" : ""}`}
             >
               <div
                 className="relative h-44 w-full overflow-hidden rounded-xl"
@@ -133,6 +272,9 @@ export default function Leadership() {
               </h3>
               <p className="font-mono text-[11px] font-medium tracking-[0.16em] text-[color:var(--coral)]">
                 {m.role}
+              </p>
+              <p className="leadership-description body-copy text-[1rem] text-[rgba(236,238,245,0.82)]">
+                {m.desc}
               </p>
               <div className="flex items-center gap-2">
                 {m.socials.map(({ href, label, Icon }) => (
@@ -161,7 +303,7 @@ export default function Leadership() {
           {members.map((m) => (
             <article
               key={m.name}
-              className="flex flex-row gap-4 p-4 rounded-2xl glass-panel md:flex-col md:gap-4 md:p-5"
+              className="leadership-card flex flex-row gap-4 rounded-2xl glass-panel p-4 md:flex-col md:gap-4 md:p-5"
             >
               <div
                 className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl md:h-[260px] md:w-full lg:h-[300px]"
@@ -192,7 +334,7 @@ export default function Leadership() {
                 <p className="font-mono text-[11px] font-medium tracking-[0.16em] text-[color:var(--coral)] md:text-[10px] md:tracking-[0.2em]">
                   {m.role}
                 </p>
-                <p className="body-copy text-[0.95rem] md:text-[13px] md:text-[rgba(236,238,245,0.6)]">
+                <p className="leadership-description body-copy text-[0.95rem] md:text-[15px] md:text-[rgba(236,238,245,0.82)]">
                   {m.desc}
                 </p>
                 <div className="mt-auto flex items-center gap-2 pt-2">

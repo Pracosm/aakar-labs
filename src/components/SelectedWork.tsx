@@ -98,19 +98,10 @@ export default function SelectedWork() {
       className="relative w-full overflow-hidden border-y border-white/10 bg-[rgba(5,18,16,0.38)] py-16 text-[color:var(--rim-white)] backdrop-blur-md md:py-24 lg:py-32"
     >
       <div className="max-w-[1160px] mx-auto px-5 md:px-10 lg:px-14">
-        <div className="mb-9 grid gap-5 md:mb-12 md:grid-cols-[minmax(0,1fr)_minmax(15rem,0.72fr)] md:items-end md:gap-12">
-          <div>
-            <div className="mb-3 flex items-center gap-3 font-mono text-[10px] font-semibold tracking-[0.24em] text-[#b9d5ce]">
-              <span className="h-px w-7 bg-[#b9d5ce]" />
-              SELECTED WORK
-            </div>
-            <h2 className="font-display text-[clamp(2.35rem,5.1vw,4.8rem)] font-bold leading-[0.96] tracking-[-0.065em] text-[color:var(--rim-white)]">
-              Selected Work
-            </h2>
-          </div>
-          <p className="max-w-[31ch] font-body text-base leading-relaxed text-white/70 md:pb-1 md:text-[1.05rem]">
-            Brands, products, and experiences for a brighter tomorrow.
-          </p>
+        <div className="mb-9 md:mb-12">
+          <h2 className="font-display text-balance text-[clamp(2.35rem,5.1vw,4.8rem)] font-bold leading-[0.96] tracking-[-0.065em] text-[color:var(--rim-white)]">
+            Selected Work
+          </h2>
         </div>
 
         <article
@@ -143,7 +134,7 @@ export default function SelectedWork() {
           <div className="flex flex-col bg-[#f9fbfa] px-5 py-5 sm:px-7 sm:py-7 lg:order-2 lg:bg-[#06201c] lg:px-10 lg:py-10 xl:px-12 xl:py-12">
             <div className="mb-4 flex flex-wrap items-center gap-2 lg:mb-8">
               <span
-                className="rounded-full px-2.5 py-1 font-body text-[10px] font-semibold uppercase tracking-[0.22em]"
+                className="whitespace-nowrap rounded-full px-2.5 py-1 font-body text-[11px] font-semibold tracking-[0.04em]"
                 style={{
                   color: "#075b4c",
                   background: "rgba(23,137,115,0.12)",
@@ -152,17 +143,17 @@ export default function SelectedWork() {
               >
                 Brand identity
               </span>
-              <span className="font-body text-[10px] uppercase tracking-[0.23em] text-[#71827e] lg:text-white/45">
+              <span className="whitespace-nowrap font-body text-[11px] tracking-[0.04em] text-[#71827e] lg:text-white/45">
                 Brand book
               </span>
             </div>
 
-            <h3 className="mb-2 font-display text-[2.15rem] font-bold leading-[0.94] tracking-[-0.065em] text-[#071c19] sm:text-[2.7rem] lg:mb-3 lg:text-[clamp(2.65rem,3.2vw,3.85rem)] lg:text-[color:var(--rim-white)]">
+            <h3 className="mb-2 font-display text-balance text-[2.15rem] font-bold leading-[0.94] tracking-[-0.065em] text-[#071c19] sm:text-[2.7rem] lg:mb-3 lg:text-[clamp(2.65rem,3.2vw,3.85rem)] lg:text-[color:var(--rim-white)]">
               the folding
               <br />
               company
             </h3>
-            <p className="mb-4 line-clamp-2 max-w-[35rem] font-body text-[15px] leading-relaxed text-[#647470] lg:mb-9 lg:line-clamp-none lg:text-base lg:text-white/65">
+            <p className="mb-4 line-clamp-2 max-w-[35rem] font-body text-pretty text-[15px] leading-relaxed text-[#647470] lg:mb-9 lg:line-clamp-none lg:text-base lg:text-white/65">
               A flexible visual identity built around movement, structure, and
               a mark that can fold into many forms.
             </p>
@@ -190,16 +181,16 @@ export default function SelectedWork() {
                 href="https://foldingcompany.design/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-[#06201c] px-5 font-body text-[11px] font-bold uppercase tracking-[0.18em] text-white transition-colors hover:bg-[#0d3b34] lg:bg-[#f5efe3] lg:text-[#06201c] lg:hover:bg-white"
+                className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-[#06201c] px-5 font-body text-[11px] font-semibold text-white transition-[transform,background-color,color] duration-150 ease-out hover:bg-[#0d3b34] active:scale-[0.96] lg:bg-[#f5efe3] lg:text-[#06201c] lg:hover:bg-white"
               >
-                Visit foldingcompany.design
+                Visit <span className="break-words font-mono text-[11px] font-medium tracking-[0.03em]">foldingcompany.design</span>
                 <ArrowUpRight size={17} weight="bold" />
               </a>
               <a
                 href="/work/tfc-brand-book.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-3 inline-flex min-h-8 w-full items-center justify-center gap-2 text-center font-body text-[10px] font-semibold uppercase tracking-[0.19em] text-[#677975] transition-colors hover:text-[#06201c] lg:mt-4 lg:min-h-9 lg:text-white/55 lg:hover:text-white"
+                className="mt-3 inline-flex min-h-11 w-full items-center justify-center gap-2 whitespace-nowrap text-center font-body text-[11px] font-medium text-[#677975] transition-[transform,color] duration-150 ease-out hover:text-[#06201c] active:scale-[0.96] lg:mt-4 lg:text-white/55 lg:hover:text-white"
               >
                 View the case study PDF
                 <ArrowUpRight size={15} weight="bold" />
@@ -255,7 +246,7 @@ export default function SelectedWork() {
                   animation: "rimPulse 2s ease-in-out infinite",
                 }}
               />
-              <span className="font-body text-[10px] font-semibold uppercase tracking-[0.18em] text-[#17351a] lg:text-white/90">
+              <span className="font-body text-[11px] font-semibold tracking-[0.04em] text-[#17351a] lg:text-white/90">
                 Live at whyclub.in
               </span>
             </div>
@@ -268,7 +259,7 @@ export default function SelectedWork() {
             <div className="why-club-work-panel-content flex flex-1 flex-col">
               <div className="mb-4 flex flex-wrap items-center gap-2 lg:mb-8">
                 <span
-                  className="rounded-full px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.22em]"
+                  className="whitespace-nowrap rounded-full px-2.5 py-1 font-body text-[11px] font-semibold tracking-[0.04em]"
                   style={{
                     color: "#356934",
                     background: "rgba(74,140,63,0.12)",
@@ -277,16 +268,16 @@ export default function SelectedWork() {
                 >
                   D2C • E-commerce
                 </span>
-                <span className="font-body text-[10px] uppercase tracking-[0.23em] text-[#70706a]">
+                <span className="whitespace-nowrap font-body text-[11px] tracking-[0.04em] text-[#70706a]">
                   Digital product
                 </span>
               </div>
 
-              <h3 className="mb-2 font-display text-[2.15rem] font-bold leading-[0.94] tracking-[-0.065em] text-[#0a0a0a] sm:text-[2.7rem] lg:mb-3 lg:text-[clamp(2.65rem,3.2vw,3.85rem)]">
+              <h3 className="mb-2 font-display text-balance text-[2.15rem] font-bold leading-[0.94] tracking-[-0.065em] text-[#0a0a0a] sm:text-[2.7rem] lg:mb-3 lg:text-[clamp(2.65rem,3.2vw,3.85rem)]">
                 WhyClub
               </h3>
 
-              <p className="mb-5 max-w-[35rem] font-body text-[15px] leading-relaxed text-[#62625c] lg:mb-9 lg:text-base">
+              <p className="mb-5 max-w-[35rem] font-body text-pretty text-[15px] leading-relaxed text-[#62625c] lg:mb-9 lg:text-base">
                 We shaped the brand, product experience, full-stack store, and
                 every image customers see.
               </p>
@@ -314,7 +305,7 @@ export default function SelectedWork() {
                   <Link
                     href="/work/whyclub"
                     onClick={handleWhyClubCaseStudyClick}
-                    className="case-study-trigger inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-[#0a0a0a] px-5 font-body text-[11px] font-bold uppercase tracking-[0.18em] text-[#f3f3f0]"
+                    className="case-study-trigger inline-flex min-h-12 w-full items-center justify-center gap-2 whitespace-nowrap rounded-full bg-[#0a0a0a] px-5 font-body text-[11px] font-semibold text-[#f3f3f0]"
                   >
                     View the case study
                     <ArrowUpRight size={16} weight="bold" />
@@ -324,7 +315,7 @@ export default function SelectedWork() {
                   href="https://whyclub.in"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-3 inline-flex min-h-8 w-full items-center justify-center font-body text-[10px] font-semibold uppercase tracking-[0.19em] text-[#6a6a64] transition-colors duration-150 ease-out hover:text-[#0a0a0a] lg:mt-4 lg:min-h-9"
+                  className="mt-3 inline-flex min-h-11 w-full items-center justify-center gap-2 whitespace-nowrap font-body text-[11px] font-medium text-[#6a6a64] transition-[transform,color] duration-150 ease-out hover:text-[#0a0a0a] active:scale-[0.96] lg:mt-4"
                 >
                   Visit the store
                   <ArrowUpRight size={14} weight="bold" className="ml-2" />
