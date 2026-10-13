@@ -53,7 +53,10 @@
   .tbc { background:#FFE9DE; color:#B33A00; padding:0 3px; border-radius:2px; font-family:'Roboto Mono',monospace; font-size:8pt; }
   .two { display:grid; grid-template-columns:1fr 1fr; gap:6mm; }
   .sign { display:grid; grid-template-columns:1fr 1fr; gap:10mm; margin-top:4mm; break-inside:avoid; }
-  .sign div { border-top:1.5px solid var(--ink); padding-top:2mm; font-size:9pt; color:var(--grey); line-height:2.1; }
+  .sign .col { display:flex; flex-direction:column; justify-content:flex-end; }
+  .sign .slot { height:17mm; display:flex; align-items:flex-end; padding-bottom:1mm; }
+  .sign .slot img { height:15mm; width:auto; margin-left:3mm; }
+  .sign .col > div { border-top:1.5px solid var(--ink); padding-top:2mm; font-size:9pt; color:var(--grey); line-height:2.1; }
   .sign b { color:var(--ink); font-weight:500; display:block; line-height:1.4; }
   .brk { break-before:page; }
 </style>
@@ -73,10 +76,11 @@
 <div class="parties">
   <div class="party">
     <span class="k2">Service provider</span>
-    <b>Aakar Labs</b>
+    <b>Aakar Labs (Kwirks Studio)</b>
     Sole proprietorship, not GST registered<br>
-    aakarlabs.art · contact.aakarlabs@gmail.com<br>
-    Proprietor, address and PAN: <span class="tbc">to add</span>
+    Proprietor: Shardul Nandedkar · Remote, India<br>
+    contact.aakarlabs@gmail.com · aakarlabs.art<br>
+    PAN: <span class="tbc">to add</span>
   </div>
   <div class="party">
     <span class="k2">Client</span>
@@ -270,7 +274,7 @@
 <h3>Confirmations before signature</h3>
 <table>
   <tr><th style="width:62mm">Confirmation</th><th>Agreed details</th></tr>
-  <tr><td>Contracting and invoicing entity</td><td>Aakar Labs, sole proprietorship. Proprietor name, address and PAN: <span class="tbc">to add</span></td></tr>
+  <tr><td>Contracting and invoicing entity</td><td>Aakar Labs (Kwirks Studio), sole proprietorship. Proprietor: Shardul Nandedkar · Remote, India · PAN: <span class="tbc">to add</span></td></tr>
   <tr><td>Banza legal billing entity / GST details</td><td>Banza Technologies Private Limited · PAN AAOCB3598F · GSTIN 29AAOCB3598F1Z4 · Bangalore 560039</td></tr>
   <tr><td>Tax basis for ₹1,50,000 fee</td><td>No GST charged; Aakar Labs is not GST registered.</td></tr>
   <tr><td>Authorised Banza decision-maker</td><td style="color:var(--mute)">______________________________</td></tr>
@@ -280,8 +284,8 @@
 <div style="break-inside:avoid"><h3>Order of precedence and signatures</h3>
 <p>This signed SOW prevails over conflicting descriptions in the original audit/proposal and the Shelf identity brief. Only the deliverables specifically included here are contracted. Changes must be approved in writing by authorised representatives of both parties.</p>
 <div class="sign">
-  <div><b>For Banza Technologies Private Limited</b>Signatory / title: ____________________<br>Signature: ____________________<br>Date: ____________________</div>
-  <div><b>For Aakar Labs</b>Signatory / title: ____________________<br>Signature: ____________________<br>Date: ____________________</div>
+  <div class="col"><span class="slot"></span><div><b>For Banza Technologies Private Limited</b>Signatory / title: ____________________<br>Signature: ____________________<br>Date: ____________________</div></div>
+  <div class="col"><span class="slot"><img src="signature.png" alt="Signature of Shardul Nandedkar"></span><div><b>For Aakar Labs (Kwirks Studio)</b>Shardul Nandedkar<br>Founder, Aakar Labs / Kwirks Studio<br>Date: ____________________</div></div>
 </div></div>
 </section>
 
