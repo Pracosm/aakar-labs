@@ -2,187 +2,288 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Statement of Work: Banza Identity | Aakar Labs</title>
+<title>Statement of Work: Banza Visual Identity | Aakar Labs</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  @page { size: A4; margin: 0; }
+  @page { size: A4; margin: 18mm 18mm 20mm;
+    @bottom-left { content: "AAKAR LABS × KWIRKS STUDIO  /  BANZA"; font-family:'Roboto Mono',monospace; font-size:7pt; color:#AFAFAF; letter-spacing:.04em; }
+    @bottom-right { content: "SOW V2.0  ·  13 OCT 2026  ·  " counter(page) " / " counter(pages); font-family:'Roboto Mono',monospace; font-size:7pt; color:#AFAFAF; letter-spacing:.04em; }
+  }
   :root { --ink:#161616; --orange:#FF5F1F; --grey:#515151; --mute:#AFAFAF; --line:#E2E2E2; --tint:#F0F0F0; }
-  * { box-sizing: border-box; }
+  * { box-sizing:border-box; }
   html, body { margin:0; padding:0; background:#fff; }
-  body { font-family:'Outfit',system-ui,sans-serif; color:var(--ink); font-size:10.5pt; line-height:1.5; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
-  .page { width:210mm; height:297mm; padding:18mm 18mm 20mm; position:relative; page-break-after:always; overflow:hidden; }
-  .page:last-child { page-break-after:auto; }
-  .mono { font-family:'Roboto Mono',monospace; text-transform:uppercase; letter-spacing:.04em; }
-  .brand { display:flex; align-items:center; gap:9px; font-family:'Roboto Mono',monospace; font-size:13pt; letter-spacing:-.06em; color:var(--ink); }
+  body { font-family:'Outfit',system-ui,sans-serif; color:var(--ink); font-size:9.5pt; line-height:1.45; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  .brand { display:flex; align-items:center; gap:9px; font-family:'Roboto Mono',monospace; font-size:13pt; letter-spacing:-.06em; }
   .brand svg { width:34px; height:auto; }
-  .eyebrow { color:var(--orange); font-size:8.5pt; margin:10mm 0 3mm; }
-  h1 { font-weight:400; font-size:30pt; line-height:1.02; letter-spacing:-.04em; margin:0 0 6mm; }
-  h2 { font-weight:500; font-size:15pt; letter-spacing:-.03em; margin:0 0 3mm; display:flex; gap:10px; align-items:baseline; }
-  h2 .n { font-family:'Roboto Mono',monospace; font-size:8.5pt; color:var(--orange); letter-spacing:.04em; }
-  p { margin:0 0 3mm; color:var(--grey); }
-  section { margin-bottom:8mm; }
-  .lede { font-size:12pt; color:var(--grey); max-width:150mm; }
-  .parties { display:grid; grid-template-columns:1fr 1fr; gap:6mm; margin-top:6mm; }
-  .party { border-top:1.5px solid var(--ink); padding-top:3mm; font-size:9.5pt; color:var(--grey); }
-  .party b { display:block; color:var(--ink); font-weight:500; font-size:11pt; margin-bottom:1mm; }
-  .party .k { font-family:'Roboto Mono',monospace; font-size:7.5pt; color:var(--mute); text-transform:uppercase; letter-spacing:.04em; }
-  table { width:100%; border-collapse:collapse; font-size:9.5pt; }
-  th { font-family:'Roboto Mono',monospace; font-weight:400; font-size:7.5pt; text-transform:uppercase; letter-spacing:.04em; color:var(--grey); text-align:left; padding:0 0 2mm; border-bottom:1.5px solid var(--ink); }
-  td { padding:2.4mm 3mm 2.4mm 0; border-bottom:1px solid var(--line); vertical-align:top; color:var(--grey); }
-  td:first-child { color:var(--ink); white-space:nowrap; }
-  td.r, th.r { text-align:right; padding-right:0; }
-  .num { font-family:'Roboto Mono',monospace; color:var(--ink); }
-  .dark { background:var(--ink); color:#fff; padding:6mm 7mm; }
-  .dark .mono { color:var(--orange); font-size:8pt; }
-  .dark .big { font-size:30pt; letter-spacing:-.04em; line-height:1; margin:2mm 0; }
-  .dark p { color:var(--mute); margin:0; }
-  .split { display:grid; grid-template-columns:62mm 1fr; gap:7mm; align-items:start; }
-  ul { margin:0 0 3mm; padding-left:4.5mm; color:var(--grey); }
-  li { margin-bottom:1.2mm; }
+  .eyebrow { color:var(--orange); font-family:'Roboto Mono',monospace; text-transform:uppercase; letter-spacing:.04em; font-size:8pt; margin:0 0 2.5mm; }
+  h1 { font-weight:400; font-size:30pt; line-height:1.02; letter-spacing:-.04em; margin:9mm 0 3mm; }
+  .sub { color:var(--grey); font-size:11pt; margin:0 0 1mm; }
+  .meta { font-family:'Roboto Mono',monospace; font-size:7.5pt; color:var(--mute); text-transform:uppercase; letter-spacing:.04em; }
+  h2 { font-weight:500; font-size:15pt; letter-spacing:-.03em; margin:0 0 3mm; padding-top:2mm; display:flex; gap:10px; align-items:baseline; break-after:avoid; }
+  h2 .n { font-family:'Roboto Mono',monospace; font-size:8pt; color:var(--orange); letter-spacing:.04em; }
+  h3 { font-weight:500; font-size:11pt; margin:5mm 0 1.5mm; letter-spacing:-.01em; break-after:avoid; }
+  h3 .k { font-family:'Roboto Mono',monospace; font-size:8pt; color:var(--orange); margin-right:6px; }
+  p { margin:0 0 2.5mm; color:var(--grey); }
+  section { margin-bottom:5.5mm; }
+  ul { margin:0 0 2.5mm; padding-left:4.5mm; color:var(--grey); }
+  li { margin-bottom:1mm; }
   li::marker { color:var(--orange); }
-  .tbc { background:#FFE9DE; color:#B33A00; padding:0 3px; border-radius:2px; font-family:'Roboto Mono',monospace; font-size:8.5pt; }
-  .sign { display:grid; grid-template-columns:1fr 1fr; gap:10mm; margin-top:6mm; }
-  .sign div { border-top:1.5px solid var(--ink); padding-top:2mm; font-size:9pt; color:var(--grey); height:30mm; }
-  .sign b { color:var(--ink); font-weight:500; display:block; }
-  .foot { position:absolute; left:18mm; right:18mm; bottom:9mm; display:flex; justify-content:space-between; font-family:'Roboto Mono',monospace; font-size:7.5pt; color:var(--mute); text-transform:uppercase; letter-spacing:.04em; border-top:1px solid var(--line); padding-top:2.5mm; }
+  .parties { display:grid; grid-template-columns:1fr 1fr; gap:6mm; margin:7mm 0 6mm; }
+  .party { border-top:1.5px solid var(--ink); padding-top:2.5mm; font-size:9pt; color:var(--grey); }
+  .party b { display:block; color:var(--ink); font-weight:500; font-size:10.5pt; margin-bottom:.8mm; }
+  .k2 { font-family:'Roboto Mono',monospace; font-size:7pt; color:var(--mute); text-transform:uppercase; letter-spacing:.04em; display:block; margin-bottom:1mm; }
+  table { width:100%; border-collapse:collapse; font-size:9pt; margin-bottom:3mm; }
+  th { font-family:'Roboto Mono',monospace; font-weight:400; font-size:7pt; text-transform:uppercase; letter-spacing:.04em; color:var(--grey); text-align:left; padding:0 3mm 2mm 0; border-bottom:1.5px solid var(--ink); }
+  td { padding:2.2mm 3mm 2.2mm 0; border-bottom:1px solid var(--line); vertical-align:top; color:var(--grey); }
+  tr { break-inside:avoid; }
+  td:first-child { color:var(--ink); }
+  td.r, th.r { text-align:right; padding-right:0; }
+  .num { font-family:'Roboto Mono',monospace; color:var(--ink); white-space:nowrap; }
+  .when { white-space:nowrap; width:27mm; }
+  .when b { font-family:'Roboto Mono',monospace; font-weight:500; font-size:8pt; color:var(--orange); display:block; letter-spacing:.02em; }
+  .when span { color:var(--ink); font-size:8.5pt; }
+  .evt { color:var(--ink); font-weight:500; display:block; }
+  .call { border-left:3px solid var(--orange); background:var(--tint); padding:3mm 4.5mm; margin:3mm 0 4mm; break-inside:avoid; font-size:9.2pt; color:var(--grey); }
+  .call b { display:block; font-family:'Roboto Mono',monospace; font-weight:500; font-size:7.5pt; letter-spacing:.04em; text-transform:uppercase; color:var(--orange); margin-bottom:.8mm; }
+  .dark { background:var(--ink); color:#fff; padding:5mm 6mm; break-inside:avoid; margin:3mm 0 4mm; }
+  .dark .mono { font-family:'Roboto Mono',monospace; text-transform:uppercase; letter-spacing:.04em; color:var(--orange); font-size:7.5pt; }
+  .dark p { color:#d2d2d2; margin:1.5mm 0 0; font-size:10pt; }
+  .tbc { background:#FFE9DE; color:#B33A00; padding:0 3px; border-radius:2px; font-family:'Roboto Mono',monospace; font-size:8pt; }
+  .two { display:grid; grid-template-columns:1fr 1fr; gap:6mm; }
+  .sign { display:grid; grid-template-columns:1fr 1fr; gap:10mm; margin-top:4mm; break-inside:avoid; }
+  .sign div { border-top:1.5px solid var(--ink); padding-top:2mm; font-size:9pt; color:var(--grey); line-height:2.1; }
+  .sign b { color:var(--ink); font-weight:500; display:block; line-height:1.4; }
+  .brk { break-before:page; }
 </style>
 </head>
 <body>
 
-<!-- PAGE 1 -->
-<div class="page">
-  <div class="brand">
-    <svg viewBox="0 0 64.73 26.38" xmlns="http://www.w3.org/2000/svg"><path d="M64.726 7.659C64.726 7.659 64.088 7.347 64.088 7.347C43.842 -2.558 20.150 -2.442 0.000 7.659M30.746 4.363C25.140 6.739 26.834 15.117 32.921 15.117C38.852 15.117 40.692 7.069 35.352 4.479C33.905 3.777 32.226 3.735 30.746 4.363ZM44.199 16.704C48.858 19.278 47.035 26.383 41.715 26.383C41.715 26.383 12.344 26.383 12.344 26.383" fill="none" stroke="#FF5F1F" stroke-width="6.647"/></svg>
-    AakarLabs
-  </div>
-
-  <div class="eyebrow mono">Banza / Statement of work</div>
-  <h1>Brand identity<br>for Banza.</h1>
-  <p class="lede">Scope, process and payment for the Banza logo, mascot, app icon, motion states, colour and typography system, and short brand playbook.</p>
-
-  <div class="parties">
-    <div class="party">
-      <span class="k">Service provider</span>
-      <b>Aakar Labs</b>
-      Sole proprietorship, not GST registered<br>
-      aakarlabs.art<br>
-      contact.aakarlabs@gmail.com<br>
-      <span class="tbc">proprietor name, address, PAN</span>
-    </div>
-    <div class="party">
-      <span class="k">Client</span>
-      <b>Banza Technologies Private Limited</b>
-      3rd Floor, No. 402-B-1TF, ITI HBCS Layout,<br>Mysore Rd, Nayandahalli,<br>Bangalore 560039, Karnataka<br>
-      PAN AAOCB3598F<br>GSTIN 29AAOCB3598F1Z4
-    </div>
-  </div>
-
-  <section style="margin-top:7mm">
-    <h2><span class="n">01</span>Overview</h2>
-    <p>Banza is a Bengaluru consumer AI app: a personal AI Twin that connects to a user's shopping, streaming, email and social accounts to find better prices and earn money back. Following the Brand Audit and Identity Proposal, Aakar Labs will redesign the Banza identity so it reads as quietly capable, trustworthy and personal, rather than a reward app.</p>
-    <p>This document fixes what is included, how work and feedback are staged, and when payments fall due.</p>
-  </section>
-
-  <section>
-    <h2><span class="n">02</span>Deliverables</h2>
-    <table>
-      <tr><th style="width:44mm">Deliverable</th><th>What is included</th></tr>
-      <tr><td>Logo + mark redesign</td><td>2–3 creative directions, then one refined direction: simplified two-tone flame mark and wordmark options. Includes the "Twin" mascot built from the flame geometry, with a small set of expressions.</td></tr>
-      <tr><td>App icon, variant set</td><td>Light, dark and monochrome icons; static and motion frames; legibility check at store sizes. Delivered as separate PNGs.</td></tr>
-      <tr><td>Animated logo</td><td>Three states, each with a static fallback: Idle (loop), Thinking (loop) and Done (plays once). Delivered as animation files.</td></tr>
-      <tr><td>Colour + typography system</td><td>Palette and type specifications. UI components are not included.</td></tr>
-      <tr><td>Short brand playbook</td><td>Usage guidelines with do's and don'ts.</td></tr>
-    </table>
-  </section>
-
-  <div class="foot"><span>Aakar Labs for Banza</span><span>Statement of work / v1</span><span>1 of 3</span></div>
+<div class="brand">
+  <svg viewBox="0 0 64.73 26.38" xmlns="http://www.w3.org/2000/svg"><path d="M64.726 7.659C64.726 7.659 64.088 7.347 64.088 7.347C43.842 -2.558 20.150 -2.442 0.000 7.659M30.746 4.363C25.140 6.739 26.834 15.117 32.921 15.117C38.852 15.117 40.692 7.069 35.352 4.479C33.905 3.777 32.226 3.735 30.746 4.363ZM44.199 16.704C48.858 19.278 47.035 26.383 41.715 26.383C41.715 26.383 12.344 26.383 12.344 26.383" fill="none" stroke="#FF5F1F" stroke-width="6.647"/></svg>
+  AakarLabs
 </div>
 
-<!-- PAGE 2 -->
-<div class="page">
-  <div class="brand">
-    <svg viewBox="0 0 64.73 26.38" xmlns="http://www.w3.org/2000/svg"><path d="M64.726 7.659C64.726 7.659 64.088 7.347 64.088 7.347C43.842 -2.558 20.150 -2.442 0.000 7.659M30.746 4.363C25.140 6.739 26.834 15.117 32.921 15.117C38.852 15.117 40.692 7.069 35.352 4.479C33.905 3.777 32.226 3.735 30.746 4.363ZM44.199 16.704C48.858 19.278 47.035 26.383 41.715 26.383C41.715 26.383 12.344 26.383 12.344 26.383" fill="none" stroke="#FF5F1F" stroke-width="6.647"/></svg>
-    AakarLabs
+<h1>Banza<br>Visual Identity Development</h1>
+<div class="eyebrow" style="margin-top:0">Client services / Statement of work</div>
+<p class="sub">Aakar Labs × Kwirks Studio · Prepared for Banza</p>
+<div class="meta">For review and signature · Version 2.0 · 13 October 2026</div>
+
+<div class="parties">
+  <div class="party">
+    <span class="k2">Service provider</span>
+    <b>Aakar Labs</b>
+    Sole proprietorship, not GST registered<br>
+    aakarlabs.art · contact.aakarlabs@gmail.com<br>
+    Proprietor, address and PAN: <span class="tbc">to add</span>
   </div>
-
-  <section style="margin-top:12mm">
-    <h2><span class="n">03</span>Process and milestones</h2>
-    <p>Work runs in staged reviews so feedback lands early and large changes of direction do not appear late. Aakar Labs shares progress on a shared board (Figma or similar); Banza comments on each stage. Total effort is about 20 working days from kickoff.</p>
-    <table>
-      <tr><th style="width:34mm">Stage</th><th>What happens</th><th class="r" style="width:30mm">Target date</th></tr>
-      <tr><td>Kickoff</td><td>Intro call, shared board and WhatsApp group set up, co-founder included.</td><td class="r"><span class="tbc">date</span></td></tr>
-      <tr><td>Directions</td><td>2–3 creative directions for logo, mascot and colour. Banza picks one and comments.</td><td class="r"><span class="tbc">date</span></td></tr>
-      <tr><td>Draft 1</td><td>Chosen direction developed: mark, icon set, type and palette. Comments round.</td><td class="r"><span class="tbc">date</span></td></tr>
-      <tr><td>Draft 2</td><td>Motion states and playbook added; refinements applied. Comments round.</td><td class="r"><span class="tbc">date</span></td></tr>
-      <tr><td>Final delivery</td><td>All files and the playbook handed over.</td><td class="r"><span class="tbc">date</span></td></tr>
-    </table>
-    <p style="margin-top:3mm">Banza has a November marketing push, so Aakar Labs will share the icon and mark early where possible to support that work.</p>
-  </section>
-
-  <section>
-    <h2><span class="n">04</span>Fees and payment</h2>
-    <div class="split">
-      <div class="dark">
-        <div class="mono">Project fee</div>
-        <div class="big">₹1,50,000</div>
-        <p>Full scope above. No GST is charged as Aakar Labs is not GST registered.</p>
-      </div>
-      <table>
-        <tr><th>Instalment</th><th>Due on</th><th class="r">Amount</th></tr>
-        <tr><td>40%</td><td>Advance, before work starts</td><td class="r num">₹60,000</td></tr>
-        <tr><td>30%</td><td>Approval of direction</td><td class="r num">₹45,000</td></tr>
-        <tr><td>30%</td><td>Final delivery</td><td class="r num">₹45,000</td></tr>
-      </table>
-    </div>
-    <p style="margin-top:3mm">Invoices are issued to Banza Technologies Private Limited using the details above, payable within <span class="tbc">7</span> days of issue.</p>
-  </section>
-
-  <div class="foot"><span>Aakar Labs for Banza</span><span>Statement of work / v1</span><span>2 of 3</span></div>
+  <div class="party">
+    <span class="k2">Client</span>
+    <b>Banza Technologies Private Limited</b>
+    3rd Floor, No. 402-B-1TF, ITI HBCS Layout, Mysore Rd, Nayandahalli, Bangalore 560039, Karnataka<br>
+    PAN AAOCB3598F · GSTIN 29AAOCB3598F1Z4
+  </div>
 </div>
 
-<!-- PAGE 3 -->
-<div class="page">
-  <div class="brand">
-    <svg viewBox="0 0 64.73 26.38" xmlns="http://www.w3.org/2000/svg"><path d="M64.726 7.659C64.726 7.659 64.088 7.347 64.088 7.347C43.842 -2.558 20.150 -2.442 0.000 7.659M30.746 4.363C25.140 6.739 26.834 15.117 32.921 15.117C38.852 15.117 40.692 7.069 35.352 4.479C33.905 3.777 32.226 3.735 30.746 4.363ZM44.199 16.704C48.858 19.278 47.035 26.383 41.715 26.383C41.715 26.383 12.344 26.383 12.344 26.383" fill="none" stroke="#FF5F1F" stroke-width="6.647"/></svg>
-    AakarLabs
-  </div>
+<div class="call"><b>Project commitment</b>A new, implementation-ready identity that launches in November. The principal logo and mark will be final and locked on 24 October; all creative deliverables and revisions will be approved by 8 November; final organised handover will take place on 10 November 2026.</div>
 
-  <section style="margin-top:12mm">
-    <h2><span class="n">05</span>Feedback and revisions</h2>
-    <ul>
-      <li>Banza gives one set of consolidated comments per stage, within <span class="tbc">2</span> working days of each share.</li>
-      <li>Each deliverable includes <span class="tbc">two</span> revision rounds. Further rounds are ₹10,000 each.</li>
-      <li>A change of creative direction after Directions is approved counts as new work and is quoted separately.</li>
-    </ul>
-  </section>
+<h3 style="margin-top:6mm">Project at a glance</h3>
+<table>
+  <tr><th style="width:38mm">Item</th><th>Agreed / proposed term</th></tr>
+  <tr><td>Scope</td><td>Logo and mark; AI Twin character exploration within identity; full app icon variants; three core motion states; colour and typography systems; short brand playbook and implementation handoff.</td></tr>
+  <tr><td>Total fee</td><td><span class="num">₹1,50,000</span>. No GST is charged, as Aakar Labs is not GST registered.</td></tr>
+  <tr><td>Payment schedule</td><td>40% advance · 30% on creative-direction approval · 30% after final delivery</td></tr>
+  <tr><td>Proposed kickoff</td><td>Wednesday, 14 October 2026, contingent on signed SOW, cleared advance and initial materials</td></tr>
+  <tr><td>Hard logo lock</td><td>Saturday, 24 October 2026. No creative changes after written sign-off.</td></tr>
+  <tr><td>All design approvals</td><td>Sunday, 8 November 2026</td></tr>
+  <tr><td>Final source-file handover</td><td>Tuesday, 10 November 2026</td></tr>
+</table>
+<p>This Statement of Work governs the agreed production scope, meetings, deliverables, approvals, fees and transfer of rights. Where the earlier proposal or initial client brief differs, this signed SOW controls.</p>
 
-  <section>
-    <h2><span class="n">06</span>Out of scope</h2>
-    <ul>
-      <li>UI components and app or website screen design.</li>
-      <li>Additional animation states, extra mascot poses beyond the agreed set, and illustration or packaging work.</li>
-      <li>Development, copywriting beyond the headline rewrites in the audit, and third-party licensing costs.</li>
-    </ul>
-  </section>
+<section class="brk">
+<h2><span class="n">01</span>Purpose and deliverables</h2>
+<h3>Purpose of the engagement</h3>
+<p>Develop a distinctive, coherent visual identity for Banza, the AI Twin shopping app. The identity should look capable and interesting on first contact, be recognisable at small app and notification sizes, and support motion that shows the Twin working for the user. The Banza name and founder-supplied messaging remain unchanged.</p>
+<h3>Creative approach</h3>
+<ul>
+  <li>Design from a fresh starting point; the existing logo does not need to be retained.</li>
+  <li>Present 2–3 exploratory routes before refining one selected direction.</li>
+  <li>Explore one canonical Twin character direction as part of the mark and icon work. This is not a standalone mascot system.</li>
+  <li>The master identity must accommodate Banza Save, Validate, Activate and Cash without designing separate product logos.</li>
+</ul>
 
-  <section>
-    <h2><span class="n">07</span>Ownership</h2>
-    <p>Full rights in the final approved deliverables pass to Banza on receipt of final payment. Aakar Labs may show the work in its portfolio after Banza's public launch of the new identity.</p>
-  </section>
+<h3><span class="k">A</span>Logo, wordmark and mark</h3>
+<ul>
+  <li>Final primary wordmark and symbol/monogram, developed as one coherent identity.</li>
+  <li>Horizontal and stacked lockups, including a version with Banza's founder-provided working tagline.</li>
+  <li>Approved light, dark and one-colour variations, clear-space and minimum-size rules.</li>
+  <li>24 px readability, monochrome notification and WhatsApp-preview suitability checks; clear visual interpretation review.</li>
+  <li>Master vector and source deliverables: SVG, transparent PNG exports and native editable design files.</li>
+</ul>
 
-  <section>
-    <h2><span class="n">08</span>Agreement</h2>
-    <p>By signing, both parties accept this statement of work as part of the services agreement between them.</p>
-    <div class="sign">
-      <div><b>Aakar Labs</b>Name · Signature · Date</div>
-      <div><b>Banza Technologies Private Limited</b>Name · Signature · Date</div>
-    </div>
-  </section>
+<h3><span class="k">B</span>App icon and full variant set</h3>
+<ul>
+  <li>2–3 distinct icon candidates for Banza to use in its Google Play listing experiment; final selected app icon aligned to the approved mark.</li>
+  <li>iOS: default, dark, clear light, clear dark, tinted light and tinted dark; layered sources suitable for Icon Composer.</li>
+  <li>Android: adaptive foreground/background observing the 66dp safe zone, themed monochrome layer, splash icon and single-colour notification icon.</li>
+  <li>Platform-ready size exports; seasonal/festive adaptation rules; side-by-side real-size comparison against relevant consumer app icons.</li>
+</ul>
+<div class="call"><b>Acceptance of icon scope</b>The studio supplies design assets, exports and visual checks. Banza conducts the actual store-listing experiment and production deployment with its internal team.</div>
+</section>
 
-  <div class="foot"><span>Aakar Labs for Banza</span><span>Statement of work / v1</span><span>3 of 3</span></div>
-</div>
+<section>
+<h2><span class="n">02</span>Production deliverables</h2>
+<div style="break-inside:avoid"><h3><span class="k">C</span>Three core motion states</h3>
+<table>
+  <tr><th style="width:38mm">State</th><th>Role and asset</th></tr>
+  <tr><td>Idle</td><td>A calm default presence; loop and static fallback.</td></tr>
+  <tr><td>Thinking / Working</td><td>Primary signature state communicating work in progress; timing should build naturally toward completion; loop or defined transition and static fallback.</td></tr>
+  <tr><td>Done / Success</td><td>Short, restrained success confirmation; playback and static fallback.</td></tr>
+</table></div>
+<ul>
+  <li>Motion principles sheet covering durations, timing, easing and intended transitions between the three states.</li>
+  <li>One implementation format, Lottie JSON <b>or</b> Rive .riv, selected with Banza engineering by 15 October; editable motion project files and preview video supplied.</li>
+  <li>A fully wired Rive state machine and optional Launch, Listening and Error animations are not included.</li>
+</ul>
+
+<h3><span class="k">D</span>Colour and typography</h3>
+<ul>
+  <li>Primary, secondary and semantic colours (success, warning, error, information), with light/dark tuning and darker text-safe counterparts.</li>
+  <li>Approved accessibility-tested colour pairs targeting WCAG AA 4.5:1 for text and 3:1 for relevant non-text components.</li>
+  <li>Brand and interface typeface recommendations, hierarchy and type scale, numeral/tabular-figure treatment, Indian-script and Arabic fallbacks, and mobile embedding licence references.</li>
+</ul>
+
+<h3><span class="k">E</span>Short brand playbook and engineering handoff</h3>
+<ul>
+  <li>Approximately 15–25 pages in PDF, plus editable design source, covering the identity rationale; logo, icon, colour and typography usage; examples of correct and incorrect application; motion states and specs.</li>
+  <li>Short application-guidance page for store graphics, notifications and share cards. Production of the actual campaign or store artwork is excluded.</li>
+  <li>Identity-relevant variables for colours, type, spacing, radii and motion in Figma, plus W3C-style design tokens JSON. This does not include a UI component library.</li>
+</ul>
+<div class="call"><b>Source brief interpretation</b>The deliverables above reflect Banza's detailed identity brief and the subsequently negotiated core package. See exclusions and open confirmations before signature.</div>
+</section>
+
+<section class="brk">
+<h2><span class="n">03</span>Meetings and hard approvals</h2>
+<p>All dates are in Indian Standard Time. Meeting times will be scheduled by the two teams. The 18 October, 24 October and 8 November deadlines fall on weekends; availability on those dates is required.</p>
+<h3>Kickoff through logo lock</h3>
+<table>
+  <tr><th>Date / event</th><th>Material sent or presented</th><th>Client decision / output</th></tr>
+  <tr><td class="when"><b>14 OCT · WED</b><span class="evt">Kickoff call</span></td><td>Kickoff agenda; confirmed scope; asset/request checklist; project contacts; implementation format questions.</td><td>Signed SOW; 40% advance of ₹60,000 received before work; client supplies existing assets and appoints approver.</td></tr>
+  <tr><td class="when"><b>15 OCT · THU</b><span class="evt">Questionnaire issued</span></td><td>Founder-discovery questionnaire covering origin story, original motivation, personal attachment, frustrations, audience, values, ambitions and creative tastes.</td><td>Banza returns founder responses by 16 Oct noon; supplies app screens, tagline and brand assets.</td></tr>
+  <tr><td class="when"><b>18 OCT · SUN</b><span class="evt">Meeting 01: Moodboards</span></td><td>2–3 exploratory moodboard territories; visual inspiration, emotional attributes, graphic/colour/type cues; initial Twin/character reference approaches.</td><td>Choose preferred territory or an agreed combination. Consolidated feedback during or immediately after the meeting.</td></tr>
+  <tr><td class="when"><b>22 OCT · THU</b><span class="evt">Meeting 02: Logo ideations</span></td><td>2–3 preliminary logo routes: mark sketches, indicative wordmark treatments, app-icon thumbnails, AI Twin interpretation, first small-size comparisons and short rationale.</td><td>Select ONE route in writing on 22 Oct. This is creative-direction approval; the 30% instalment of ₹45,000 becomes due.</td></tr>
+  <tr><td class="when"><b>24 OCT · SAT</b><span class="evt">Meeting 03: Final logo lock</span></td><td>Polished final symbol and primary wordmark, canonical icon direction, monochrome/small-scale proof and revision summary incorporating agreed feedback.</td><td>Banza approves final logo and mark in writing by 24 Oct. Identity geometry and creative direction become locked; no further creative changes.</td></tr>
+</table>
+<div class="call"><b>24 Oct hard lock</b>No requests for colour-shape reconcepting, new marks, typography redesign of the approved wordmark or alternative directions are accepted after written logo sign-off. Only objective production or file errors may be corrected. Any requested creative changes require a new written scope, fee and schedule approval.</div>
+</section>
+
+<section>
+<h2><span class="n">04</span>Later review meetings</h2>
+<h3>Applications through handover</h3>
+<table>
+  <tr><th>Date / event</th><th>Material sent or presented</th><th>Client decision / output</th></tr>
+  <tr><td class="when"><b>28 OCT · WED</b><span class="evt">Meeting 04: Icon + visual system</span></td><td>All six iOS appearance previews; Android adaptive/notification previews; 2–3 store candidates; colour system and typeface recommendations; side-by-side icon checks.</td><td>Consolidated notes by 29 Oct, 12:00 noon. Logo remains locked; changes limited to permissible variants, supporting colours and type.</td></tr>
+  <tr><td class="when"><b>31 OCT · SAT</b><span class="evt">Meeting 05: Motion first look</span></td><td>Previews/animatics for Idle, Thinking and Done; principles, timings, easing and static fallbacks.</td><td>Select motion behaviours and send consolidated notes by 1 Nov noon.</td></tr>
+  <tr><td class="when"><b>3 NOV · TUE</b><span class="evt">Meeting 06: System review</span></td><td>Refined three-state animation previews; app icon export set; near-final palette, typography and accessibility results; early engineering token examples.</td><td>Approve visual-system selections; provide consolidated corrections by 4 Nov noon.</td></tr>
+  <tr><td class="when"><b>5 NOV · THU</b><span class="evt">Meeting 07: Playbook / QA preview</span></td><td>15–25-page playbook draft; motion specs; implementation exports in chosen format; Figma variable and token sample; handoff checklist.</td><td>Return one consolidated documentation/technical correction list by 6 Nov noon.</td></tr>
+  <tr><td class="when"><b>6 NOV · FRI</b><span class="evt">Meeting 08: Final design review</span></td><td>Near-final full identity presentation: approved logo, all platform icons, three motion states, colour/type, playbook and technical files.</td><td>Final consolidated correction list by 6 Nov, 6:00 PM. No new concepts or unlocked logo work.</td></tr>
+  <tr><td class="when"><b>7 NOV · SAT</b><span class="evt">Final corrections</span></td><td>Apply the approved in-scope final corrections; verify animations, icons, colour pairs, token files and playbook.</td><td>No new requests; clarification responses same day if needed.</td></tr>
+  <tr><td class="when"><b>8 NOV · SUN</b><span class="evt">Meeting 09: Final sign-off</span></td><td>Completed, revised and QA-checked entire identity set and final playbook for review.</td><td>Written approval of ALL creative deliverables by end of 8 Nov. No revisions after this date.</td></tr>
+  <tr><td class="when"><b>9 NOV · MON</b><span class="evt">Technical packaging</span></td><td>Final file naming, packaging, integrity checks and import/format verification. No creative changes.</td><td>Handover bundle staged; delivery manifest ready.</td></tr>
+  <tr><td class="when"><b>10 NOV · TUE</b><span class="evt">Handover meeting</span></td><td>All approved editable source files, vectors, platform icons, motion files, playbook PDF and design-token files, with manifest.</td><td>Client confirms receipt. Final 30% instalment (₹45,000) invoiced after delivery.</td></tr>
+</table>
+</section>
+
+<section>
+<h2><span class="n">05</span>Approvals, revision rules and dependencies</h2>
+<h3>How feedback and approval will work</h3>
+<p><b style="color:var(--ink);font-weight:500">One approver, one consolidated response.</b> Banza shall nominate one decision-maker to collect internal comments and provide a single written response per milestone. Meeting notes are shared as a short decision record. A verbal preference is not an approval unless confirmed in writing (email or the designated project channel).</p>
+<h3>Revision allowance</h3>
+<p>The agreed core bundle allows up to two structured rounds of consolidated in-scope feedback per major deliverable, provided they occur before the applicable approval gate and within this schedule. The moodboard and initial 2–3 route review are exploratory selection meetings, not a commitment to develop all routes into complete identity systems. An unselected route is not an additional final deliverable.</p>
+<p>For the logo, the scheduled feedback opportunities are the 22 October route selection and the refinement review culminating in 24 October approval. No unused logo revision allowance carries beyond the 24 October lock. Later icon, colour, type, motion and playbook revisions may not alter the approved logo geometry.</p>
+<div class="call"><b>Binding creative gates</b>24 October: approved logo, mark and canonical identity geometry are frozen. 8 November: all remaining design and documentation are final and frozen. Corrections to corrupted exports or objectively incorrect files do not reopen creative approval; substantive changes require separate written agreement.</div>
+
+<h3>Feedback turnaround and weekends</h3>
+<ul>
+  <li>Banza provides founder questionnaire responses and key materials by the stated deadlines.</li>
+  <li>All key reviewers commit to the 18 October, 24 October and 8 November weekend approvals.</li>
+  <li>Design reviews require one consolidated response by the deadlines shown; the production plan assumes rapid, usually same-day or next-day decisions.</li>
+  <li>Client-caused delays, unanswered technical questions, late content or new requests may move dependent milestones. Both parties will agree any revised dates in writing; a fixed handover cannot be guaranteed without timely approvals.</li>
+</ul>
+<h3>Decisions required at kickoff</h3>
+<ul>
+  <li>Confirm the final animation handoff format (Lottie or Rive), app asset requirements, and Figma workspace and access.</li>
+  <li>Identify one authorised approver and the channel for binding approvals.</li>
+</ul>
+</section>
+
+<section>
+<h2><span class="n">06</span>Commercials and handover</h2>
+<div style="break-inside:avoid"><div class="dark"><div class="mono">Fixed professional fee</div><div style="font-size:26pt;letter-spacing:-.04em;line-height:1.1;margin-top:1mm">₹1,50,000</div><p>For the expressly included scope. No GST is charged, as Aakar Labs is not GST registered. No additional design services are implied by this amount.</p></div>
+<table>
+  <tr><th>Instalment</th><th>Trigger</th><th class="r" style="width:14mm">%</th><th class="r" style="width:24mm">Amount</th></tr>
+  <tr><td>1 · Advance</td><td>Due before kickoff; target 14 Oct 2026</td><td class="r num">40%</td><td class="r num">₹60,000</td></tr>
+  <tr><td>2 · Direction sign-off</td><td>Due upon written selection of the direction on 22 Oct 2026</td><td class="r num">30%</td><td class="r num">₹45,000</td></tr>
+  <tr><td>3 · Final delivery</td><td>Invoiced after completed handover on 10 Nov 2026; proposed due by 13 Nov 2026</td><td class="r num">30%</td><td class="r num">₹45,000</td></tr>
+  <tr><td><b style="font-weight:500">Total</b></td><td>Full fixed fee</td><td class="r num">100%</td><td class="r num">₹1,50,000</td></tr>
+</table></div>
+<p>Invoices will be issued to Banza Technologies Private Limited at the billing details on page 1.</p>
+
+<h3>Final delivery contents · 10 November</h3>
+<ul>
+  <li>Approved logo/wordmark lockups and variants: editable source files, SVG, transparent PNGs and usage specifications.</li>
+  <li>Complete iOS and Android app-icon asset package; store experiment candidates; small-size and seasonal-rules documentation.</li>
+  <li>Idle, Thinking and Done implementation exports in the one agreed format, video previews, static fallbacks and native motion source files.</li>
+  <li>Colour and typography tables, licensing references and accessibility-pair results.</li>
+  <li>Final 15–25-page PDF playbook and editable source; Figma variables and W3C-style JSON tokens; delivery manifest and folder structure.</li>
+</ul>
+<h3>Acceptance and payment mechanics</h3>
+<p>On 8 November, Banza provides written approval that the final creative deliverables match this SOW and the agreed sign-off decisions. On 10 November, Aakar Labs × Kwirks Studio transfers the organised files and delivery manifest. Banza confirms receipt within one working day and pays the final invoice after delivery within the agreed due period (proposed: three working days). Receipt acknowledgement is not an invitation to restart approved creative work.</p>
+<h3>Ownership and editable files</h3>
+<p>Banza receives the approved native/editable source files at handover. Upon cleared payment of all agreed fees, exclusive rights in the final approved original identity assets created under this SOW transfer to Banza for worldwide use, modification and reproduction. Rejected routes, preliminary concepts, studio processes/templates and general know-how remain with their creators. Third-party fonts and licensed assets are subject to their original licences and are not transferred as owned IP.</p>
+</section>
+
+<section>
+<h2><span class="n">07</span>Boundaries, obligations and signatures</h2>
+<h3>Scope boundaries</h3>
+<table>
+  <tr><th style="width:50%">Included</th><th>Excluded unless later agreed</th></tr>
+  <tr><td>Exploration of a canonical Twin character within logo/icon work</td><td>A standalone character bible, a customisable avatar generator or individual user characters</td></tr>
+  <tr><td>Three core motion states and one selected app-ready format</td><td>Optional Splash/Launch, Listening or Error motion states; full state-machine wiring</td></tr>
+  <tr><td>Brand colour/type system, identity tokens and usage directions</td><td>Complete product UI component library, UI/UX screen design or engineering implementation</td></tr>
+  <tr><td>App icon variants and experiment-ready artwork</td><td>Running store experiments, paid research or guaranteed conversion improvements</td></tr>
+  <tr><td>Usage examples within the playbook</td><td>Full campaign design, separate website design/development, social media sets</td></tr>
+  <tr><td>Identity assets above</td><td>The proposed 2–4 motif graphic kit and desktop/mobile hero mock are not included unless added by signed change order</td></tr>
+</table>
+<h3>Client inputs and responsibilities</h3>
+<p>Banza will supply its current identity files, sample app screens, approved working tagline and other founder-owned copy, relevant brand references, one point of contact, engineering format confirmation, and prompt consolidated decisions. Banza is responsible for legal trademark clearance, product development, public launch, app-store submission, required font licences and any research or testing it elects to run.</p>
+<h3>Changes, pause or cancellation</h3>
+<p>New deliverables, revisions after locked approval dates or substantial changes to the agreed brief require a written change order specifying revised fee and timeline before commencement. If the project is paused or terminated, work completed and reasonable committed costs through the written pause/termination date will be accounted for, with unused advance reconciled against those amounts. Neither party is obligated to undertake unapproved additions.</p>
+<h3>Confidentiality and portfolio</h3>
+<p>Both teams will treat unpublished brand concepts, product details and internal materials as confidential. The creative partners may publish approved project work after Banza's public launch, subject to Banza's written approval and exclusion of confidential product information.</p>
+</section>
+
+<section>
+<h2><span class="n">08</span>Approval and execution</h2>
+<p>The signing representatives confirm that they have reviewed the scope, creative milestones, revision limits, date-specific approvals and financial terms set out in this SOW. Aakar Labs and Banza approve the operational schedule, including the three weekend review and approval dates.</p>
+<h3>Confirmations before signature</h3>
+<table>
+  <tr><th style="width:62mm">Confirmation</th><th>Agreed details</th></tr>
+  <tr><td>Contracting and invoicing entity</td><td>Aakar Labs, sole proprietorship. Proprietor name, address and PAN: <span class="tbc">to add</span></td></tr>
+  <tr><td>Banza legal billing entity / GST details</td><td>Banza Technologies Private Limited · PAN AAOCB3598F · GSTIN 29AAOCB3598F1Z4 · Bangalore 560039</td></tr>
+  <tr><td>Tax basis for ₹1,50,000 fee</td><td>No GST charged; Aakar Labs is not GST registered.</td></tr>
+  <tr><td>Authorised Banza decision-maker</td><td style="color:var(--mute)">______________________________</td></tr>
+  <tr><td>Selected motion-export format (Lottie or Rive)</td><td style="color:var(--mute)">______________________________</td></tr>
+  <tr><td>Weekend meeting availability (18 Oct, 24 Oct, 8 Nov)</td><td style="color:var(--mute)">______________________________</td></tr>
+</table>
+<div style="break-inside:avoid"><h3>Order of precedence and signatures</h3>
+<p>This signed SOW prevails over conflicting descriptions in the original audit/proposal and the Shelf identity brief. Only the deliverables specifically included here are contracted. Changes must be approved in writing by authorised representatives of both parties.</p>
+<div class="sign">
+  <div><b>For Banza Technologies Private Limited</b>Signatory / title: ____________________<br>Signature: ____________________<br>Date: ____________________</div>
+  <div><b>For Aakar Labs</b>Signatory / title: ____________________<br>Signature: ____________________<br>Date: ____________________</div>
+</div></div>
+</section>
 
 </body>
 </html>
