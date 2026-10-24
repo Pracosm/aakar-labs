@@ -35,7 +35,7 @@ const members: Array<{
         Icon: LinkedinLogo,
       },
       {
-        href: "https://x.com/pracosm",
+        href: "https://x.com/sidequestbrain",
         label: "X (Twitter)",
         Icon: XLogo,
       },
